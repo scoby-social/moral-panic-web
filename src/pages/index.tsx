@@ -1,9 +1,11 @@
 import { SxProps } from "@mui/material";
 import { Box } from "@mui/system";
-import { Header } from "components/common/Header/Header";
 import { useAtom } from "jotai";
-import { currentWallet, userHasNoID } from "lib/store";
 import { useEffect } from "react";
+
+import { currentWallet, userHasNoID } from "lib/store";
+
+import { Header } from "components/common/Header/Header";
 
 const headerBoxContainerStyle: SxProps = {
   // paddingBottom: "1rem",

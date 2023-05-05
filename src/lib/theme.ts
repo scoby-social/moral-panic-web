@@ -18,9 +18,10 @@ export default function CustomTheme() {
         fontSize: "1vmax !important",
       },
       h1: {
-        fontFamily: "Patched",
+        fontFamily: "Patched Prospect",
         fontSize: "3vmax",
-        fontWeight: "bold",
+        fontWeight: "400",
+        letterSpacing: "0.2em !important",
         [breakpoints.up("sm")]: {
           fontSize: "3.5vmax",
         },
@@ -34,7 +35,8 @@ export default function CustomTheme() {
         },
       },
       h3: {
-        fontWeight: "500",
+        fontFamily: "Patched Prospect",
+        fontWeight: "400",
         fontSize: "1.1vmax",
         [breakpoints.up("sm")]: {
           fontSize: "1.3vmax",
@@ -54,6 +56,7 @@ export default function CustomTheme() {
       subtitle2: {
         fontFamily: "Cabin",
         fontSize: "1vmax",
+        lineHeight: "1vmax",
         [breakpoints.up("sm")]: {
           fontSize: "0.80vmax",
         },
