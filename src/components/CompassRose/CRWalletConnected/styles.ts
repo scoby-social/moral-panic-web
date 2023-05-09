@@ -32,3 +32,10 @@ export const textStyle: SxProps = {
     }
 }
 
+export const roseDropTextStyle: SxProps = {
+    fontFamily: "Patched",
+    fontSize: {
+        xs: "1.4vmax",
+        lg: "1.2vmax",
+    },
+};

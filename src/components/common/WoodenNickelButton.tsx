@@ -23,6 +23,10 @@ const WoodenButton = styled(Button)`
     background-color: #076936;
   }
 
+  &:hover {
+    background-color: #1a1f2e;
+  }
+
   @media (min-width: 769px) {
     padding: 2vmax 2.2vmax;
   }

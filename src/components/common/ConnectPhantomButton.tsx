@@ -111,6 +111,7 @@ export const ConnectPhantomButton: FC<ConnectWalletButtonProps> = () => {
   if (!publicKey) {
     return (
       <WalletButton
+        startIcon={undefined}
         endIcon={
           <PhantomIcon
             src={`/phantom_icon.png`}
