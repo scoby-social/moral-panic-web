@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import { Box, Button, Typography } from "@mui/material";
 import { textStyle, container, title, roseDropTextStyle } from "./styles";
 import { ConnectPhantomButton } from "components/common/ConnectPhantomButton";
-import { WoodenNickelButton } from "components/common/WoodenNickelButton";
 
 const RoseDropButton = styled(Button)`
   max-height: 3vmax;

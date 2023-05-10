@@ -4,20 +4,35 @@ import { CompassRose } from "components/CompassRose/CompassRose";
 import { Header } from "components/common/Header/Header";
 import { useAtom } from "jotai";
 import { currentWallet, userHasNoID } from "lib/store";
-import { useEffect } from "react";
-
-import { NextComponentType } from "next";
+import { FC, useEffect } from "react";
 
 const headerBoxContainerStyle: SxProps = {
-  // paddingBottom: "1rem",
-  overflow: "auto",
+  subdomain: "quest",
 };
 
-const Home = ({}) => {
+enum subdomainType {
+  quest = "quest",
+}
+
+interface indexProps {
+  subdomain: "quest";
+}
+
+export async function getServerSideProps({ req }: any) {
+  const subdomain = req.headers.host.split(".")[0];
+
+  return {
+    props: {
+      subdomain,
+    },
+  };
+}
+
+const Home: FC<indexProps> = ({ subdomain }) => {
   const [missingID] = useAtom(userHasNoID);
   const [wallet] = useAtom(currentWallet);
 
-  const headerTitle = "";
+  const headerTitle = "The Quest of the Compass Rose";
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -27,6 +42,8 @@ const Home = ({}) => {
     <div>
       <Box sx={headerBoxContainerStyle}>
         <Header spawn={false} title={headerTitle} isProfile={false} />
+
+        {/* {subdomain === subdomainType.quest && <CompassRose />} */}
 
         <CompassRose />
       </Box>

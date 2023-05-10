@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import styled from "@emotion/styled";
 import { Button, Typography, SxProps } from "@mui/material";
 import Image from "next/image";
+import { useGetOperateSystem } from "lib/hooks/useGetOperateSystem";
+import { useRouter } from "next/router";
 
 const textStyle: SxProps = {
   fontFamily: "Patched",
@@ -28,9 +30,25 @@ interface DownloadPhantomButtonProps {
 export const DowloadPhantomButtom: FC<DownloadPhantomButtonProps> = ({
   sx,
 }) => {
+  const router = useRouter();
+  const operateSystem = useGetOperateSystem();
+
+  const androidUrl =
+    "https://play.google.com/store/apps/details?id=app.phantom&hl=es_419&gl=US&pli=1";
+  const iosUrl = "https://apps.apple.com/app/phantom-solana-wallet/1598432977";
+
+  const handleClick = () => {
+    if (operateSystem === "Ios") {
+      router.push(iosUrl, {}, { locale: "_blank" });
+    } else {
+      router.push(androidUrl);
+    }
+  };
+
   return (
     <DownloadButton
       sx={{ ...sx }}
+      onClick={handleClick}
       endIcon={
         <Image src={`/phantom_icon.png`} width={24} height={24} alt="paper" />
       }
