@@ -5,6 +5,11 @@
   src: url('/fonts/Patched-Medium.otf')
 }
 
+@font-face {
+  font-family: 'Patched-Prospect';
+  src: url('/fonts/PatchedProspect.otf')
+}
+
 html {
   padding: 0;
   margin: 0;

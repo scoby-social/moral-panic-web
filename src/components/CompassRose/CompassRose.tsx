@@ -12,6 +12,7 @@ import { currentWallet } from "lib/store";
 import { useAtom } from "jotai";
 import { CREnterTheForge } from "./CREnterTheForge/CREnterTheForge";
 import { CRSlipstream } from "./CRSlipstream/CRSlipstream";
+import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUSerHasCompassRose";
 
 export const CompassRose = () => {
   const wallet = useWallet();
@@ -30,9 +31,11 @@ export const CompassRose = () => {
 
   const getTokensInWallet = async () => {
     // const fakeId = await checkIfUserHasFakeID(wallet);
-     const woodenNickle = await checkIfUserHasWoodenNickle(wallet);
+    // const woodenNickle = await checkIfUserHasWoodenNickle(wallet);
+    //const compassRose = await checkIfUserHasCompassRose(wallet);
     // setHasWoodenNickle(woodenNickle);
     // setHasFakeId(fakeId);
+    //setHasCompassRose(compassRose);
   };
 
   const renderComponent = () => {
