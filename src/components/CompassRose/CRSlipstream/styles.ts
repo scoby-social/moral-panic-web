@@ -9,7 +9,9 @@ export const container: SxProps = {
     alignItems: 'center',
     textAlign: 'center',
     padding: {
-        xs: '1vmax'
+        xs: '1vmax',
+        sm: '5vmax',
+        lg: '3vmax 8vmax 8vmax 8vmax'
     },
     minHeight: '50vh',
 }
@@ -28,6 +30,6 @@ export const textStyle: SxProps = {
     fontSize: {
         xs: '1.5vmax',
         sm: '1.8vmax',
-        lg: '1.3vmax'
+        lg: '1.6vmax'
     }
 }
