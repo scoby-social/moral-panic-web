@@ -44,8 +44,6 @@ const Home: FC<indexProps> = ({ subdomain }) => {
       <Box sx={headerBoxContainerStyle}>
         <Header spawn={false} title={headerTitle} isProfile={false} />
 
-        {/* {subdomain === subdomainType.quest && <CompassRose />} */}
-
         <CompassRose />
       </Box>
     </div>
