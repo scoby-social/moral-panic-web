@@ -1,7 +1,7 @@
 
 import { getNFTByWallet } from "../common/getNFTByWallet";
 
-export async function checkIfUserHasWoodenNickle(wallet: any): Promise<boolean> {
+export async function checkIfUserHasWoodenNickel(wallet: any): Promise<boolean> {
   const Symbol = "NICKEL";
   const rpcCluster = process.env.NEXT_PUBLIC_HELIUS_SOLANA_CLUSTER!;
 

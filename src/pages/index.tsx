@@ -1,10 +1,11 @@
+import { FC, useEffect } from "react";
+import { useAtom } from "jotai";
 import { SxProps } from "@mui/material";
 import { Box } from "@mui/system";
-import { CompassRose } from "components/CompassRose/CompassRose";
+
+import CompassRose from "components/CompassRose/CompassRose";
 import { Header } from "components/common/Header/Header";
-import { useAtom } from "jotai";
 import { currentWallet, userHasNoID } from "lib/store";
-import { FC, useEffect } from "react";
 
 const headerBoxContainerStyle: SxProps = {
   subdomain: "quest",

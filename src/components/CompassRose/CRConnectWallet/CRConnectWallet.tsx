@@ -1,8 +1,8 @@
-import { Box, Typography } from "@mui/material";
-import { ConnectPhantomButton } from "components/common/ConnectPhantomButton";
-import { DowloadPhantomButtom } from "components/common/DowloadPhantomButtom";
-import Image from "next/image";
 import React from "react";
+import { Box, Typography } from "@mui/material";
+
+import { ConnectPhantomButton } from "components/common/ConnectPhantomButton";
+import { DownloadPhantomButtom } from "components/common/DownloadPhantomButtom";
 import {
   container,
   paperContainer,
@@ -13,7 +13,7 @@ import {
 } from "./styles";
 import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 
-export const CRConnectWallet = () => {
+const CRConnectWallet = () => {
   const isMobile = useCheckMobileScreen();
 
   return (
@@ -40,7 +40,9 @@ export const CRConnectWallet = () => {
         <Typography sx={paperTextTitle}>{`Outlaw Code`}</Typography>
 
         <Typography sx={paperTextContent}>{`Believe Nothing.`}</Typography>
-        <Typography sx={paperTextContent}>{`Experience Everything.`}</Typography>
+        <Typography
+          sx={paperTextContent}
+        >{`Experience Everything.`}</Typography>
         <Typography sx={paperTextContent}>{`Deceive No One.`}</Typography>
       </Box>
 
@@ -49,7 +51,9 @@ export const CRConnectWallet = () => {
       </Typography>
 
       <ConnectPhantomButton />
-      {isMobile && <DowloadPhantomButtom sx={{ marginTop: "1vmax" }} />}
+      {isMobile && <DownloadPhantomButtom sx={{ marginTop: "1vmax" }} />}
     </Box>
   );
 };
+
+export default CRConnectWallet;

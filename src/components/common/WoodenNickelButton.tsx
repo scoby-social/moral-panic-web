@@ -34,7 +34,7 @@ const WoodenButton = styled(Button)`
 export const WoodenNickelButton = () => {
   return (
     <WoodenButton type="button" variant="contained">
-      <Typography sx={textStyle}>{`COP A WOODEN NICKLE`}</Typography>
+      <Typography sx={textStyle}>{`COP A WOODEN NICKEL`}</Typography>
     </WoodenButton>
   );
 };

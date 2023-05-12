@@ -1,7 +1,6 @@
-
 import { getNFTByWallet } from "../common/getNFTByWallet";
 
-export async function checkIfUserHasCompassRose(wallet: any): Promise<boolean> {
+export const getCompassRoseMetaData = async (wallet: any) => {
     const Symbol = "ROSE";
     const rpcCluster = process.env.NEXT_PUBLIC_HELIUS_SOLANA_CLUSTER!;
 
@@ -12,9 +11,10 @@ export async function checkIfUserHasCompassRose(wallet: any): Promise<boolean> {
     );
 
     if (!rose) {
-        return false
+        return null
     }
 
-    return true
-
+    return rose;
 }
+
+

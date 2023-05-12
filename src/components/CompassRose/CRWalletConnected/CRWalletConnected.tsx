@@ -24,7 +24,7 @@ const RoseDropButton = styled(Button)`
   }
 `;
 
-export const CRWalletConnected = () => {
+const CRWalletConnected = () => {
   return (
     <Box sx={container}>
       <Typography
@@ -63,3 +63,5 @@ export const CRWalletConnected = () => {
     </Box>
   );
 };
+
+export default CRWalletConnected;

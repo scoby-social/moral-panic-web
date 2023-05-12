@@ -3,7 +3,7 @@ import React from "react";
 import { container, textStyle, title } from "./styles";
 import styled from "@emotion/styled";
 
-export const CREnterTheForge = () => {
+const CREnterTheForge = () => {
   const EnterTheForgeButton = styled(Button)`
     max-height: 3vmax;
     background-color: #076936;
@@ -42,3 +42,4 @@ export const CREnterTheForge = () => {
     </Box>
   );
 };
+export default CREnterTheForge;

@@ -12,7 +12,7 @@ type OperateSystemType =
   | "Ios"
   | "Android";
 
-export const useGetOperateSystem = () => {
+export const useGetOperatingSystem = () => {
   const userAgent = navigator.userAgent;
   let operatingSystem;
 

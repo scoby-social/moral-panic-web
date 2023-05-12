@@ -1,41 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-
-import { container } from "./styles";
-import { CRConnectWallet } from "./CRConnectWallet/CRConnectWallet";
-import { CRWalletConnected } from "./CRWalletConnected/CRWalletConnected";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useGetOperateSystem } from "lib/hooks/useGetOperateSystem";
-import { checkIfUserHasFakeID } from "lib/web3/fakeID/checkIfUserHasFakeID";
-import { checkIfUserHasWoodenNickle } from "lib/web3/woodenNickle/checkIfUserHasWoodenNickle";
-import { currentWallet } from "lib/store";
 import { useAtom } from "jotai";
-import { CREnterTheForge } from "./CREnterTheForge/CREnterTheForge";
-import { CRSlipstream } from "./CRSlipstream/CRSlipstream";
-import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUSerHasCompassRose";
 
-export const CompassRose = () => {
+import { checkIfUserHasFakeID } from "lib/web3/fakeID/checkIfUserHasFakeID";
+import { checkIfUserHasWoodenNickel } from "lib/web3/woodenNickel/checkIfUserHasWoodenNickel";
+import { currentUser, currentWallet } from "lib/store";
+import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUSerHasCompassRose";
+import { container } from "./styles";
+import CRConnectWallet from "./CRConnectWallet/CRConnectWallet";
+import CRWalletConnected from "./CRWalletConnected/CRWalletConnected";
+import CREnterTheForge from "./CREnterTheForge/CREnterTheForge";
+import CRSlipstream from "./CRSlipstream/CRSlipstream";
+
+const CompassRose = () => {
   const wallet = useWallet();
   const [publicKey] = useAtom(currentWallet);
+  const [user, _] = useAtom(currentUser);
 
   const [hasFakeId, setHasFakeId] = useState(true);
-  const [hasWoodenNickle, setHasWoodenNickle] = useState(false);
+  const [hasWoodenNickel, setHasWoodenNickel] = useState(false);
   const [hasCompassRose, setHasCompassRose] = useState(true);
+  const [compassRoseMetadata, setcompassRoseMetadata] = useState(null);
 
   useEffect(() => {
-    if (publicKey) {
+    if (wallet.publicKey) {
       getTokensInWallet().then();
     }
     // eslint-disable-next-line
-  }, [publicKey]);
+  }, [publicKey, wallet]);
 
   const getTokensInWallet = async () => {
-    // const fakeId = await checkIfUserHasFakeID(wallet);
-    // const woodenNickle = await checkIfUserHasWoodenNickle(wallet);
-    //const compassRose = await checkIfUserHasCompassRose(wallet);
-    // setHasWoodenNickle(woodenNickle);
-    // setHasFakeId(fakeId);
-    //setHasCompassRose(compassRose);
+    const fakeId = await checkIfUserHasFakeID(wallet);
+    const compassRose = await checkIfUserHasCompassRose(wallet);
+    // const woodenNickel = await checkIfUserHasWoodenNickel(wallet);
+    // setHasWoodenNickel(woodenNickel);
+    setHasFakeId(fakeId);
+    setHasCompassRose(compassRose);
   };
 
   const renderComponent = () => {
@@ -43,15 +44,15 @@ export const CompassRose = () => {
       return <CRWalletConnected />;
     }
 
-    if (
-      publicKey &&
-      ((!hasCompassRose && hasFakeId) || (hasCompassRose && !hasFakeId))
-    ) {
+    if (publicKey && !hasCompassRose && hasFakeId) {
       return <CREnterTheForge />;
     }
 
-    if (publicKey && hasCompassRose && hasFakeId) {
-      return <CRSlipstream />;
+    if (
+      publicKey &&
+      ((hasCompassRose && hasFakeId) || (hasCompassRose && !hasFakeId))
+    ) {
+      return <CRSlipstream userName={user.username} />;
     }
 
     if (!publicKey) {
@@ -62,4 +63,4 @@ export const CompassRose = () => {
   return <Box sx={container}>{renderComponent()}</Box>;
 };
 
-/* NICKEL */
+export default CompassRose;

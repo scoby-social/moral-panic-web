@@ -1,8 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import { Box, Button, SxProps, Typography } from "@mui/material";
 import { textStyle, title, container } from "./styles";
 import NFTFullCardPresentation from "components/common/NFTFullCardPresentation/NFTFullCardPresentation";
 import styled from "@emotion/styled";
+
+interface CRSlipstream {
+  userName: string;
+}
 
 const EnterThSlipstream = styled(Button)`
   max-height: 3vmax;
@@ -18,9 +22,12 @@ const EnterThSlipstream = styled(Button)`
   &:focus {
     background-color: #076936;
   }
+  &:hover {
+    background-color: #1a1f2e;
+  }
 `;
 
-export const CRSlipstream = () => {
+const CRSlipstream: FC<CRSlipstream> = ({ userName }) => {
   const nftdata = {
     guidance:
       "The Quest of the Compass Rose is a point of entry into Hellbenders: Moral Panic!, a massively-multiplayer Web3 game available on xNFT Backpack and the Solana Saga phone , an outlaw biker gang of amphibious superheroes. Activate your Compass Rose to play Hellbenders: Moral Panic!, our.",
@@ -39,7 +46,9 @@ export const CRSlipstream = () => {
 
   return (
     <Box sx={container}>
-      <Typography sx={title} variant="h2">{`Welcome Home Stranger`}</Typography>
+      <Typography sx={title} variant="h2">{`Welcome Home ${
+        !userName ? "Stranger" : "," + userName
+      }`}</Typography>
 
       <Typography variant="h3" sx={{ ...textStyle, maxWidth: "48vmax" }}>
         {`This is the entry point to the Slipstream, where you will embark on an epic adventure beyond time, space and the death-grip of global civilization.`}
@@ -50,15 +59,23 @@ export const CRSlipstream = () => {
 
       <NFTFullCardPresentation {...nftdata} />
 
-      <Typography variant="h3" sx={{ ...textStyle, marginY: '3vmax' }}>
+      <Typography variant="h3" sx={{ ...textStyle, marginY: "3vmax" }}>
         {`Ready to begin your quest, Stranger?`}
       </Typography>
 
       <EnterThSlipstream>
-        <Typography sx={{ fontFamily: "Patched", fontSize: "1.6vmax !important", marginTop: '5px' }}>
+        <Typography
+          sx={{
+            fontFamily: "Patched",
+            fontSize: "1.6vmax !important",
+            marginTop: "5px",
+          }}
+        >
           {`ENTER THE SLIPSTREAM`}
         </Typography>
       </EnterThSlipstream>
     </Box>
   );
 };
+
+export default CRSlipstream;

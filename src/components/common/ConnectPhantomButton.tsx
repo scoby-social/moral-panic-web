@@ -17,6 +17,16 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 import { walletAddressShortener } from "../../lib/helpers/walletAddressShortener";
+import { useAtom } from "jotai";
+import {
+  currentUser,
+  currentWallet,
+  isLoadingUser,
+  userHasNoID,
+} from "lib/store";
+import { getOldestFakeIDInWallet } from "lib/web3/fakeID/getOldestFakeIDInWallet";
+import { getUserByFakeID } from "lib/axios/requests/users/getUserByFakeID";
+import { User } from "lib/models/user";
 
 const textStyle: SxProps = {
   fontFamily: "Patched",
@@ -82,7 +92,50 @@ export const ConnectPhantomButton: FC<ConnectWalletButtonProps> = () => {
   const isMobile = useCheckMobileScreen();
   const { publicKey } = useWallet();
 
+  const [_, setWallet] = useAtom(currentWallet);
+  const [__, setCurrentUser] = useAtom(currentUser);
+  const [___, setLoadingUser] = useAtom(isLoadingUser);
+  const [____, setUserHasNoID] = useAtom(userHasNoID);
+
   const [open, setOpen] = useState(false);
+
+  const getUserByWalletOrRemoveUser =
+    React.useCallback(async (): Promise<void> => {
+      if (publicKey) {
+        setLoadingUser(true);
+        setWallet(publicKey.toString());
+
+        const walletFakeID = await getOldestFakeIDInWallet(publicKey);
+
+        if (!walletFakeID) {
+          setUserHasNoID(true);
+          return;
+        }
+
+        const user = await getUserByFakeID(walletFakeID.mintAddress.toString());
+
+        if (Object.keys(user).length === 0) {
+          setUserHasNoID(true);
+        } else {
+          setUserHasNoID(false);
+        }
+
+        setLoadingUser(false);
+        setCurrentUser(user);
+        return;
+      }
+
+      setLoadingUser(false);
+      setWallet("");
+      setCurrentUser({} as User);
+      setUserHasNoID(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [publicKey]);
+
+  React.useEffect(() => {
+    getUserByWalletOrRemoveUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicKey]);
 
   const copyToClipboard = () => {
     if (publicKey) {
