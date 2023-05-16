@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { checkIfUserHasFakeID } from "lib/web3/fakeID/checkIfUserHasFakeID";
 import { checkIfUserHasWoodenNickel } from "lib/web3/woodenNickel/checkIfUserHasWoodenNickel";
 import { currentUser, currentWallet } from "lib/store";
-import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUSerHasCompassRose";
+import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUserHasCompassRose";
 import { container } from "./styles";
 import CRConnectWallet from "./CRConnectWallet/CRConnectWallet";
 import CRWalletConnected from "./CRWalletConnected/CRWalletConnected";
@@ -20,7 +20,7 @@ const CompassRose = () => {
 
   const [hasFakeId, setHasFakeId] = useState(true);
   const [hasWoodenNickel, setHasWoodenNickel] = useState(false);
-  const [hasCompassRose, setHasCompassRose] = useState(true);
+  const [hasCompassRose, setHasCompassRose] = useState(false);
   const [compassRoseMetadata, setcompassRoseMetadata] = useState(null);
 
   useEffect(() => {
@@ -28,7 +28,9 @@ const CompassRose = () => {
       getTokensInWallet().then();
     }
     // eslint-disable-next-line
-  }, [publicKey, wallet]);
+  }, [publicKey]);
+
+  useEffect(() => {}, [publicKey, wallet.publicKey]);
 
   const getTokensInWallet = async () => {
     const fakeId = await checkIfUserHasFakeID(wallet);
