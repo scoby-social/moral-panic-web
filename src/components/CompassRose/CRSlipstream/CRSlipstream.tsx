@@ -46,8 +46,8 @@ const CRSlipstream: FC<CRSlipstream> = ({ userName }) => {
 
   return (
     <Box sx={container}>
-      <Typography sx={title} variant="h2">{`Welcome Home ${
-        !userName ? "Stranger" : "," + userName
+      <Typography sx={title} variant="h2">{`${
+        !userName ? "Welcome Home Stranger" : "Welcome Home, " + userName
       }`}</Typography>
 
       <Typography variant="h3" sx={{ ...textStyle, maxWidth: "48vmax" }}>

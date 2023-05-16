@@ -18,7 +18,7 @@ const CompassRose = () => {
   const [publicKey] = useAtom(currentWallet);
   const [user, _] = useAtom(currentUser);
 
-  const [hasFakeId, setHasFakeId] = useState(true);
+  const [hasFakeId, setHasFakeId] = useState(false);
   const [hasWoodenNickel, setHasWoodenNickel] = useState(false);
   const [hasCompassRose, setHasCompassRose] = useState(false);
   const [compassRoseMetadata, setcompassRoseMetadata] = useState(null);
