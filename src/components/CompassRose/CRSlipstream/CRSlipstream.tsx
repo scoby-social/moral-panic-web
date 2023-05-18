@@ -6,13 +6,15 @@ import styled from "@emotion/styled";
 
 interface CRSlipstream {
   userName: string;
+  walletWasSaved: boolean;
+  saveWallet: () => void;
 }
 
 const EnterThSlipstream = styled(Button)`
   max-height: 3vmax;
   background-color: #076936;
   line-height: 0 !important;
-  padding: 2.5vmax 2vmax;
+  padding: 2.5vmax 4.5vmax;
   border-radius: 0.6vmax;
   color: #fff;
   border: solid 1px #000;
@@ -27,7 +29,11 @@ const EnterThSlipstream = styled(Button)`
   }
 `;
 
-const CRSlipstream: FC<CRSlipstream> = ({ userName }) => {
+const CRSlipstream: FC<CRSlipstream> = ({
+  userName,
+  saveWallet,
+  walletWasSaved,
+}) => {
   const nftdata = {
     guidance:
       "The Quest of the Compass Rose is a point of entry into Hellbenders: Moral Panic!, a massively-multiplayer Web3 game available on xNFT Backpack and the Solana Saga phone , an outlaw biker gang of amphibious superheroes. Activate your Compass Rose to play Hellbenders: Moral Panic!, our.",
@@ -59,11 +65,22 @@ const CRSlipstream: FC<CRSlipstream> = ({ userName }) => {
 
       <NFTFullCardPresentation {...nftdata} />
 
-      <Typography variant="h3" sx={{ ...textStyle, marginY: "3vmax" }}>
-        {`Ready to begin your quest, Stranger?`}
-      </Typography>
+      {!userName ? (
+        <Typography variant="h3" sx={{ ...textStyle, marginY: "3vmax" }}>
+          {`Pay attention to the wallet holding your Compass Rose. She’ll let you know when your ready to take the next step on your quest.`}
+        </Typography>
+      ) : (
+        <Typography variant="h3" sx={{ ...textStyle, marginY: "3vmax" }}>
+          {`Do you want the Compass Rose to send guidance when you’re ready to embark on your quest?`}
+        </Typography>
+      )}
 
-      <EnterThSlipstream>
+      <EnterThSlipstream
+        onClick={() => {
+          saveWallet();
+        }}
+        disabled={walletWasSaved}
+      >
         <Typography
           sx={{
             fontFamily: "Patched",
@@ -71,7 +88,7 @@ const CRSlipstream: FC<CRSlipstream> = ({ userName }) => {
             marginTop: "5px",
           }}
         >
-          {`ENTER THE SLIPSTREAM`}
+          {userName ? `HELL YEAH!` : `ALL SET!`}
         </Typography>
       </EnterThSlipstream>
     </Box>

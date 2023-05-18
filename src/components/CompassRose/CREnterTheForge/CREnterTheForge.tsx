@@ -15,6 +15,9 @@ const CREnterTheForge = () => {
     &:focus {
       background-color: #076936;
     }
+    &:hover {
+      background-color: #1a1f2e;
+    }
   `;
 
   return (

@@ -12,6 +12,8 @@ import CRConnectWallet from "./CRConnectWallet/CRConnectWallet";
 import CRWalletConnected from "./CRWalletConnected/CRWalletConnected";
 import CREnterTheForge from "./CREnterTheForge/CREnterTheForge";
 import CRSlipstream from "./CRSlipstream/CRSlipstream";
+import { saveWallet } from "lib/axios/requests/users/saveWallet";
+import { checkIfWalletExists } from "lib/axios/requests/users/checkIfWalletExists";
 
 const CompassRose = () => {
   const wallet = useWallet();
@@ -19,26 +21,36 @@ const CompassRose = () => {
   const [user, _] = useAtom(currentUser);
 
   const [hasFakeId, setHasFakeId] = useState(false);
+  const [walletWasSaved, setwalletWasSaved] = useState(false);
   const [hasWoodenNickel, setHasWoodenNickel] = useState(false);
   const [hasCompassRose, setHasCompassRose] = useState(false);
   const [compassRoseMetadata, setcompassRoseMetadata] = useState(null);
 
   useEffect(() => {
     if (wallet.publicKey) {
-      getTokensInWallet().then();
+      onInit().then();
     }
     // eslint-disable-next-line
   }, [publicKey]);
 
-  useEffect(() => {}, [publicKey, wallet.publicKey]);
+  useEffect(() => {}, [publicKey, wallet.publicKey, walletWasSaved]);
 
-  const getTokensInWallet = async () => {
+  const onInit = async () => {
     const fakeId = await checkIfUserHasFakeID(wallet);
     const compassRose = await checkIfUserHasCompassRose(wallet);
+    const walletSaved = await checkIfWalletExists(wallet.publicKey!);
     // const woodenNickel = await checkIfUserHasWoodenNickel(wallet);
     // setHasWoodenNickel(woodenNickel);
     setHasFakeId(fakeId);
     setHasCompassRose(compassRose);
+    setwalletWasSaved(walletSaved);
+  };
+
+  const saveWalletAddress = () => {
+    if (wallet.publicKey) {
+      saveWallet(wallet.publicKey).then();
+      setwalletWasSaved(true);
+    }
   };
 
   const renderComponent = () => {
@@ -54,7 +66,13 @@ const CompassRose = () => {
       publicKey &&
       ((hasCompassRose && hasFakeId) || (hasCompassRose && !hasFakeId))
     ) {
-      return <CRSlipstream userName={user.username} />;
+      return (
+        <CRSlipstream
+          walletWasSaved={walletWasSaved}
+          userName={user.username}
+          saveWallet={saveWalletAddress}
+        />
+      );
     }
 
     if (!publicKey) {
