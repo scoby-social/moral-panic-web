@@ -1,5 +1,6 @@
 import { SxProps } from "@mui/material";
 import { Box } from "@mui/system";
+import Deal from "components/Deal/Deal";
 import { Header } from "components/common/Header/Header";
 import { useAtom } from "jotai";
 import { currentWallet, userHasNoID } from "lib/store";
@@ -23,6 +24,7 @@ const Home = () => {
     <div>
       <Box sx={headerBoxContainerStyle}>
         <Header spawn={false} title={headerTitle} isProfile={false} />
+        <Deal />
       </Box>
     </div>
   );
