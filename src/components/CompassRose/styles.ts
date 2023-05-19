@@ -9,5 +9,6 @@ export const container: SxProps = {
     background: `url(/hellbenders_bar_bg.png)`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    minHeight: '50vh'
 }
 
