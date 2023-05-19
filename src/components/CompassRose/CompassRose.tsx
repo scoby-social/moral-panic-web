@@ -31,12 +31,12 @@ const CompassRose = () => {
     if (wallet.publicKey) {
       const fakeId = await checkIfUserHasFakeID(wallet);
       const compassRose = await checkIfUserHasCompassRose(wallet);
-      // const walletSaved = await checkIfWalletExists(wallet.publicKey!);
+      const walletSaved = await checkIfWalletExists(wallet.publicKey!);
       // const woodenNickel = await checkIfUserHasWoodenNickel(wallet);
       // setHasWoodenNickel(woodenNickel);
       setHasFakeId(fakeId);
       setHasCompassRose(compassRose);
-      // setwalletWasSaved(walletSaved);
+      setwalletWasSaved(walletSaved);
       setIsLoading(false);
     } else {
       setTimeout(() => {
@@ -67,7 +67,17 @@ const CompassRose = () => {
 
   const renderComponent = () => {
     if (isLoading) {
-      return <CircularProgress sx={{ alignSelf: "center" }} />;
+      return (
+        <CircularProgress
+          size={`9vmax`}
+          sx={{
+            alignSelf: "center",
+            width: "9vmax",
+            height: "9vmax",
+            marginTop: "12vmax",
+          }}
+        />
+      );
     }
 
     if (!publicKey) {
