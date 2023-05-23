@@ -9,6 +9,7 @@ export const container: SxProps = {
     background: `url(/the_deal_wallpaper.png)`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    minHeight:'50vh'
 }
 
 
@@ -37,7 +38,11 @@ export const title: SxProps = {
 export const textStyle: SxProps = {
     fontFamily: 'Cabin',
     marginTop: '1.5vmax',
-    maxWidth: "48vmax",
+    maxWidth: {
+        xs: '31vmax !important',
+        sm: '40vmax !important',
+        lg: "50vmax !important"
+    },
     fontSize: {
         xs: '1.5vmax',
         sm: '1.8vmax',
