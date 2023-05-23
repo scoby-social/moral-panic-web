@@ -5,7 +5,7 @@ import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 import WalletDisconnect from "./WalletDisconnect/WalletDisconnect";
 import { DealWoodenNickel } from "./DealWoodenNickel/DealWoodenNickel";
 
-const Deal = () => {
+const TheDeal = () => {
   const isMobile = useCheckMobileScreen();
 
   return (
@@ -16,4 +16,4 @@ const Deal = () => {
   );
 };
 
-export default Deal;
+export default TheDeal;

@@ -18,9 +18,9 @@ const TopTabs = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           </Link>
         </>
       )}
-      <Link sx={link} target="_blank" href={`https://spawn.hellbenders.world`}>
+      {/* <Link sx={link} target="_blank" href={`https://spawn.hellbenders.world`}>
         Mint a Spawn
-      </Link>
+      </Link> */}
     </Box>
   );
 };
