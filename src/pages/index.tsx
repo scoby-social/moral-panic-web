@@ -1,6 +1,7 @@
 import { SxProps } from "@mui/material";
 import { Box } from "@mui/system";
 import Deal from "components/Deal/Deal";
+import { CustomButton } from "components/common/CustomButton/CustomButton";
 import { Header } from "components/common/Header/Header";
 import { useAtom } from "jotai";
 import { currentWallet, userHasNoID } from "lib/store";
@@ -14,7 +15,7 @@ const Home = () => {
   const [missingID] = useAtom(userHasNoID);
   const [wallet] = useAtom(currentWallet);
 
-  const headerTitle = "";
+  const headerTitle = "THE DEAL";
 
   useEffect(() => {
     // eslint-disable-next-line
