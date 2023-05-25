@@ -1,40 +1,42 @@
 import { SxProps } from "@mui/material";
 import { CSSProperties } from "react";
 
-export const layerWrapper: SxProps = {
+export const layersContainer: SxProps = {
+  width: "80%",
+  maxHeight: "15vmax",
+  overflowY: "auto",
   display: "flex",
-  flexFlow: "column",
+  flexWrap: "wrap",
   justifyContent: "center",
   alignItems: "center",
 };
 
+export const layerWrapper: SxProps = {
+  margin: "1vmax",
+  padding: "1vmax",
+  borderRadius: "14px",
+  display: "flex",
+  flexFlow: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "rgba(217, 217, 217, 0.05)",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+
+  "&:hover": {
+    cursor: "pointer",
+  },
+};
+
 export const imageWrapper = (selected: boolean): SxProps => ({
-  width: selected ? "12vmax" : "8vmax",
-  height: selected ? "12vmax" : "8vmax",
+  width: "6vmax",
+  height: "6vmax",
   position: "relative",
 });
 
 export const captionTextColor: SxProps = {
+  marginTop: "0.5vmax",
   color: "rgba(255, 255, 255, 0.8)",
   userSelect: "none",
-};
-
-export const layerExceptionCaption: SxProps = {
-  ...captionTextColor,
-  maxWidth: "250px",
-  margin: "1vmax 0",
-  textAlign: "center",
-  userSelect: "none",
-};
-
-export const layerCropSquare: SxProps = {
-  padding: "3.5vmax 3.5vmax",
-  position: "absolute",
-  zIndex: 2,
-  border: "1px solid rgba(190, 239, 0, 1)",
-  borderRadius: 2,
-  top: "2px",
-  left: "2.5vmax",
 };
 
 export const imageStyle: CSSProperties = {

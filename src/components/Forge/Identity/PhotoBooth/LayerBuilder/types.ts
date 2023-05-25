@@ -12,18 +12,13 @@ export interface LayerInBuilder extends Layer {
 }
 
 export interface ScrollPhotoBoothReturnValues {
-  layersToShow: LayerInBuilder[];
   combinedLayer: LayerInBuilder;
   stepLayer: LayerInBuilder;
   reversedKey: string | null;
 }
 
 export interface GetAllLayersForCurrentStepReturnValues {
-  layersToShow: LayerInBuilder[];
   completeLayers: LayerInBuilder[];
-  combinedLayer: LayerInBuilder;
-  stepLayer: LayerInBuilder;
-  reversedKey: string | null;
 }
 
 export interface MergeImageWithExceptionReturnValues {

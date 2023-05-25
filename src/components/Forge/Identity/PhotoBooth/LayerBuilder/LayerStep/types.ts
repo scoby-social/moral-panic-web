@@ -5,16 +5,11 @@ export interface LayerStepProps {
 }
 
 export interface GetLayersForCurrentStepParams {
-  diff: number;
   currentStep: number;
-  layersToCombine: LayerInBuilder[];
-  step: number;
-  selectedLayersOnStep: LayerInBuilder[];
   bodyType: number;
 }
 
 export interface ScrollPhotoBoothLayersParams {
-  diff: number;
   layerIndex: number;
   allStepLayers: LayerInBuilder[];
   layersToCombine: LayerInBuilder[];

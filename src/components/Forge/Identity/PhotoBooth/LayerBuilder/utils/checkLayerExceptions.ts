@@ -7,9 +7,10 @@ export function checkLayerExceptions(
   combiningLayer: LayerInBuilder
 ): Array<LayerInBuilder | null> {
   if (combiningLayer.standard) return [];
+  if (!combiningLayer.exceptions) return [];
 
   let incompatibleLayers: Array<LayerInBuilder | null> = [];
-  combiningLayer.exceptions.forEach((value) => {
+  combiningLayer.exceptions.forEach(value => {
     incompatibleLayers.push(
       checkExceptionInLayer(value, selectedLayerPerStep, combiningLayer.type)
     );
@@ -29,7 +30,7 @@ function checkExceptionInLayer(
   filterLayersToCheckNewExceptions(filteredLayers);
 
   if (Array.isArray(exception.items)) {
-    exception.items.forEach((exceptionName) => {
+    exception.items.forEach(exceptionName => {
       let matchingString = "";
 
       if (exceptionName.includes("*")) {
@@ -38,7 +39,7 @@ function checkExceptionInLayer(
         matchingString = exceptionName;
       }
 
-      filteredLayers.forEach((value) => {
+      filteredLayers.forEach(value => {
         if (
           value.name.includes(matchingString) &&
           value.type === exception.type &&
@@ -59,7 +60,7 @@ function checkExceptionInLayer(
       });
     });
   } else {
-    filteredLayers.forEach((value) => {
+    filteredLayers.forEach(value => {
       if (
         !value.standard &&
         (value.type === exception.type || exception.type === "*")

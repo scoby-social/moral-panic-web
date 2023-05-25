@@ -1,6 +1,7 @@
-import { filterLayersToCheckNewExceptions } from "components/Profile/PhotoBooth/LayerBuilder/utils/filterLayersToCheckNewExceptions";
 import { OrderedSelectedLayers } from "lib/axios/requests/users/types/orderedSelectedLayers";
 import { uploadImages } from "lib/axios/requests/users/uploadImages";
+import { filterLayersToCheckNewExceptions } from "components/Forge/Identity/PhotoBooth/LayerBuilder/utils/filterLayersToCheckNewExceptions";
+
 import { deleteShadowDriveFile } from "../deleteShadowDriveFile";
 import { mintFakeID } from "./mintFakeID";
 import { MetadataAttributes, Metadata } from "../types/metadata";
@@ -60,7 +61,7 @@ export async function uploadNFT({
 
   filterLayersToCheckNewExceptions(filteredLayers);
 
-  filteredLayers.forEach((layer) => {
+  filteredLayers.forEach(layer => {
     if (layer && !layer.skipped) {
       attributes.push({
         trait_type: layer.type.toString(),

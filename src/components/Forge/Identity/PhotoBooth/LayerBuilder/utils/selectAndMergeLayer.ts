@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import { doesStepHasSpecialException } from "../../utils/getSteps";
 import { ScrollPhotoBoothLayersParams } from "../LayerStep/types";
 import { LayerInBuilder, ScrollPhotoBoothReturnValues } from "../types";
@@ -8,65 +7,19 @@ import { getLayerExceptionText } from "./getLayerExceptionText";
 import { mergeImages } from "./mergeImages";
 import { mergeImageWithException } from "./mergeImagesWithException";
 
-export async function scrollPhotoBoothLayers({
-  diff,
+export async function selectAndMergeLayer({
   layerIndex,
   allStepLayers,
   layersToCombine,
   step,
   selectedLayersOnStep,
 }: ScrollPhotoBoothLayersParams): Promise<ScrollPhotoBoothReturnValues> {
-  const length = allStepLayers.length;
-
-  const firstLeft = layerIndex - 1;
-  const firstRight = (layerIndex + 1) % length;
-
-  const leftSideLayers = [];
-  const rightSideLayers = [];
-
-  /* Fill the layers to be shown, that are not selected */
-  const firstLeftSum =
-    firstLeft < 0 ? Math.abs(firstLeft + allStepLayers.length) : firstLeft;
-
-  rightSideLayers.push(allStepLayers[firstRight]);
-
-  if (diff > 1) {
-    const secondLeft = layerIndex - diff;
-    const secondLeftSum =
-      secondLeft < 0 ? Math.abs(secondLeft + allStepLayers.length) : secondLeft;
-
-    leftSideLayers.push(allStepLayers[secondLeftSum]);
-    leftSideLayers.push(allStepLayers[firstLeftSum]);
-
-    const secondRight = (layerIndex + diff) % length;
-    rightSideLayers.push(allStepLayers[secondRight]);
-  } else {
-    leftSideLayers.push(allStepLayers[firstLeftSum]);
-  }
-
-  /* ------------------------------------------------ */
-
   const currentLayer = { ...allStepLayers[layerIndex] };
   currentLayer.selected = true;
 
   /* Checks for exception and build the final selected image */
 
   let reversedKey: string | null = null;
-
-  if (layerIndex === 0 && step > 1) {
-    const layers = [
-      ...leftSideLayers,
-      { ...allStepLayers[0], selected: true },
-      ...rightSideLayers,
-    ].map((val, index) => ({ ...val, key: `${nanoid()}-${index}` }));
-
-    return {
-      layersToShow: layers,
-      combinedLayer: currentLayer,
-      stepLayer: allStepLayers[layerIndex],
-      reversedKey,
-    };
-  }
 
   const filteredLayers = getFilteredLayers(step, selectedLayersOnStep);
 
@@ -92,16 +45,7 @@ export async function scrollPhotoBoothLayers({
     currentLayer.image = mergedImage;
   }
 
-  const layersToShow = [
-    ...leftSideLayers,
-    currentLayer,
-    ...rightSideLayers,
-  ].map((val, index) => ({ ...val, key: `${nanoid()}-${index}` }));
-
-  /* ------------------------------------------------ */
-
   return {
-    layersToShow,
     combinedLayer: currentLayer,
     stepLayer: allStepLayers[layerIndex],
     reversedKey,

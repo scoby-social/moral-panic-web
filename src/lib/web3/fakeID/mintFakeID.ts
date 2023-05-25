@@ -35,12 +35,10 @@ export const mintFakeID = async (
     process.env.NEXT_PUBLIC_TOKEN_METADATA_PROGRAM_ID!
   );
 
-  // membership kind smart contract address and IDL
   const FakeIDNFTProgramId = new PublicKey(
     process.env.NEXT_PUBLIC_FAKE_ID_PROGRAM_ID!
   );
 
-  // meta data for scoby nft
   const FakeIDNFTPOOL = new PublicKey(
     process.env.NEXT_PUBLIC_FAKE_ID_NFT_POOL!
   );
@@ -99,7 +97,7 @@ export const mintFakeID = async (
       0
     )
   );
-  instructions.forEach((item) => transaction.add(item));
+  instructions.forEach(item => transaction.add(item));
 
   const metadata = await getMetadata(nftMintAddress, TOKEN_METADATA_PROGRAM_ID);
   const masterEdition = await getEdition(
@@ -145,7 +143,7 @@ export const mintFakeID = async (
   if (scobyUsdcTokenAccount[1]) {
     if (
       royaltyList.findIndex(
-        (item) => item == (poolData.scobyWallet as PublicKey).toString()
+        item => item == (poolData.scobyWallet as PublicKey).toString()
       ) === -1
     ) {
       royaltyList.push((poolData.scobyWallet as PublicKey).toString());
@@ -270,7 +268,7 @@ export const mintFakeID = async (
 
     if (parentMembershipUsdcTokenAccount[1]) {
       if (
-        royaltyList.findIndex((item) => item == accountInfo.owner.toString()) ==
+        royaltyList.findIndex(item => item == accountInfo.owner.toString()) ==
         -1
       ) {
         royaltyList.push(accountInfo.owner.toString());
@@ -320,7 +318,7 @@ export const mintFakeID = async (
           if (grandParentMembershipUsdcTokenAccount[1]) {
             if (
               royaltyList.findIndex(
-                (item) => item == accountInfo.owner.toString()
+                item => item == accountInfo.owner.toString()
               ) == -1
             ) {
               royaltyList.push(accountInfo.owner.toString());
@@ -380,7 +378,7 @@ export const mintFakeID = async (
           if (grandGrandParentMembershipUsdcTokenAccount[1]) {
             if (
               royaltyList.findIndex(
-                (item) => item == accountInfo.owner.toString()
+                item => item == accountInfo.owner.toString()
               ) == -1
             ) {
               royaltyList.push(accountInfo.owner.toString());
@@ -443,7 +441,7 @@ export const mintFakeID = async (
           if (grandGrandGrandParentMembershipUsdcTokenAccount[1]) {
             if (
               royaltyList.findIndex(
-                (item) => item == accountInfo.owner.toString()
+                item => item == accountInfo.owner.toString()
               ) == -1
             ) {
               royaltyList.push(accountInfo.owner.toString());

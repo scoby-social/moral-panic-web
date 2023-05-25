@@ -4,7 +4,6 @@ import { useAtom } from "jotai";
 
 import UserCard from "components/common/UserCard/UserCard";
 import ConnectWalletButton from "components/common/ConnectWalletButton";
-import CountdownTimer from "components/common/CountdownTimer/CountdownTimer";
 import HellbendersDescription from "components/common/HellbendersDescription";
 import {
   currentUser,
@@ -117,8 +116,8 @@ const Profile = () => {
 
   const paginate = React.useCallback(async () => {
     const users = await executeBroodSearch(currentPage);
-    setAllUsers((prevUsers) => [...prevUsers, ...users]);
-    setFilteredUsers((prevUsers) => [...prevUsers, ...users]);
+    setAllUsers(prevUsers => [...prevUsers, ...users]);
+    setFilteredUsers(prevUsers => [...prevUsers, ...users]);
     // eslint-disable-next-line
   }, [executeBroodSearch, currentPage]);
 

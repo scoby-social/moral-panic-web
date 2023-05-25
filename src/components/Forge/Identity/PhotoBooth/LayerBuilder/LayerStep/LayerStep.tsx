@@ -12,21 +12,21 @@ import {
   selectedBodyType,
   selectedLayerIndexPerStep,
   selectedLayerPerStep,
+  userSelectedLayerOnStep,
 } from "lib/store";
 import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 
 import { getLayersForCurrentStep } from "../utils/getLayersForCurrentStep";
-import { scrollPhotoBoothLayers } from "../utils/scrollPhotoBoothLayer";
 import {
   captionTextColor,
   layerWrapper,
-  layerExceptionCaption,
   imageWrapper,
   imageStyle,
-  layerCropSquare,
+  layersContainer,
 } from "./styles";
 import { LayerStepProps } from "./types";
 import { LayerInBuilder } from "../types";
+import { selectAndMergeLayer } from "../utils/selectAndMergeLayer";
 
 const LayerStep = ({ step }: LayerStepProps) => {
   const isMobile = useCheckMobileScreen();
@@ -39,11 +39,9 @@ const LayerStep = ({ step }: LayerStepProps) => {
   const [___, setProcessingMerge] = useAtom(mergeInProcess);
   const [bodyType, setBodyType] = useAtom(selectedBodyType);
   const [stepsRendered, setStepsRendered] = useAtom(renderedSteps);
+  const [____, setHasSelectedLayer] = useAtom(userSelectedLayerOnStep);
 
   const [allLayers, setAllLayers] = React.useState<LayerInBuilder[]>([]);
-  const [visibleLayers, setVisibleLayers] = React.useState<LayerInBuilder[]>(
-    []
-  );
 
   const addLayerToSelectedOne = React.useCallback(
     (combinedLayer: LayerInBuilder, stepLayer: LayerInBuilder) => {
@@ -56,7 +54,7 @@ const LayerStep = ({ step }: LayerStepProps) => {
           }
         }
 
-        setSelectedLayerOnStep((prevLayers) => {
+        setSelectedLayerOnStep(prevLayers => {
           const newLayers = [...prevLayers];
           if (!newLayers[currentStep]) newLayers.push(stepLayer);
           else newLayers[currentStep] = stepLayer;
@@ -64,7 +62,7 @@ const LayerStep = ({ step }: LayerStepProps) => {
           return newLayers;
         });
 
-        setAllCombinedLayers((prevLayers) => {
+        setAllCombinedLayers(prevLayers => {
           const newLayers = [...prevLayers];
           if (!newLayers[currentStep]) newLayers.push(combinedLayer);
           else newLayers[currentStep] = combinedLayer;
@@ -79,8 +77,8 @@ const LayerStep = ({ step }: LayerStepProps) => {
 
   const reverseLayerInStepByKey = React.useCallback((key: string | null) => {
     if (key) {
-      setSelectedLayerOnStep((prev) => {
-        return [...prev].map((val) => {
+      setSelectedLayerOnStep(prev => {
+        return [...prev].map(val => {
           if (val.key === key) {
             return { ...val, reverse: true };
           }
@@ -92,29 +90,44 @@ const LayerStep = ({ step }: LayerStepProps) => {
     // eslint-disable-next-line
   }, []);
 
+  const selectLayer = React.useCallback(
+    async (layerIndex: number) => {
+      const { combinedLayer, stepLayer, reversedKey } =
+        await selectAndMergeLayer({
+          layerIndex,
+          allStepLayers: allLayers,
+          layersToCombine: allCombinedLayers,
+          step,
+          selectedLayersOnStep,
+        });
+
+      setHasSelectedLayer(true);
+      reverseLayerInStepByKey(reversedKey);
+      addLayerToSelectedOne(combinedLayer, stepLayer);
+      setProcessingMerge(false);
+    },
+    // eslint-disable-next-line
+    [currentStep, allLayers]
+  );
+
   const getLayers = React.useCallback(async () => {
     setProcessingMerge(true);
-    const {
-      layersToShow,
-      completeLayers,
-      combinedLayer,
-      stepLayer,
-      reversedKey,
-    } = await getLayersForCurrentStep({
-      diff: isMobile ? 1 : 2,
+    const { completeLayers } = await getLayersForCurrentStep({
       currentStep,
-      layersToCombine: allCombinedLayers,
-      step,
-      selectedLayersOnStep,
       bodyType,
     });
 
     setProcessingMerge(false);
-    reverseLayerInStepByKey(reversedKey);
     setAllLayers(completeLayers);
     setAllStepLayers(completeLayers);
-    setVisibleLayers(layersToShow);
-    addLayerToSelectedOne(combinedLayer, stepLayer);
+    if (step === 0) setAllCombinedLayers([completeLayers[0]]);
+    else
+      setAllCombinedLayers(prevLayers => {
+        const newLayers = [...prevLayers];
+        newLayers.push(newLayers[newLayers.length - 1]);
+
+        return newLayers;
+      });
 
     // eslint-disable-next-line
   }, [
@@ -126,50 +139,13 @@ const LayerStep = ({ step }: LayerStepProps) => {
     bodyType,
   ]);
 
-  const scrollLayers = React.useCallback(async () => {
-    if (currentStep === step) {
-      const { layersToShow, combinedLayer, stepLayer, reversedKey } =
-        await scrollPhotoBoothLayers({
-          diff: isMobile ? 1 : 2,
-          layerIndex: selectedLayerIdx[step],
-          allStepLayers: allLayers,
-          layersToCombine: allCombinedLayers,
-          step,
-          selectedLayersOnStep,
-        });
-
-      reverseLayerInStepByKey(reversedKey);
-      addLayerToSelectedOne(combinedLayer, stepLayer);
-      setProcessingMerge(false);
-      setVisibleLayers(layersToShow);
-    }
-    // eslint-disable-next-line
-  }, [
-    currentStep,
-    step,
-    isMobile,
-    selectedLayerIdx,
-    allLayers,
-    allCombinedLayers,
-    selectedLayersOnStep,
-  ]);
-
   /*------------------------------*/
-
-  // Scrolls the Layers carousel when the layer index is changed
-  // on arrow buttons press
-  React.useEffect(() => {
-    if (visibleLayers.length > 0) {
-      scrollLayers();
-    }
-    // eslint-disable-next-line
-  }, [selectedLayerIdx]);
 
   // Checks if this layer step is the same as the current step
   // and also if this step has been rendered in order to fetch the layers and mark it as rendered
   React.useEffect(() => {
     if (currentStep === step && !stepsRendered[step]) {
-      setStepsRendered((prev) => {
+      setStepsRendered(prev => {
         const newSteps = [...prev];
         newSteps[step] = true;
         return newSteps;
@@ -184,17 +160,9 @@ const LayerStep = ({ step }: LayerStepProps) => {
   React.useEffect(() => {
     if (!stepsRendered[step]) {
       setAllLayers([]);
-      setVisibleLayers([]);
     }
     // eslint-disable-next-line
   }, [stepsRendered]);
-
-  React.useEffect(() => {
-    if (visibleLayers.length > 0) {
-      scrollLayers();
-    }
-    // eslint-disable-next-line
-  }, [isMobile]);
 
   // Fills the store allStepLayers with all the layers of the current step
   // in order to be used in the parent component to scroll the carousel
@@ -203,7 +171,7 @@ const LayerStep = ({ step }: LayerStepProps) => {
       setAllStepLayers(allLayers);
 
       if (allCombinedLayers.length > 0) {
-        setAllCombinedLayers((prev) => {
+        setAllCombinedLayers(prev => {
           const newLayers = [...prev];
           newLayers[newLayers.length - 1].skipped = false;
 
@@ -219,11 +187,14 @@ const LayerStep = ({ step }: LayerStepProps) => {
   if (currentStep !== step) return <></>;
 
   return (
-    <>
-      {visibleLayers.map((layer) => (
-        <Box key={layer.key} sx={layerWrapper}>
+    <Box sx={layersContainer}>
+      {allLayers.map((layer, index) => (
+        <Box
+          key={layer.key}
+          sx={layerWrapper}
+          onClick={() => selectLayer(index)}
+        >
           <Box sx={imageWrapper(layer.selected)}>
-            {layer.selected && currentStep > 0 && <Box sx={layerCropSquare} />}
             <Image
               key={`${layer.index}-${layer.name}`}
               alt={layer.name}
@@ -235,12 +206,12 @@ const LayerStep = ({ step }: LayerStepProps) => {
           <Typography sx={captionTextColor} variant="caption">
             {layer.name.split(".")[0]}
           </Typography>
-          <Typography sx={layerExceptionCaption} variant="caption">
-            {layer.exception}
-          </Typography>
+          {/* <Typography sx={layerExceptionCaption} variant="caption"> */}
+          {/* {layer.exception} */}
+          {/* </Typography> */}
         </Box>
       ))}
-    </>
+    </Box>
   );
 };
 
