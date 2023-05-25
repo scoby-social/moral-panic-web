@@ -5,7 +5,6 @@ import * as React from "react";
 import { useAtom } from "jotai";
 
 import ConnectWalletButton from "components/common/ConnectWalletButton";
-import SearchBar from "components/common/SearchBar/SearchBar";
 import {
   currentUser,
   selectedLeader,
@@ -76,11 +75,6 @@ export const Header = ({ title, isProfile, spawn }: HeaderProps) => {
             </Typography>
           )}
         </Box>
-        {isSuccessfullyLogged && !spawn && !isProfile && (
-          <Box sx={searchBarWrapper}>
-            <SearchBar />
-          </Box>
-        )}
       </Box>
     </Box>
   );
