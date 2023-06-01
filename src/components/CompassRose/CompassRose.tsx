@@ -109,7 +109,7 @@ const CompassRose = () => {
       return (
         <CRWalletConnected
           walletWasSaved={walletWasSaved}
-          walletPubKey={wallet.publicKey}
+          saveWalletAddress={saveWalletAddress}
         />
       );
     }
@@ -118,7 +118,7 @@ const CompassRose = () => {
       return (
         <CRWalletConnected
           walletWasSaved={walletWasSaved}
-          walletPubKey={wallet.publicKey}
+          saveWalletAddress={saveWalletAddress}
         />
       );
     }

@@ -35,19 +35,13 @@ const RoseDropButton = styled(Button)`
 
 type CRWalletConnectedProps = {
   walletWasSaved: boolean;
-  walletPubKey: PublicKey;
+  saveWalletAddress: () => void;
 };
 
 const CRWalletConnected: FC<CRWalletConnectedProps> = ({
   walletWasSaved,
-  walletPubKey,
+  saveWalletAddress,
 }) => {
-  const wallet = useWallet();
-
-  const handleClick = async () => {
-    await saveWallet(walletPubKey);
-  };
-
   return (
     <Box sx={container}>
       <Typography
@@ -80,7 +74,7 @@ const CRWalletConnected: FC<CRWalletConnectedProps> = ({
       >
         {`If you don’t have a Compass Rose, you can register for the next Rosedrop here.`}
       </Typography>
-      <RoseDropButton disabled={walletWasSaved} onClick={handleClick}>
+      <RoseDropButton disabled={walletWasSaved} onClick={saveWalletAddress}>
         <Typography sx={roseDropTextStyle}>
           {!walletWasSaved ? `ROSEDROP ME!` : `ALL SET!`}
         </Typography>
