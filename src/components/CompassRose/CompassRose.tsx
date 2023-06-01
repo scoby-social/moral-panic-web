@@ -110,7 +110,7 @@ const CompassRose = () => {
     }
 
     if (publicKey && !hasCompassRose && hasFakeId) {
-      return <CREnterTheForge />;
+      return <CRWalletConnected />;
     }
 
     if (
