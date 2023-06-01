@@ -29,6 +29,10 @@ const EnterToSlipstream = styled(Button)`
   &:hover {
     background-color: #1a1f2e;
   }
+  &.Mui-disabled {
+    background-color: rgba(3, 86, 43, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+  }
 `;
 
 const CRSlipstream: FC<CRSlipstream> = ({
@@ -99,7 +103,7 @@ const CRSlipstream: FC<CRSlipstream> = ({
             marginTop: "5px",
           }}
         >
-          {userName ? `HELL YEAH!` : `ALL SET!`}
+          {!walletWasSaved ? `HELL YEAH!` : `ALL SET!`}
         </Typography>
       </EnterToSlipstream>
     </Box>

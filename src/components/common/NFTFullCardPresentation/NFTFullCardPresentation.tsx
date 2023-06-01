@@ -26,7 +26,6 @@ const NftImage = styled(Image)`
 
 const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
   guidance,
-  creationDate,
   symbol,
   familyName,
   collectionName,
@@ -54,17 +53,6 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
         </Box>
 
         <Box sx={propertiesContainer}>
-          <Box sx={propertieItem}>
-            <Typography variant="h3" sx={nftPropertie}>
-              {`Creation date`}
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
-            >
-              {creationDate}
-            </Typography>
-          </Box>
           <Box sx={propertieItem}>
             <Typography variant="h3" sx={nftPropertie}>
               {`Symbol`}
@@ -115,7 +103,7 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
 
           <Box
             sx={{
-              ...propertieItem,
+              ...lastPropertiesNft,
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",

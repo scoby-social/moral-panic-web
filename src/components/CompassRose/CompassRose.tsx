@@ -38,20 +38,19 @@ const CompassRose = () => {
       const walletSaved = await checkIfWalletExists(wallet.publicKey!);
 
       if (compassRose && compass) {
-        const content = compass.content;
-
-        console.log({ content });
+        const { name, description, image, external_url, symbol, attributes } =
+          compass;
 
         setcompassRoseMetadata({
-          name: content.metadata!.name as string,
-          description: content.metadata!.description as string,
-          background: "Parent",
-          external_url: "https://quest.hellbenders.world/ ",
-          imageUri:
-            "https://shdw-drive.genesysgo.net/zbpSoq69RKCh66qbs3f5KzBQzw7usPe772CC1kumLtX/21.png",
+          name,
+          description,
+          external_url,
+          symbol,
+          imageUri: image,
+          background: attributes.find(i => i.trait_type === "Background")!
+            .value!,
           collection_name: "Compass Rose",
           family_name: "Mapshifting",
-          symbol: content.metadata!.symbol as string,
         });
       }
 

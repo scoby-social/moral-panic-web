@@ -67,7 +67,7 @@ export const nftTitle: SxProps = {
   fontFamily: "Patched-Prospect",
   fontWeight: "400",
   fontSize: {
-    sx: "3vmax !important",
+    xs: "2.5vmax !important",
     sm: "4.5vmax !important"
   },
   marginBottom: {
