@@ -81,7 +81,9 @@ const CRWalletConnected: FC<CRWalletConnectedProps> = ({
         {`If you don’t have a Compass Rose, you can register for the next Rosedrop here.`}
       </Typography>
       <RoseDropButton disabled={walletWasSaved} onClick={handleClick}>
-        <Typography sx={roseDropTextStyle}>{`ROSEDROP ME!`}</Typography>
+        <Typography sx={roseDropTextStyle}>
+          {!walletWasSaved ? `ROSEDROP ME!` : `ALL SET!`}
+        </Typography>
       </RoseDropButton>
     </Box>
   );
