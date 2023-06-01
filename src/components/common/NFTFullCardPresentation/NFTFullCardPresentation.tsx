@@ -98,7 +98,11 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
                 </Typography>
                 <Typography
                   variant="h3"
-                  sx={{ ...textStyle, textAlign: "start", marginTop: "0.4vmax" }}
+                  sx={{
+                    ...textStyle,
+                    textAlign: "start",
+                    marginTop: "0.4vmax",
+                  }}
                 >
                   {att.value}
                 </Typography>
@@ -121,7 +125,7 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
                 textAlign: "start",
                 marginTop: "0.4vmax",
                 color: "rgba(255, 255, 255, 1)",
-                textDecoration: "none",
+                textDecoration: "solid underline #ffffff 0.05vmax",
               }}
             >
               {externalUrl}
