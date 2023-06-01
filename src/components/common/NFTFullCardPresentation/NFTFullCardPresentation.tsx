@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import React, { FC } from "react";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 
 import {
   lastPropertiesNft,
@@ -13,29 +13,27 @@ import {
   propertiesContainer,
   textStyle,
 } from "./styles";
+import { NFTFullCardProps } from "./types";
 
 const NftImage = styled(Image)`
   width: 100%;
   height: auto;
 
-  @media(min-width: 769px){
+  @media (min-width: 769px) {
     padding-left: 8vmax;
-    padding-right: 8vmax; 
+    padding-right: 8vmax;
   }
 `;
 
 const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
   guidance,
-  artist,
-  creationDate,
-  fileSize,
   symbol,
   familyName,
   collectionName,
-  background,
   externalUrl,
   title,
   imageUrl,
+  attributes,
 }) => {
   return (
     <Box sx={nftCard}>
@@ -43,7 +41,7 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
         {title}
       </Typography>
 
-      <NftImage src={imageUrl} alt="rose" width={100} height={100} />
+      <NftImage src={imageUrl} alt="rose" width={1080} height={1080} />
 
       <Box>
         <Box>
@@ -55,57 +53,14 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
           </Typography>
         </Box>
 
-        <Box sx={{ marginTop: "2.5vmax" }}>
-          <Typography variant="h3" sx={nftPropertie}>
-            {`Artist`}
-          </Typography>
-          <Typography variant="h3" sx={{ ...textStyle, textAlign: "start" }}>
-            {artist}
-          </Typography>
-        </Box>
-
         <Box sx={propertiesContainer}>
-          <Box sx={propertieItem}>
-            <Typography variant="h3" sx={nftPropertie}>
-              {`Creation date`}
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
-            >
-              {creationDate}
-            </Typography>
-          </Box>
-
-          <Box sx={propertieItem}>
-            <Typography variant="h3" sx={nftPropertie}>
-              {`File size`}
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
-            >
-              {fileSize}
-            </Typography>
-          </Box>
-          <Box sx={propertieItem}>
-            <Typography variant="h3" sx={nftPropertie}>
-              {`Creation date`}
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
-            >
-              {creationDate}
-            </Typography>
-          </Box>
           <Box sx={propertieItem}>
             <Typography variant="h3" sx={nftPropertie}>
               {`Symbol`}
             </Typography>
             <Typography
               variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
+              sx={{ ...textStyle, textAlign: "start", marginTop: "0.4vmax" }}
             >
               {symbol}
             </Typography>
@@ -117,7 +72,7 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
             </Typography>
             <Typography
               variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
+              sx={{ ...textStyle, textAlign: "start", marginTop: "0.4vmax" }}
             >
               {familyName}
             </Typography>
@@ -129,34 +84,52 @@ const NFTFullCardPresentation: FC<NFTFullCardProps> = ({
             </Typography>
             <Typography
               variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
+              sx={{ ...textStyle, textAlign: "start", marginTop: "0.4vmax" }}
             >
               {collectionName}
             </Typography>
           </Box>
 
-          <Box sx={propertieItem}>
-            <Typography variant="h3" sx={nftPropertie}>
-              {`Background`}
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
-            >
-              {background}
-            </Typography>
-          </Box>
+          {attributes.length &&
+            attributes.map(att => (
+              <Box sx={propertieItem} key={att.trait_type}>
+                <Typography variant="h3" sx={nftPropertie}>
+                  {att.trait_type}
+                </Typography>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    ...textStyle,
+                    textAlign: "start",
+                    marginTop: "0.4vmax",
+                  }}
+                >
+                  {att.value}
+                </Typography>
+              </Box>
+            ))}
 
-          <Box sx={lastPropertiesNft}>
+          <Box
+            sx={{
+              ...lastPropertiesNft,
+            }}
+          >
             <Typography variant="h3" sx={nftPropertie}>
               {`external_url`}
             </Typography>
-            <Typography
-              variant="h3"
-              sx={{ ...textStyle, textAlign: "start", marginTop: "1vmax" }}
+            <Link
+              href={externalUrl}
+              target="_blank"
+              sx={{
+                ...textStyle,
+                textAlign: "start",
+                marginTop: "0.4vmax",
+                color: "rgba(255, 255, 255, 1)",
+                textDecoration: "solid underline #ffffff 0.05vmax",
+              }}
             >
               {externalUrl}
-            </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>

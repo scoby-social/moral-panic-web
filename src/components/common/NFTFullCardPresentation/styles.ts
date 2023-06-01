@@ -67,7 +67,7 @@ export const nftTitle: SxProps = {
   fontFamily: "Patched-Prospect",
   fontWeight: "400",
   fontSize: {
-    sx: "3vmax !important",
+    xs: "2.5vmax !important",
     sm: "4.5vmax !important"
   },
   marginBottom: {
@@ -90,9 +90,25 @@ export const propertiesContainer: SxProps = {
 
 export const lastPropertiesNft: SxProps = {
   ...propertieItem,
-  gridColumnStart: "2",
+
+  overflow: {
+    xs: "none",
+    sm: "none"
+  },
+  textOverflow: {
+    xs: "ellipsis",
+    sm: 'inherit'
+  },
+  whiteSpace: {
+    xs: "nowrap",
+    sm: 'initial'
+  },
+  display: "flex",
+  flexDirection: "column",
+
+  gridColumnStart: "1",
   gridColumnEnd: {
-    xs: "4",
-    lg: "3",
+    xs: "3",
+    sm: "2",
   },
 };

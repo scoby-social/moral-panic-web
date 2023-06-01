@@ -1,2 +1,0 @@
-{"v":0,"name":"sugar","msg":"Lend me some sugar, I am your neighbor.","level":30,"hostname":"DESKTOP-1CRN57J","pid":14608,"time":"2023-05-12T21:06:12.9995189Z","target":"sugar","line":123,"file":"src/main.rs"}
-{"v":0,"name":"sugar","msg":"Cache file 'cache.json' not found. Run `sugar upload` to create it or provide it with the --cache option.","level":50,"hostname":"DESKTOP-1CRN57J","pid":14608,"time":"2023-05-12T21:06:13.0079927Z","target":"sugar_cli::cache","line":157,"file":"src\\cache.rs"}
