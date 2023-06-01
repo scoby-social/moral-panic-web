@@ -1,7 +1,11 @@
+import { FC } from "react";
 import styled from "@emotion/styled";
 import { Box, Button, Typography } from "@mui/material";
 import { textStyle, container, title, roseDropTextStyle } from "./styles";
 import { ConnectPhantomButton } from "components/common/ConnectPhantomButton";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { saveWallet } from "lib/axios/requests/users/saveWallet";
+import { PublicKey } from "@solana/web3.js";
 
 const RoseDropButton = styled(Button)`
   max-height: 3vmax;
@@ -19,12 +23,31 @@ const RoseDropButton = styled(Button)`
     background-color: #1a1f2e;
   }
 
+  &.Mui-disabled {
+    background-color: rgba(3, 86, 43, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+  }
+
   @media (min-width: 769px) {
     padding: 2vmax 3.3vmax;
   }
 `;
 
-const CRWalletConnected = () => {
+type CRWalletConnectedProps = {
+  walletWasSaved: boolean;
+  walletPubKey: PublicKey;
+};
+
+const CRWalletConnected: FC<CRWalletConnectedProps> = ({
+  walletWasSaved,
+  walletPubKey,
+}) => {
+  const wallet = useWallet();
+
+  const handleClick = async () => {
+    await saveWallet(walletPubKey);
+  };
+
   return (
     <Box sx={container}>
       <Typography
@@ -57,7 +80,7 @@ const CRWalletConnected = () => {
       >
         {`If you don’t have a Compass Rose, you can register for the next Rosedrop here.`}
       </Typography>
-      <RoseDropButton>
+      <RoseDropButton disabled={walletWasSaved} onClick={handleClick}>
         <Typography sx={roseDropTextStyle}>{`ROSEDROP ME!`}</Typography>
       </RoseDropButton>
     </Box>

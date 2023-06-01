@@ -101,20 +101,30 @@ const CompassRose = () => {
       );
     }
 
-    if (!publicKey) {
+    if (!wallet.publicKey) {
       return <CRConnectWallet />;
     }
 
-    if (publicKey && !hasCompassRose && !hasFakeId) {
-      return <CRWalletConnected />;
+    if (wallet.publicKey && !hasCompassRose && !hasFakeId) {
+      return (
+        <CRWalletConnected
+          walletWasSaved={walletWasSaved}
+          walletPubKey={wallet.publicKey}
+        />
+      );
     }
 
-    if (publicKey && !hasCompassRose && hasFakeId) {
-      return <CRWalletConnected />;
+    if (wallet.publicKey && !hasCompassRose && hasFakeId) {
+      return (
+        <CRWalletConnected
+          walletWasSaved={walletWasSaved}
+          walletPubKey={wallet.publicKey}
+        />
+      );
     }
 
     if (
-      publicKey &&
+      wallet.publicKey &&
       ((hasCompassRose && hasFakeId && compassRoseMetadata !== null) ||
         (hasCompassRose && !hasFakeId && compassRoseMetadata !== null))
     ) {
