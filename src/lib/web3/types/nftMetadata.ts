@@ -6,7 +6,7 @@ export type nftMetadata = {
     family_name: string;
     collection_name: string;
     external_url: string;
-    background: string;
+    attributes: Attribute[]
 };
 export interface CompressNFTData {
     interface:   string;

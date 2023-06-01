@@ -90,9 +90,25 @@ export const propertiesContainer: SxProps = {
 
 export const lastPropertiesNft: SxProps = {
   ...propertieItem,
-  gridColumnStart: "2",
+
+  overflow: {
+    xs: "none",
+    sm: "none"
+  },
+  textOverflow: {
+    xs: "ellipsis",
+    sm: 'inherit'
+  },
+  whiteSpace: {
+    xs: "nowrap",
+    sm: 'initial'
+  },
+  display: "flex",
+  flexDirection: "column",
+
+  gridColumnStart: "1",
   gridColumnEnd: {
-    xs: "4",
-    lg: "3",
+    xs: "3",
+    sm: "2",
   },
 };
