@@ -3,14 +3,16 @@ import { Box, Button, SxProps, Typography } from "@mui/material";
 import { textStyle, title, container } from "./styles";
 import NFTFullCardPresentation from "components/common/NFTFullCardPresentation/NFTFullCardPresentation";
 import styled from "@emotion/styled";
+import { nftMetadata } from "lib/web3/types/nftMetadata";
 
 interface CRSlipstream {
   userName: string;
   walletWasSaved: boolean;
+  compassRoseData: nftMetadata;
   saveWallet: () => void;
 }
 
-const EnterThSlipstream = styled(Button)`
+const EnterToSlipstream = styled(Button)`
   max-height: 3vmax;
   background-color: #076936;
   line-height: 0 !important;
@@ -27,27 +29,40 @@ const EnterThSlipstream = styled(Button)`
   &:hover {
     background-color: #1a1f2e;
   }
+  &.Mui-disabled {
+    background-color: rgba(3, 86, 43, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+  }
 `;
 
 const CRSlipstream: FC<CRSlipstream> = ({
   userName,
   saveWallet,
+  compassRoseData,
   walletWasSaved,
 }) => {
+  const {
+    description,
+    symbol,
+    family_name,
+    collection_name,
+    background,
+    external_url,
+    imageUri,
+  } = compassRoseData;
+
+  console.log({ imageUri });
+
   const nftdata = {
-    guidance:
-      "The Quest of the Compass Rose is a point of entry into Hellbenders: Moral Panic!, a massively-multiplayer Web3 game available on xNFT Backpack and the Solana Saga phone , an outlaw biker gang of amphibious superheroes. Activate your Compass Rose to play Hellbenders: Moral Panic!, our.",
-    artist:
-      "A stunning photograph of a sunset over the ocean, taken at a beach in Hawaii.",
+    guidance: description,
     creationDate: "2023-03-05",
-    fileSize: "800 KB",
-    symbol: "ROSE",
-    familyName: "Mapshifting",
-    collectionName: "Compass Rose",
-    background: "Parent",
-    externalUrl: "https://quest.hellbenders.world/",
+    symbol: symbol,
+    familyName: family_name,
+    collectionName: collection_name,
+    background: background,
+    externalUrl: external_url,
     title: "Compass Rose",
-    imageUrl: `/rose.png`,
+    imageUrl: imageUri,
   };
 
   return (
@@ -75,7 +90,7 @@ const CRSlipstream: FC<CRSlipstream> = ({
         </Typography>
       )}
 
-      <EnterThSlipstream
+      <EnterToSlipstream
         onClick={() => {
           saveWallet();
         }}
@@ -88,9 +103,9 @@ const CRSlipstream: FC<CRSlipstream> = ({
             marginTop: "5px",
           }}
         >
-          {userName ? `HELL YEAH!` : `ALL SET!`}
+          {!walletWasSaved ? `HELL YEAH!` : `ALL SET!`}
         </Typography>
-      </EnterThSlipstream>
+      </EnterToSlipstream>
     </Box>
   );
 };

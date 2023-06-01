@@ -14,24 +14,46 @@ import CRSlipstream from "./CRSlipstream/CRSlipstream";
 import { saveWallet } from "lib/axios/requests/users/saveWallet";
 import { checkIfWalletExists } from "lib/axios/requests/users/checkIfWalletExists";
 import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUSerHasCompassRose";
+import { getCompassRoseMetaData } from "lib/web3/compassRose/getCompassRoseMetaData";
+import { nftMetadata } from "lib/web3/types/nftMetadata";
 
 const CompassRose = () => {
   const wallet = useWallet();
   const [publicKey] = useAtom(currentWallet);
   const [user, _] = useAtom(currentUser);
-  const [isLoading, setIsLoading] = useState(true);
 
+  const [isLoading, setIsLoading] = useState(true);
   const [hasFakeId, setHasFakeId] = useState(false);
   const [walletWasSaved, setwalletWasSaved] = useState(false);
   const [hasWoodenNickel, setHasWoodenNickel] = useState(false);
   const [hasCompassRose, setHasCompassRose] = useState(false);
-  const [compassRoseMetadata, setcompassRoseMetadata] = useState(null);
+  const [compassRoseMetadata, setcompassRoseMetadata] =
+    useState<nftMetadata | null>(null);
 
   const onInit = useCallback(async () => {
     if (wallet.publicKey) {
       const fakeId = await checkIfUserHasFakeID(wallet);
       const compassRose = await checkIfUserHasCompassRose(wallet);
+      const compass = await getCompassRoseMetaData(wallet);
       const walletSaved = await checkIfWalletExists(wallet.publicKey!);
+
+      if (compassRose && compass) {
+        const { name, description, image, external_url, symbol, attributes } =
+          compass;
+
+        setcompassRoseMetadata({
+          name,
+          description,
+          external_url,
+          symbol,
+          imageUri: image,
+          background: attributes.find(i => i.trait_type === "Background")!
+            .value!,
+          collection_name: "Compass Rose",
+          family_name: "Mapshifting",
+        });
+      }
+
       // const woodenNickel = await checkIfUserHasWoodenNickel(wallet);
       // setHasWoodenNickel(woodenNickel);
       setHasFakeId(fakeId);
@@ -94,12 +116,14 @@ const CompassRose = () => {
 
     if (
       publicKey &&
-      ((hasCompassRose && hasFakeId) || (hasCompassRose && !hasFakeId))
+      ((hasCompassRose && hasFakeId && compassRoseMetadata !== null) ||
+        (hasCompassRose && !hasFakeId && compassRoseMetadata !== null))
     ) {
       return (
         <CRSlipstream
           walletWasSaved={walletWasSaved}
           userName={user.username}
+          compassRoseData={compassRoseMetadata}
           saveWallet={saveWalletAddress}
         />
       );

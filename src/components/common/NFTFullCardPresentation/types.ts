@@ -1,8 +1,6 @@
 interface NFTFullCardProps {
     guidance: string;
-    artist: string;
     creationDate: string;
-    fileSize: string;
     symbol: string;
     familyName: string;
     collectionName: string;
