@@ -37,18 +37,17 @@ const CompassRose = () => {
       const compass = await getCompassRoseMetaData(wallet);
       const walletSaved = await checkIfWalletExists(wallet.publicKey!);
 
-      if (compassRose && compass) {
+      if (compassRose) {
         const { name, description, image, external_url, symbol, attributes } =
-          compass;
+          compass!;
 
         setcompassRoseMetadata({
           name,
           description,
           external_url,
           symbol,
+          attributes,
           imageUri: image,
-          background: attributes.find(i => i.trait_type === "Background")!
-            .value!,
           collection_name: "Compass Rose",
           family_name: "Mapshifting",
         });

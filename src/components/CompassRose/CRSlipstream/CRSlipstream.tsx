@@ -46,12 +46,10 @@ const CRSlipstream: FC<CRSlipstream> = ({
     symbol,
     family_name,
     collection_name,
-    background,
     external_url,
     imageUri,
+    attributes
   } = compassRoseData;
-
-  console.log({ imageUri });
 
   const nftdata = {
     guidance: description,
@@ -59,10 +57,10 @@ const CRSlipstream: FC<CRSlipstream> = ({
     symbol: symbol,
     familyName: family_name,
     collectionName: collection_name,
-    background: background,
     externalUrl: external_url,
     title: "Compass Rose",
     imageUrl: imageUri,
+    attributes,
   };
 
   return (
