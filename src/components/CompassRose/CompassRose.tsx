@@ -15,7 +15,7 @@ import { saveWallet } from "lib/axios/requests/users/saveWallet";
 import { checkIfWalletExists } from "lib/axios/requests/users/checkIfWalletExists";
 import { getCompassRoseMetaData } from "lib/web3/compassRose/getCompassRoseMetaData";
 import { nftMetadata } from "lib/web3/types/nftMetadata";
-import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUserHasCompassRoses";
+import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUserHasCompassRose";
 
 const CompassRose = () => {
   const wallet = useWallet();
