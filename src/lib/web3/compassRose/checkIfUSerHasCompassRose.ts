@@ -1,6 +1,6 @@
 
 import { getNFTByWallet } from "../common/getNFTByWallet";
-import { getNFTByWalletByGrouValue } from "../common/getNFTByWalletByGrouValue";
+import { getNFTByWalletByGrouValue } from "../common/getNFTByWalletByGroupValue";
 import { getNFTByWalletByName } from "../common/getNFTByWalletOnChain";
 import { NftJsonMetadata } from "../types/nftJsonMetadata";
 

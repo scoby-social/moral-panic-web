@@ -2,7 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import WrapperConnection from "../wrappedConnection";
 
-export async function getNFTByWalletByGrouValue(
+export async function getNFTByWalletByGroupValue(
     groupKey: string,
     rpcUrl: string,
     owner: PublicKey,
