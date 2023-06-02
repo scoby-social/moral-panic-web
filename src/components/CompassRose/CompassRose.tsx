@@ -13,9 +13,9 @@ import CREnterTheForge from "./CREnterTheForge/CREnterTheForge";
 import CRSlipstream from "./CRSlipstream/CRSlipstream";
 import { saveWallet } from "lib/axios/requests/users/saveWallet";
 import { checkIfWalletExists } from "lib/axios/requests/users/checkIfWalletExists";
-import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUSerHasCompassRose";
 import { getCompassRoseMetaData } from "lib/web3/compassRose/getCompassRoseMetaData";
 import { nftMetadata } from "lib/web3/types/nftMetadata";
+import { checkIfUserHasCompassRose } from "lib/web3/compassRose/checkIfUserHasCompassRose";
 
 const CompassRose = () => {
   const wallet = useWallet();
