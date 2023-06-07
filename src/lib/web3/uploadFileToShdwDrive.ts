@@ -8,7 +8,7 @@ const SHDW_DRIVE_ENDPOINT = "https://shadow-storage.genesysgo.net";
 
 const shdwDrivePrivateKey = process.env
   .NEXT_PUBLIC_SHDW_DRIVE_ACC_SECRET_KEY!.split(",")
-  .map((val) => Number(val));
+  .map(val => Number(val));
 
 const SECRET_KEY_ARR = Keypair.fromSecretKey(
   new Uint8Array(shdwDrivePrivateKey)
@@ -16,11 +16,10 @@ const SECRET_KEY_ARR = Keypair.fromSecretKey(
 
 export async function saveMetadataImage(
   fileUrl: string,
-  fileName: string
+  fileName: string,
+  storageAccountAddress: string
 ): Promise<string> {
-  const storageAccount = new PublicKey(
-    process.env.NEXT_PUBLIC_SHDW_STORE_ACCOUNT!
-  );
+  const storageAccount = new PublicKey(storageAccountAddress);
   const data = new FormData();
 
   const fileBlob = await (await fetch(fileUrl)).blob();
@@ -65,11 +64,10 @@ export async function saveMetadataImage(
 export async function saveJsonMetadata(
   fileBlob: Blob,
   fileUrl: string,
-  fileName: string
+  fileName: string,
+  storageAccountAddress: string
 ): Promise<string> {
-  const storageAccount = new PublicKey(
-    process.env.NEXT_PUBLIC_SHDW_STORE_ACCOUNT!
-  );
+  const storageAccount = new PublicKey(storageAccountAddress);
 
   const data = new FormData();
 

@@ -1,23 +1,27 @@
 import { Box, Link } from "@mui/material";
-import { useAtom } from "jotai";
-
-import { currentUser } from "lib/store";
 import { link, linkWrapper } from "./styles";
 
-const TopTabs = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  const [user] = useAtom(currentUser);
+const TopTabs = () => {
   return (
     <Box sx={linkWrapper}>
-      {isLoggedIn && (
-        <>
-          <Link sx={link} href="/">
-            The Club
-          </Link>
-          <Link sx={link} href={`/${user.username}`}>
-            My Page
-          </Link>
-        </>
-      )}
+      <Link sx={link} href={`/throw-down`}>
+        Throw Down
+      </Link>
+      <Link sx={link} target="_blank" href="https://www.hellbenders.world">
+        The Club
+      </Link>
+      <Link sx={link} href="/forge">
+        The Forge
+      </Link>
+      <Link sx={link} href="/cave">
+        The Cave
+      </Link>
+      <Link sx={link} href="/deal">
+        The Deal
+      </Link>
+      <Link sx={link} href="/black-paper">
+        The Black Paper
+      </Link>
     </Box>
   );
 };
