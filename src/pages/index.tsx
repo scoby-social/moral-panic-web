@@ -5,7 +5,6 @@ import { useAtom } from "jotai";
 
 import CompassRose from "components/CompassRose/CompassRose";
 import { Header } from "components/common/Header/Header";
-
 import { currentWallet, userHasNoID } from "lib/store";
 
 const headerBoxContainerStyle: SxProps = {
