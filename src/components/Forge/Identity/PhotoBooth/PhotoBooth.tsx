@@ -2,8 +2,13 @@ import { Box, Typography, Button, CircularProgress } from "@mui/material";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import { useWallet } from "@solana/wallet-adapter-react";
 import * as Sentry from "@sentry/nextjs";
+import {
+  resolveToWalletAddress,
+  getParsedNftAccountsByOwner,
+} from "@nfteyez/sol-rayz";
+import { Connection } from "@solana/web3.js";
 import * as React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 
 import { getPoolMintedCount } from "lib/web3/fakeID/getPoolMintedCount";
@@ -13,11 +18,10 @@ import {
   formValues,
   photoBoothStep,
   selectedLayerPerStep,
-  selectedLeader,
 } from "lib/store";
-import { getWalletBalance } from "lib/web3/common/getWalletBalance";
 import { checkIfUserHasFakeID } from "lib/web3/fakeID/checkIfUserHasFakeID";
 import { createUser } from "lib/axios/requests/users/saveUser";
+import { woodenNickelAddress } from "lib/store/forge";
 
 import {
   photoBoothContainer,
@@ -41,6 +45,7 @@ import {
 import { getStepsLength, getTotalStepsStartingFromOne } from "./utils/getSteps";
 import { uploadNFT } from "lib/web3/fakeID/uploadNFT";
 import LayerBuilder from "./LayerBuilder/LayerBuilder";
+import { getWoodenNickelFakeIDInfo } from "lib/axios/requests/woodenNickel/getWoodenNickelFakeIDInfo";
 
 const PhotoBooth = ({
   setFormFilled,
@@ -51,8 +56,8 @@ const PhotoBooth = ({
   const [values] = useAtom(formValues);
   const [allCombinedLayers] = useAtom(combinedLayers);
   const [selectedLayers] = useAtom(selectedLayerPerStep);
-  const [leader] = useAtom(selectedLeader);
   const [croppedImage] = useAtom(finalCroppedImage);
+  const [woodenNickel, setWoodenNickel] = useAtom(woodenNickelAddress);
 
   const maxStepNumber = getStepsLength();
   const totalSteps = getTotalStepsStartingFromOne();
@@ -80,26 +85,43 @@ const PhotoBooth = ({
     // eslint-disable-next-line
   }, [wallet]);
 
+  const getWnAddressInWallet = React.useCallback(async () => {
+    if (!wallet.publicKey) return;
+    const connection = new Connection(
+      process.env.NEXT_PUBLIC_HELIUS_SOLANA_CLUSTER!
+    );
+
+    const publicAddress = await resolveToWalletAddress({
+      text: wallet.publicKey.toString(),
+    });
+    const nftArray = await getParsedNftAccountsByOwner({
+      publicAddress,
+      connection,
+    });
+
+    const wn = nftArray.find(val => val.data.symbol === "NICKEL");
+
+    setWoodenNickel(wn?.mint || "");
+
+    // eslint-disable-next-line
+  }, [wallet.publicKey]);
+
+  React.useEffect(() => {
+    if (!woodenNickel) getWnAddressInWallet();
+
+    // eslint-disable-next-line
+  }, [wallet.publicKey]);
+
   const createIdentity = async () => {
     try {
+      const parentData = await getWoodenNickelFakeIDInfo(woodenNickel!);
+
       setMessage("");
       setLoading(true);
 
       const bio = values.bio;
       bio.replace(/"/g, '\\"');
       bio.replace(/'/g, "\\'");
-
-      const walletBalance = await getWalletBalance(
-        wallet.publicKey!.toString()
-      );
-
-      if (walletBalance.usdc < 6.66 || walletBalance.sol < 0.009) {
-        setMessage(
-          "Hey! We checked your wallet and you don't have enough crypto to mint. Come back later when you've earned some bread and try again."
-        );
-        setLoading(false);
-        return;
-      }
 
       const resultingLayer = {
         ...allCombinedLayers[allCombinedLayers.length - 1],
@@ -122,8 +144,8 @@ const PhotoBooth = ({
         selectedLayers,
         resultingLayer,
         formResult: { ...values, bio },
-        leaderWalletAddress: leader.wallet,
-        parentNftAddress: leader.fakeID,
+        leaderWalletAddress: parentData.wallet,
+        parentNftAddress: parentData.fakeID,
         wallet,
         seniority: 0,
         updateMessage: setMessage,
@@ -137,7 +159,7 @@ const PhotoBooth = ({
           avatar: res.image,
           fakeID: res.nftAddress,
         },
-        leader.fakeID,
+        parentData.fakeID,
         res.metadataUrl
       );
 

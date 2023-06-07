@@ -12,7 +12,6 @@ export async function getNftsForOwnerBySymbol(
   const metaplex = new Metaplex(conn);
 
   const nfts = await metaplex.nfts().findAllByOwner({ owner });
-  console.log("NFTs: ", nfts);
 
   nfts.forEach(val => {
     if (val.symbol === symbol) {

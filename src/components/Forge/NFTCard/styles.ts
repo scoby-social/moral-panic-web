@@ -5,8 +5,15 @@ export const itemTitle: SxProps = {
   margin: "1vmax 0",
 };
 
+export const itemDescription: SxProps = {
+  padding: "0.5vmax",
+  borderRadius: "3px",
+  backgroundColor: "rgba(76, 76, 81, 0.17)",
+};
+
 export const itemContainer: SxProps = {
   width: "100%",
+  height: "20vmax",
   padding: "1vmax",
   display: "flex",
   justifyContent: "space-between",
@@ -15,13 +22,14 @@ export const itemContainer: SxProps = {
 };
 
 export const tokenInfoContainer: SxProps = {
+  maxWidth: "60%",
   display: "flex",
   flexFlow: "column",
   justifyContent: "space-between",
 };
 
 export const itemImageContainer: SxProps = {
-  width: "50vmax",
+  width: "50%",
   height: "100%",
   marginRight: "1vmax",
   position: "relative",

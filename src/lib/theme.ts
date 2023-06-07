@@ -27,7 +27,7 @@ export default function CustomTheme() {
         },
       },
       h2: {
-        fontFamily: "Poppins",
+        fontFamily: "Patched",
         fontWeight: "800",
         fontSize: "1.5vmax",
         [breakpoints.up("sm")]: {
@@ -92,11 +92,12 @@ export default function CustomTheme() {
           {
             props: { variant: "contained" },
             style: {
-              margin: "0.5vmax 0",
+              margin: "0",
               padding: "0.25vmax 1.5vmax",
               color: "#FFF",
               fontSize: "1.25vmax !important",
               fontWeight: "900",
+              fontFamily: "Patched",
               borderRadius: "5px",
               backgroundColor: "#076936",
             },
@@ -219,6 +220,9 @@ export default function CustomTheme() {
       secondary: {
         main: "#485364",
         contrastText: "#FFF",
+      },
+      warning: {
+        main: "#FF710B",
       },
     },
   });

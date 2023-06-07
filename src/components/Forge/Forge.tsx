@@ -1,7 +1,11 @@
+import { useWallet } from "@solana/wallet-adapter-react";
+
 import Items from "./Items/Items";
+import Welcome from "./Welcome/Welcome";
 
 const ForgeMain = () => {
-  return <Items />;
+  const { publicKey } = useWallet();
+  return !publicKey ? <Welcome /> : <Items />;
 };
 
 export default ForgeMain;

@@ -1,8 +1,8 @@
 import { atom } from "jotai";
 import { LayerType } from "lib/models/layer";
-import { getIterableSteps } from "components/Profile/PhotoBooth/utils/getSteps";
 import { PhotoBoothFormInputs } from "components/Forge/Identity/Form/types";
 import { LayerInBuilder } from "components/Forge/Identity/PhotoBooth/LayerBuilder/types";
+import { getIterableSteps } from "components/Forge/Identity/PhotoBooth/utils/getSteps";
 import { Pronouns } from "lib/models/user";
 
 export const photoBoothStep = atom<number>(0);

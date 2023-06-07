@@ -16,18 +16,22 @@ import {
   Transaction,
   TransactionInstruction,
 } from "@solana/web3.js";
+
 import { createAssociatedTokenAccountInstruction } from "../common/createAssociatedTokenAccountInstruction";
 import { createMint } from "../common/createMint";
-
 import { getEdition } from "../common/getEdition";
 import { getMetadata } from "../common/getMetadata";
 import { getNftsForOwnerBySymbol } from "../common/getNftsForOwner";
 import { getOrCreateAssociatedTokenAccount } from "../common/getOrCreateAssociatedTokenAccount";
 import { getTokenWallet } from "../common/getTokenWallet";
 import { sendTransaction } from "../common/sendTransaction";
-
 import * as woodenSFTIdl from "./wooden_idl.json";
 import * as fakeIDNFTIdl from "../fakeID/usdc-fake-id.json";
+import { saveWoodenNickelMetadata } from "./saveWoodenNickelMetadata";
+import { MintWoodenNickelProps } from "./types";
+import { createWoodenNickel } from "lib/axios/requests/woodenNickel/createWoodenNickel";
+import { getWoodenNickelLineage } from "lib/axios/requests/woodenNickel/getWoodenNickelLineage";
+import { updateWoodenNickel } from "lib/axios/requests/woodenNickel/updateWoodenNickel";
 
 const WoodenNickelSFTPool = new PublicKey(
   process.env.NEXT_PUBLIC_WOODEN_NICKEL_SFT_POOL!
@@ -43,11 +47,15 @@ const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey(
 
 const FakeIDNFTSYMBOL = "HELLPASS";
 
-export const mintWoodenNickel = async (
-  wallet: any,
-  tokensToBeMinted: number,
-  fakeIDName: string
-): Promise<string> => {
+export const mintWoodenNickel = async ({
+  wallet,
+  keep,
+  username,
+  woodenNickel,
+  seniority,
+  fullName,
+  fakeID,
+}: MintWoodenNickelProps): Promise<void> => {
   const conn = new Connection(process.env.NEXT_PUBLIC_SOLANA_CLUSTER!);
   const confirmOption: ConfirmOptions = {
     commitment: "finalized",
@@ -66,31 +74,21 @@ export const mintWoodenNickel = async (
   const usdcToken = new PublicKey(process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS!);
 
   try {
-    // get provider from connection
-    const provider = new anchor.AnchorProvider(
-      conn,
-      wallet as any,
-      confirmOption
-    );
+    const provider = new anchor.AnchorProvider(conn, wallet, confirmOption);
 
-    // get fake id nft program
     const program = new anchor.Program(
       woodenSFTIdl as any,
       WoodenSFTProgramID,
       provider
     );
 
-    // get fake id nft pool
     const poolData = await program.account.pool.fetch(WoodenNickelSFTPool);
 
-    // get config data of above pool
+    const transaction = new Transaction();
+    const createTokenAccountTransaction = new Transaction();
+    const instructions: TransactionInstruction[] = [];
+    const signers: Keypair[] = [];
 
-    // const track = await checkState(parentMembership);
-
-    let transaction = new Transaction();
-    let createTokenAccountTransaction = new Transaction();
-    let instructions: TransactionInstruction[] = [];
-    let signers: Keypair[] = [];
     const mintRent = await conn.getMinimumBalanceForRentExemption(
       MintLayout.span
     );
@@ -117,7 +115,7 @@ export const mintWoodenNickel = async (
         mintKey,
         recipientKey,
         wallet.publicKey,
-        tokensToBeMinted,
+        keep,
         0
       )
     );
@@ -195,11 +193,6 @@ export const mintWoodenNickel = async (
       extendedData: parentNftExtendedData,
     };
 
-    const formData = {
-      name: fakeIDName,
-      uri: `https://gateway.pinata.cloud/ipfs/QmNcVgXXT6FgyQQLWimm2qkVJzzFV72ZJs2HxtrmFxxmH8`,
-    };
-
     const parentMembershipResp = await conn.getTokenLargestAccounts(
       parentMembership.extendedData.mint,
       "finalized"
@@ -257,7 +250,7 @@ export const mintWoodenNickel = async (
       throw new Error("Invalid Grand Parent Membership Nft info");
     const grandParentMembershipOwner = new PublicKey(accountInfo.owner);
 
-    var grandParentMembershipUsdcTokenAccount =
+    const grandParentMembershipUsdcTokenAccount =
       await getOrCreateAssociatedTokenAccount(
         conn,
         wallet.publicKey,
@@ -301,7 +294,7 @@ export const mintWoodenNickel = async (
       throw new Error("Invalid Grand Parent Membership Nft info");
     const grandGrandParentMembershipOwner = new PublicKey(accountInfo.owner);
 
-    var grandGrandParentMembershipUsdcTokenAccount =
+    const grandGrandParentMembershipUsdcTokenAccount =
       await getOrCreateAssociatedTokenAccount(
         conn,
         wallet.publicKey,
@@ -348,7 +341,7 @@ export const mintWoodenNickel = async (
       accountInfo.owner
     );
 
-    var grandGrandGrandParentMembershipUsdcTokenAccount =
+    const grandGrandGrandParentMembershipUsdcTokenAccount =
       await getOrCreateAssociatedTokenAccount(
         conn,
         wallet.publicKey,
@@ -369,7 +362,19 @@ export const mintWoodenNickel = async (
       }
     }
 
-    if (true) {
+    if (!woodenNickel) {
+      const lineage = await getWoodenNickelLineage(fakeID);
+      const uri = await saveWoodenNickelMetadata(username, seniority, {
+        ...lineage,
+        minter: fullName,
+        creator: "Sally the Clubhouse Wallet",
+      });
+
+      const formData = {
+        name: username,
+        uri,
+      };
+
       transaction.add(
         program.instruction.mint(new anchor.BN(bump), formData, {
           accounts: {
@@ -409,8 +414,15 @@ export const mintWoodenNickel = async (
       }
 
       await sendTransaction(conn, wallet, transaction, signers);
+
+      await createWoodenNickel(
+        wallet.publicKey!.toString(),
+        mintKey.toString(),
+        keep,
+        fakeID
+      );
     } else {
-      const SNFTAddress = track.track.SNFTAddress;
+      const SNFTAddress = woodenNickel;
       const myMint = new PublicKey(SNFTAddress);
 
       const tokenAccount = await getOrCreateAssociatedTokenAccount(
@@ -424,26 +436,22 @@ export const mintWoodenNickel = async (
       const addTokenTransaction = new Transaction();
 
       addTokenTransaction.add(
-        program.instruction.addToken(
-          new anchor.BN(bump),
-          new anchor.BN(tokensToBeMinted),
-          {
-            accounts: {
-              owner: wallet.publicKey,
-              pool: WoodenNickelSFTPool,
-              sourceTokenAccount: sourceTokenAccount[0],
-              scobyUsdcTokenAccount: scobyUsdcTokenAccount[0],
-              parentNftUsdcTokenAccount: parentMembershipUsdcTokenAccount[0],
-              grandParentNftUsdcTokenAccount:
-                grandParentMembershipUsdcTokenAccount[0],
-              grandGrandParentNftUsdcTokenAccount:
-                grandGrandParentMembershipUsdcTokenAccount[0],
-              grandGrandGrandParentNftUsdcTokenAccount:
-                grandGrandGrandParentMembershipUsdcTokenAccount[0],
-              tokenProgram: TOKEN_PROGRAM_ID,
-            },
-          }
-        )
+        program.instruction.addToken(new anchor.BN(bump), new anchor.BN(keep), {
+          accounts: {
+            owner: wallet.publicKey,
+            pool: WoodenNickelSFTPool,
+            sourceTokenAccount: sourceTokenAccount[0],
+            scobyUsdcTokenAccount: scobyUsdcTokenAccount[0],
+            parentNftUsdcTokenAccount: parentMembershipUsdcTokenAccount[0],
+            grandParentNftUsdcTokenAccount:
+              grandParentMembershipUsdcTokenAccount[0],
+            grandGrandParentNftUsdcTokenAccount:
+              grandGrandParentMembershipUsdcTokenAccount[0],
+            grandGrandGrandParentNftUsdcTokenAccount:
+              grandGrandGrandParentMembershipUsdcTokenAccount[0],
+            tokenProgram: TOKEN_PROGRAM_ID,
+          },
+        })
       );
 
       addTokenTransaction.add(
@@ -451,7 +459,7 @@ export const mintWoodenNickel = async (
           myMint,
           tokenAccount[0],
           wallet.publicKey,
-          tokensToBeMinted,
+          keep,
           [wallet],
           TOKEN_PROGRAM_ID
         )
@@ -462,10 +470,11 @@ export const mintWoodenNickel = async (
       addTokenTransaction.recentBlockhash = blockHash.blockhash;
       const signed = await wallet.signTransaction(addTokenTransaction);
       await conn.sendRawTransaction(await signed.serialize());
-    }
 
-    return mintKey.toString();
+      await updateWoodenNickel(wallet.publicKey.toString(), keep);
+    }
   } catch (err) {
     console.trace(err);
+    throw err;
   }
 };

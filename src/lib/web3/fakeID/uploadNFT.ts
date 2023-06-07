@@ -99,7 +99,8 @@ export async function uploadNFT({
   const metadataShdwUrl = await saveJsonMetadata(
     blob,
     blobUri,
-    `${metadata.username}.json`
+    `${metadata.username}.json`,
+    process.env.NEXT_PUBLIC_SHDW_STORE_ACCOUNT!
   );
 
   let nftAddress = "";

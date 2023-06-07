@@ -42,9 +42,7 @@ const LayerBuilder = () => {
     userSelectedLayerOnStep
   );
 
-  const [selectedLayerIdxPerStep, setSelectedLayerIdxPerStep] = useAtom(
-    selectedLayerIndexPerStep
-  );
+  const [__, setSelectedLayerIdxPerStep] = useAtom(selectedLayerIndexPerStep);
   const [wallet] = useAtom(currentWallet);
   const [_, setStepsRendered] = useAtom(renderedSteps);
   const [allCombinedLayers, setAllCombinedLayers] = useAtom(combinedLayers);
@@ -95,10 +93,7 @@ const LayerBuilder = () => {
 
   const revertLayer = React.useCallback(() => {
     setSelectedLayerOnStep(prevLayers => {
-      const newLayers = [...prevLayers];
-      newLayers.pop();
-
-      return newLayers;
+      return [...prevLayers].slice(0, -1);
     });
 
     setAllCombinedLayers(prevLayers => {

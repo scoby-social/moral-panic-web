@@ -52,9 +52,9 @@ export const leaderboardContentWrapper = (isProfile: boolean): SxProps => {
 };
 
 export const leaderboardText: SxProps = {
-  letterSpacing: "0.385em",
   textAlign: "center",
   userSelect: "none",
+  fontWeight: "400",
 };
 
 export const headerImageWrapper: SxProps = {
