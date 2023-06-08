@@ -53,13 +53,27 @@ export const image: CSSProperties = {
 export const featuredCardActionsContainer: SxProps = {
   width: "100%",
   marginTop: "2vmax",
-  padding: "1vmax",
+  padding: "1vmax 1vmax 0.5vmax 1vmax",
   borderRadius: "8px",
   border: "1px solid #565656",
   backgroundColor: "#1E1D2A",
   display: "flex",
+  flexFlow: "column",
   justifyContent: "space-around",
   alignItems: "center",
+};
+
+export const featuredCardActionsWrapper: SxProps = {
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+};
+
+export const resultText: SxProps = {
+  maxWidth: "80%",
+  marginTop: "1vmax",
+  textAlign: "center",
 };
 
 export const featuredFormContainer: SxProps = {
@@ -68,12 +82,10 @@ export const featuredFormContainer: SxProps = {
 };
 
 export const mintButtonContainer: SxProps = {
-  flex: 1,
   display: "flex",
   flexFlow: "column",
   alignSelf: "center",
-  justifyContent: "center",
-  alignItems: "center",
+  alignItems: "start",
 };
 
 export const supplyInfoItemWrapper: SxProps = {
@@ -93,5 +105,9 @@ export const supplyInfoForm: SxProps = {
     border: "none !important",
     textAlign: "center",
     padding: "0.3vmax",
+  },
+
+  "& .MuiInputBase-input.Mui-disabled": {
+    WebkitTextFillColor: "rgba(217, 217, 217, 0.20)",
   },
 };

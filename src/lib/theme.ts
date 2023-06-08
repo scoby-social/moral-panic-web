@@ -54,7 +54,7 @@ export default function CustomTheme() {
         },
       },
       subtitle2: {
-        fontFamily: "Poppins",
+        fontFamily: "Cabin",
         fontSize: "1vmax",
         lineHeight: "1vmax",
         [breakpoints.up("sm")]: {
@@ -62,7 +62,7 @@ export default function CustomTheme() {
         },
       },
       caption: {
-        fontFamily: "Poppins",
+        fontFamily: "Cabin",
         fontSize: "0.80vmax",
         [breakpoints.up("sm")]: {
           fontSize: "0.60vmax",
