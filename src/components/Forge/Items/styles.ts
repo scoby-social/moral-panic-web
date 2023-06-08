@@ -22,3 +22,11 @@ export const cardItemContainer: SxProps = {
   },
   gridGap: "3vmax",
 };
+
+export const loadingContainer: SxProps = {
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
