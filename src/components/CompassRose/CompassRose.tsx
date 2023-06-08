@@ -4,12 +4,10 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useAtom } from "jotai";
 
 import { checkIfUserHasFakeID } from "lib/web3/fakeID/checkIfUserHasFakeID";
-import { checkIfUserHasWoodenNickel } from "lib/web3/woodenNickel/checkIfUserHasWoodenNickel";
 import { currentUser, currentWallet } from "lib/store";
 import { container } from "./styles";
 import CRConnectWallet from "./CRConnectWallet/CRConnectWallet";
 import CRWalletConnected from "./CRWalletConnected/CRWalletConnected";
-import CREnterTheForge from "./CREnterTheForge/CREnterTheForge";
 import CRSlipstream from "./CRSlipstream/CRSlipstream";
 import { saveWallet } from "lib/axios/requests/users/saveWallet";
 import { checkIfWalletExists } from "lib/axios/requests/users/checkIfWalletExists";
@@ -25,7 +23,6 @@ const CompassRose = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasFakeId, setHasFakeId] = useState(false);
   const [walletWasSaved, setwalletWasSaved] = useState(false);
-  const [hasWoodenNickel, setHasWoodenNickel] = useState(false);
   const [hasCompassRose, setHasCompassRose] = useState(false);
   const [compassRoseMetadata, setcompassRoseMetadata] =
     useState<nftMetadata | null>(null);
