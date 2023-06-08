@@ -4,5 +4,5 @@ import client from "lib/axios/axiosClient";
 export async function getWoodenNickelLineage(
   fakeID: string
 ): Promise<WoodenNickelLineage> {
-  return client.get(`/woodenNickel/lineage?fakeID=${fakeID}`);
+  return (await client.get(`/woodenNickel/lineage?fakeID=${fakeID}`)).data;
 }

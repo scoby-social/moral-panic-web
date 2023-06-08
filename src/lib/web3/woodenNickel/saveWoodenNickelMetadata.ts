@@ -23,7 +23,7 @@ This Wooden Nickel was minted by ${name} as legal tender in the Slipstream.
   const seniority = serial;
 
   const metadata = {
-    name,
+    name: `${name}'s Wooden Nickel`,
     description,
     symbol,
     image,

@@ -38,6 +38,7 @@ const Items = () => {
       const wnInWallet = await getWnAddressInWallet();
 
       setWoodenNickel(wnInWallet || "");
+      setWoodenNickelQuota(null);
       return;
     }
 
@@ -79,7 +80,9 @@ const Items = () => {
         <FeaturedCard
           imageUrl="https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/wooden_nickel.png"
           title="WOODEN NICKEL"
-          description="With this Wooden Nickel you can forge the Fake ID you’ll need for your voyage into the Hellbenders Slipstream.The first Wooden Nickel was issued in 1933 by the town of Blaine, Washington as a real currency when their bank failed during the Great Depression.  Many other towns..."
+          description={
+            "With this Wooden Nickel you can forge the Fake ID you’ll need for your voyage into the Hellbenders Slipstream.\n\nThe first Wooden Nickel was issued in 1933 by the town of Blaine, Washington as a real currency when their bank failed during the Great Depression. Many other towns followed suit until the U.S. Congress outlawed wooden currency just a few years later.\n\nThe Hellbenders Motorcycle Club honors each member as a sovereign soul with the inalienable right to mint their own currency."
+          }
           metadata={[
             { title: "Symbol", description: "NICKEL" },
             { title: "Minter", description: user?.username },

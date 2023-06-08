@@ -5,16 +5,17 @@ import {
   Typography,
   TextField,
   CircularProgress,
+  Badge,
 } from "@mui/material";
 import { useWallet } from "@solana/wallet-adapter-react";
 import * as React from "react";
 import { useAtom } from "jotai";
 import Image from "next/image";
-import Link from "next/link";
 
 import { mintWoodenNickel } from "lib/web3/woodenNickel/mintWoodenNickel";
 import { woodenNickelAddress, woodenNickelCurrentQuota } from "lib/store/forge";
-import { currentUser } from "lib/store";
+import { currentUser, userHasNoID } from "lib/store";
+import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 
 import {
   image,
@@ -27,6 +28,8 @@ import {
   supplyInfoItemWrapper,
   supplyInfoForm,
   mintButtonContainer,
+  featuredCardActionsWrapper,
+  resultText,
 } from "./styles";
 import { FeaturedCardProps } from "./types";
 
@@ -34,10 +37,10 @@ const FeaturedCard = ({
   title,
   description,
   imageUrl,
-  metadata,
   fetchInfo,
 }: FeaturedCardProps) => {
   const wallet = useWallet();
+  const isMobile = useCheckMobileScreen();
   const [minting, setMinting] = React.useState(false);
   const [result, setResult] = React.useState({ success: false, message: "" });
   const [keep, setKeep] = React.useState(0);
@@ -45,6 +48,7 @@ const FeaturedCard = ({
   const [user] = useAtom(currentUser);
   const [woodenNickel] = useAtom(woodenNickelAddress);
   const [woodenNickelQuota] = useAtom(woodenNickelCurrentQuota);
+  const [missingID] = useAtom(userHasNoID);
 
   const maxAvailable = woodenNickelQuota
     ? woodenNickelQuota.upTo - woodenNickelQuota.minted
@@ -87,6 +91,26 @@ const FeaturedCard = ({
     }
   };
 
+  React.useEffect(() => {
+    if (missingID) {
+      setResult({
+        success: false,
+        message:
+          "Sorry bud, but you need a Fake ID to mint a Wooden Nickel! Forge one here or go 'n fetch one at hellbenders.world",
+      });
+    } else {
+      setResult({ success: false, message: "" });
+    }
+  }, [missingID]);
+
+  React.useEffect(() => {
+    setKeep(maxAvailable);
+  }, [maxAvailable]);
+
+  console.log("Wooden Nickel: ", woodenNickel);
+  console.log("Wooden Nickel Quota: ", woodenNickelQuota);
+  console.log("Missing ID: ", missingID);
+
   return (
     <Card sx={featuredCardStyles}>
       <Box sx={featuredImageWrapper}>
@@ -96,129 +120,145 @@ const FeaturedCard = ({
       </Box>
       <Box>
         <Box>
-          <Typography variant="h3" color="primary">
+          <Typography variant="h3" color="primary" sx={{ margin: "0.8vmax 0" }}>
             {title}
           </Typography>
-          <Typography variant="h6" color="primary">
+          <Typography variant="h6" color="#848484">
             Guidance
           </Typography>
-          <Typography variant="subtitle2">{description}</Typography>
+          <Typography variant="subtitle2" sx={{ whiteSpace: "pre-wrap" }}>
+            {description}
+          </Typography>
 
           <Box sx={featuredCardMetadata}>
-            {metadata.map((value, index) => (
-              <Box key={index}>
-                <Typography variant="subtitle2" color="primary">
-                  {value.title}
-                </Typography>
-                {value.link ? (
-                  <Link href={value.description} target="_blank">
-                    <Typography variant="subtitle2">
-                      {value.description}
-                    </Typography>
-                  </Link>
-                ) : (
-                  <Typography variant="subtitle2">
-                    {value.description}
-                  </Typography>
-                )}
-              </Box>
-            ))}
-
             <Box sx={featuredCardActionsContainer}>
-              <Box sx={featuredFormContainer}>
-                <Box sx={supplyInfoItemWrapper}>
-                  <Typography variant="subtitle2">
-                    <b>{"Keep: "}</b>
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    type="number"
-                    value={keep > maxAvailable ? maxAvailable : keep}
-                    error={formError}
-                    onChange={e => {
-                      const value = Number(e.target.value);
-                      if (Number.isNaN(value)) {
-                        return;
+              <Box sx={featuredCardActionsWrapper}>
+                <Box sx={featuredFormContainer}>
+                  <Box sx={supplyInfoItemWrapper}>
+                    <Typography
+                      sx={{
+                        color: missingID ? "rgba(217, 217, 217, 0.20)" : "#FFF",
+                      }}
+                      variant="subtitle2"
+                    >
+                      <b>{"Keep: "}</b>
+                    </Typography>
+                    <TextField
+                      variant="standard"
+                      type="number"
+                      value={keep}
+                      disabled={missingID}
+                      error={formError}
+                      onChange={e => {
+                        const value = Number(e.target.value);
+                        if (Number.isNaN(value)) {
+                          return;
+                        }
+                        if (Number(value) < 0) return;
+                        setFormError(false);
+                        setKeep(value > maxAvailable ? maxAvailable : value);
+                      }}
+                      sx={supplyInfoForm}
+                      size="small"
+                    />
+                  </Box>
+
+                  <Box
+                    sx={{
+                      ...supplyInfoItemWrapper,
+                      marginTop: "0.4vmax",
+                    }}
+                  >
+                    <Typography variant="subtitle2">
+                      <b>{"Quota:"}</b>
+                    </Typography>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        textAlign: "center",
+                        width: "50%",
+                      }}
+                    >
+                      {maxAvailable}
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      ...supplyInfoItemWrapper,
+                      marginTop: "0.4vmax",
+                    }}
+                  >
+                    <Typography variant="subtitle2">
+                      <b>{"Unit Cost:"}</b>
+                    </Typography>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        textAlign: "center",
+                        width: "50%",
+                      }}
+                    >
+                      {0.01}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={mintButtonContainer}>
+                  {missingID ? (
+                    <Badge
+                      badgeContent={
+                        <Image
+                          src={
+                            "https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/lock.svg"
+                          }
+                          alt="lock"
+                          width={isMobile ? 20 : 40}
+                          height={isMobile ? 20 : 40}
+                        />
                       }
-                      if (Number(value) < 0) return;
-                      setFormError(false);
-                      setKeep(value > maxAvailable ? maxAvailable : value);
-                    }}
-                    sx={supplyInfoForm}
-                    size="small"
-                  />
-                </Box>
-
-                <Box
-                  sx={{
-                    ...supplyInfoItemWrapper,
-                    marginTop: "0.4vmax",
-                  }}
-                >
-                  <Typography variant="subtitle2">
-                    <b>{"Quota:"}</b>
+                    >
+                      <Button variant="contained" disabled={missingID}>
+                        MINT
+                      </Button>
+                    </Badge>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      disabled={maxAvailable === 0 || minting}
+                      onClick={mint}
+                      sx={{
+                        backgroundImage:
+                          "https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/button.svg",
+                      }}
+                    >
+                      {minting ? <CircularProgress /> : "MINT"}
+                    </Button>
+                  )}
+                  <Typography variant="caption">
+                    <b>Total: </b>
+                    {keep * 0.01}
                   </Typography>
                   <Typography
-                    variant="subtitle2"
                     sx={{
-                      textAlign: "center",
-                      width: "50%",
+                      fontSize: "0.5vmax !important",
+                      lineHeight: "0.5 !important",
                     }}
-                  >
-                    {maxAvailable}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{
-                    ...supplyInfoItemWrapper,
-                    marginTop: "0.4vmax",
-                  }}
-                >
-                  <Typography variant="subtitle2">
-                    <b>{"Unit Cost:"}</b>
-                  </Typography>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{
-                      textAlign: "center",
-                      width: "50%",
-                    }}
-                  >
-                    {0.01}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box sx={mintButtonContainer}>
-                <Button
-                  variant="contained"
-                  disabled={maxAvailable === 0 || minting}
-                  onClick={mint}
-                >
-                  {minting ? <CircularProgress /> : "MINT"}
-                </Button>
-                <Typography variant="caption">
-                  <b>Total: </b>
-                  {keep * 0.01}
-                </Typography>
-                {!woodenNickel && (
-                  <Typography
-                    sx={{ fontSize: "0.5vmax !important" }}
                     variant="caption"
                   >
                     Plus a small SOL transaction Fee
                   </Typography>
-                )}
+                </Box>
               </Box>
+              {result && (
+                <Typography
+                  variant="subtitle2"
+                  sx={resultText}
+                  color={result.success ? "primary" : "#FF710B"}
+                >
+                  {result.message}
+                </Typography>
+              )}
             </Box>
-            {result && (
-              <Typography
-                variant="subtitle2"
-                color={result.success ? "primary" : "#FF710B"}
-              >
-                {result.message}
-              </Typography>
-            )}
           </Box>
         </Box>
       </Box>
