@@ -6,6 +6,7 @@ import {
   TextField,
   CircularProgress,
   Badge,
+  Link,
 } from "@mui/material";
 import { useWallet } from "@solana/wallet-adapter-react";
 import * as React from "react";
@@ -42,7 +43,11 @@ const FeaturedCard = ({
   const wallet = useWallet();
   const isMobile = useCheckMobileScreen();
   const [minting, setMinting] = React.useState(false);
-  const [result, setResult] = React.useState({ success: false, message: "" });
+  const [result, setResult] = React.useState({
+    success: false,
+    message: "",
+    link: "",
+  });
   const [keep, setKeep] = React.useState(0);
   const [formError, setFormError] = React.useState(false);
   const [user] = useAtom(currentUser);
@@ -63,7 +68,7 @@ const FeaturedCard = ({
     if (maxAvailable <= 0) return;
 
     try {
-      setResult({ success: false, message: "" });
+      setResult({ success: false, message: "", link: "" });
       setMinting(true);
 
       await mintWoodenNickel({
@@ -78,6 +83,7 @@ const FeaturedCard = ({
       setResult({
         success: true,
         message: "Congrats! You have minted your token successfully",
+        link: "",
       });
       setMinting(false);
       fetchInfo();
@@ -86,6 +92,7 @@ const FeaturedCard = ({
         success: false,
         message:
           "I dunno why, but the machines elves f*cked up your trade, Try again later.",
+        link: "",
       });
       setMinting(false);
     }
@@ -96,20 +103,17 @@ const FeaturedCard = ({
       setResult({
         success: false,
         message:
-          "Sorry bud, but you need a Fake ID to mint a Wooden Nickel! Forge one here or go 'n fetch one at hellbenders.world",
+          "Sorry bud, but you need a Fake ID to mint a Wooden Nickel! Forge one here or go 'n fetch one at ",
+        link: "hellbenders.world",
       });
     } else {
-      setResult({ success: false, message: "" });
+      setResult({ success: false, message: "", link: "" });
     }
   }, [missingID]);
 
   React.useEffect(() => {
     setKeep(maxAvailable);
   }, [maxAvailable]);
-
-  console.log("Wooden Nickel: ", woodenNickel);
-  console.log("Wooden Nickel Quota: ", woodenNickelQuota);
-  console.log("Missing ID: ", missingID);
 
   return (
     <Card sx={featuredCardStyles}>
@@ -199,7 +203,7 @@ const FeaturedCard = ({
                         width: "50%",
                       }}
                     >
-                      {0.01}
+                      {0.01} USDC
                     </Typography>
                   </Box>
                 </Box>
@@ -236,7 +240,7 @@ const FeaturedCard = ({
                   )}
                   <Typography variant="caption">
                     <b>Total: </b>
-                    {keep * 0.01}
+                    {keep * 0.01} USDC
                   </Typography>
                   <Typography
                     sx={{
@@ -250,13 +254,25 @@ const FeaturedCard = ({
                 </Box>
               </Box>
               {result && (
-                <Typography
-                  variant="subtitle2"
-                  sx={resultText}
-                  color={result.success ? "primary" : "#FF710B"}
-                >
-                  {result.message}
-                </Typography>
+                <Box sx={{ display: "flex" }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={resultText}
+                    color={result.success ? "primary" : "#FF710B"}
+                  >
+                    {result.message}
+                    {result.link && (
+                      <Link
+                        color="#FF710B"
+                        sx={resultText}
+                        href={"https://hellbenders.world"}
+                        target="_blank"
+                      >
+                        hellbenders.world
+                      </Link>
+                    )}
+                  </Typography>
+                </Box>
               )}
             </Box>
           </Box>

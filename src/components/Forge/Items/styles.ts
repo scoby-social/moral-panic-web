@@ -8,7 +8,10 @@ export const pageWrapper: SxProps = {
 };
 
 export const container: SxProps = {
-  maxWidth: "1500px",
+  width: {
+    lg: "60%",
+    xs: "80%",
+  },
   margin: "2vmax 5vmax",
 };
 

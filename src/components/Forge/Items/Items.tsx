@@ -26,6 +26,7 @@ import { getWoodenNickelQuota } from "lib/axios/requests/woodenNickel/getWoodenN
 
 const Items = () => {
   const wallet = useWallet();
+  const loaded = React.useRef(false);
   const [woodenNickel, setWoodenNickel] = useAtom(woodenNickelAddress);
   const [missingID] = useAtom(userHasNoID);
   const [user] = useAtom(currentUser);
@@ -34,7 +35,7 @@ const Items = () => {
 
   const fetchInfo = React.useCallback(async () => {
     if (!wallet.publicKey) return;
-    setLoading(true);
+    if (!loaded.current) setLoading(true);
 
     const woodenNickelAddr = await getWoodenNickelAddress(
       wallet.publicKey.toString()
@@ -46,14 +47,16 @@ const Items = () => {
 
       setWoodenNickel(wnInWallet || "");
       setWoodenNickelQuota(null);
-      setLoading(false);
+      if (!loaded.current) setLoading(false);
+      loaded.current = true;
       return;
     }
 
     const woodenNickelQuota = await getWoodenNickelQuota(woodenNickelAddr);
 
     setWoodenNickelQuota(woodenNickelQuota);
-    setLoading(false);
+    if (!loaded.current) setLoading(false);
+    loaded.current = true;
 
     // eslint-disable-next-line
   }, [wallet.publicKey]);
@@ -128,17 +131,21 @@ const Items = () => {
                 buttonTitle="CREATE ID"
                 id="fake_id"
                 locked={!woodenNickel || !missingID}
+                lockedText={
+                  missingID
+                    ? "Hey pal, looks like you are missing a Wooden Nickel. Go cop one and try again!"
+                    : "Hey pal, looks like you already have a Fake ID. You don't need to have two identities! But if want to, you'll need to do it with a different wallet holding a Wooden Nickel."
+                }
               />
 
               <NFTCard
                 imageUrl="https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/compass_rose_example.png"
                 title="Compass Rose"
                 description="Follow your personal Compass Rose for an epic adventure beyond time, space and the death-grip of global civilization. Your quest is as unique as your sovereign soul."
-                price={0}
                 buttonTitle="MINT"
-                currency="USDC"
                 id="compass_rose"
                 locked
+                lockedText=""
               />
 
               <NFTCard
@@ -146,21 +153,19 @@ const Items = () => {
                 imageUrl="https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/founders_guild.png"
                 title="Founders Guild"
                 description="The Founders Guild is society of transformation where members initiate themselves into the mysteries of their own souls."
-                price={0.01}
                 buttonTitle="MINT"
-                currency="USDC"
                 locked
+                lockedText=""
               />
 
               <NFTCard
                 imageUrl="https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/spawn.png"
                 title="Spawn"
                 description="The Spawn embodies your brood, provides membership in the Cooperative DAO and allows you to create characters that will do your bidding in the Slipstream."
-                price={6.66}
-                currency="USDC"
                 id="fake_id"
                 buttonTitle="MINT"
                 locked
+                lockedText=""
               />
             </Box>
           </Box>

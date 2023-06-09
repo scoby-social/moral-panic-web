@@ -38,7 +38,9 @@ export const featuredImageWrapper: SxProps = {
 
 export const featuredImageContainer: SxProps = {
   width: {
+    lg: "100%",
     md: "100%",
+    sm: "60%",
     xs: "80%",
   },
   height: "100%",

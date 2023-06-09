@@ -12,6 +12,7 @@ import {
   tokenInfoContainer,
   itemTitle,
   itemDescription,
+  lockedTextStyles,
 } from "./styles";
 import { NFTCardProps } from "./types";
 
@@ -24,6 +25,7 @@ const NFTCard = ({
   buttonTitle,
   id,
   locked,
+  lockedText,
 }: NFTCardProps) => {
   const isMobile = useCheckMobileScreen();
   const router = useRouter();
@@ -65,7 +67,6 @@ const NFTCard = ({
           ) : (
             <Button
               onClick={e => {
-                console.log("Clicked!");
                 e.preventDefault();
                 router.push("/forge/identity", {
                   forceOptimisticNavigation: true,
@@ -77,7 +78,7 @@ const NFTCard = ({
               {buttonTitle}
             </Button>
           )}
-          {!locked && (
+          {price && currency && (
             <>
               <Typography variant="caption">
                 <b>Unit Cost: </b>
@@ -87,6 +88,15 @@ const NFTCard = ({
                 Plus a small SOL transaction Fee
               </Typography>
             </>
+          )}
+          {locked && lockedText && (
+            <Typography
+              sx={lockedTextStyles}
+              variant="subtitle2"
+              color="#FF710B"
+            >
+              {lockedText}
+            </Typography>
           )}
         </Box>
       </Box>

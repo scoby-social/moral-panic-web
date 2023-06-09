@@ -48,3 +48,12 @@ export const mintButtonContainer: SxProps = {
   justifyContent: "center",
   alignItems: "center",
 };
+
+export const lockedTextStyles: SxProps = {
+  maxWidth: {
+    md: "70%",
+    xs: "80%",
+  },
+  textAlign: "center",
+  marginTop: "1vmax",
+};
