@@ -371,7 +371,7 @@ export const mintWoodenNickel = async ({
       });
 
       const formData = {
-        name: `${username}'s Wooden Nickel`,
+        name: username,
         uri,
       };
 

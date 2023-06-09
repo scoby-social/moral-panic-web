@@ -74,9 +74,9 @@ export default function CustomTheme() {
         styleOverrides: {
           root: {
             fontFamily: "Poppins",
-            fontSize: "0.80vmax",
+            fontSize: "1vmax",
             [breakpoints.up("sm")]: {
-              fontSize: "0.60vmax",
+              fontSize: "0.80vmax",
             },
           },
         },
