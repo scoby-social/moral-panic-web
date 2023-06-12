@@ -2,7 +2,6 @@ import * as anchor from "@project-serum/anchor";
 import {
   MintLayout,
   TOKEN_PROGRAM_ID,
-  AccountLayout,
   createMintToCheckedInstruction,
   createMintToInstruction,
 } from "@solana/spl-token";
@@ -18,6 +17,7 @@ import {
 } from "@solana/web3.js";
 
 import { createAssociatedTokenAccountInstruction } from "../common/createAssociatedTokenAccountInstruction";
+import FakeIDNFTIdl from "../fakeID/usdc-fake-id.json";
 import { createMint } from "../common/createMint";
 import { getEdition } from "../common/getEdition";
 import { getMetadata } from "../common/getMetadata";
@@ -26,12 +26,12 @@ import { getOrCreateAssociatedTokenAccount } from "../common/getOrCreateAssociat
 import { getTokenWallet } from "../common/getTokenWallet";
 import { sendTransaction } from "../common/sendTransaction";
 import * as woodenSFTIdl from "./wooden_idl.json";
-import * as fakeIDNFTIdl from "../fakeID/usdc-fake-id.json";
 import { saveWoodenNickelMetadata } from "./saveWoodenNickelMetadata";
 import { MintWoodenNickelProps } from "./types";
 import { createWoodenNickel } from "lib/axios/requests/woodenNickel/createWoodenNickel";
 import { getWoodenNickelLineage } from "lib/axios/requests/woodenNickel/getWoodenNickelLineage";
 import { updateWoodenNickel } from "lib/axios/requests/woodenNickel/updateWoodenNickel";
+import { getWholeLineageFromFakeID } from "../common/getWholeLineageFromFakeID";
 
 const WoodenNickelSFTPool = new PublicKey(
   process.env.NEXT_PUBLIC_WOODEN_NICKEL_SFT_POOL!
@@ -45,7 +45,13 @@ const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey(
   process.env.NEXT_PUBLIC_TOKEN_METADATA_PROGRAM_ID!
 );
 
+const FakeIDNFTPOOL = new PublicKey(process.env.NEXT_PUBLIC_FAKE_ID_NFT_POOL!);
+
 const FakeIDNFTSYMBOL = "HELLPASS";
+
+const FakeIDNFTProgramId = new PublicKey(
+  process.env.NEXT_PUBLIC_FAKE_ID_PROGRAM_ID!
+);
 
 export const mintWoodenNickel = async ({
   wallet,
@@ -63,22 +69,18 @@ export const mintWoodenNickel = async ({
     skipPreflight: false,
   };
 
-  const FakeIDNFTProgramId = new PublicKey(
-    process.env.NEXT_PUBLIC_FAKE_ID_PROGRAM_ID!
-  );
-
-  const FakeIDNFTPOOL = new PublicKey(
-    process.env.NEXT_PUBLIC_FAKE_ID_NFT_POOL!
-  );
-
-  const usdcToken = new PublicKey(process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS!);
-
   try {
     const provider = new anchor.AnchorProvider(conn, wallet, confirmOption);
 
     const program = new anchor.Program(
       woodenSFTIdl as any,
       WoodenSFTProgramID,
+      provider
+    );
+
+    const fakeIDProgram = new anchor.Program(
+      FakeIDNFTIdl as any,
+      FakeIDNFTProgramId,
       provider
     );
 
@@ -130,237 +132,33 @@ export const mintWoodenNickel = async ({
       WoodenSFTProgramID
     );
 
-    const royaltyList: String[] = [];
-
-    const sourceTokenAccount = await getOrCreateAssociatedTokenAccount(
-      conn,
-      wallet.publicKey,
-      usdcToken,
-      wallet.publicKey,
-      wallet.signTransaction
-    );
-
-    if (sourceTokenAccount[1]) {
-      royaltyList.push(wallet.publicKey.toString());
-      createTokenAccountTransaction.add(sourceTokenAccount[1]);
-    }
-
-    const scobyUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
-      conn,
-      wallet.publicKey,
-      usdcToken,
-      poolData.scobyWallet,
-      wallet.signTransaction
-    );
-
-    if (scobyUsdcTokenAccount[1]) {
-      if (
-        royaltyList.findIndex(
-          item => item == poolData.scobyWallet.toString()
-        ) == -1
-      ) {
-        royaltyList.push(poolData.scobyWallet.toString());
-        createTokenAccountTransaction.add(scobyUsdcTokenAccount[1]);
-      }
-    }
-
     const memberships = await getNftsForOwnerBySymbol(
       FakeIDNFTSYMBOL,
       wallet.publicKey,
       conn
     );
 
-    const parentNFT = memberships[0].mintAddress;
+    const fakeIDPoolData = (await fakeIDProgram.account.pool.fetch(
+      FakeIDNFTPOOL
+    )) as any;
 
-    const [parentNftMetadataExtended] = await PublicKey.findProgramAddress(
-      [parentNFT.toBuffer(), FakeIDNFTPOOL.toBuffer()],
-      FakeIDNFTProgramId
+    const {
+      creatorNftAccount,
+      sourceTokenAccount,
+      scobyUsdcTokenAccount,
+      parentMembershipUsdcTokenAccount,
+      grandParentMembershipUsdcTokenAccount,
+      grandGrandParentMembershipUsdcTokenAccount,
+      grandGrandGrandParentMembershipUsdcTokenAccount,
+    } = await getWholeLineageFromFakeID(
+      conn,
+      wallet,
+      createTokenAccountTransaction,
+      poolData,
+      memberships[0].mintAddress,
+      provider,
+      fakeIDPoolData
     );
-
-    const fakeIDProgram = new anchor.Program(
-      fakeIDNFTIdl as any,
-      FakeIDNFTProgramId,
-      provider
-    );
-
-    const parentNftExtendedData =
-      await fakeIDProgram.account.metadataExtended.fetch(
-        parentNftMetadataExtended
-      );
-
-    const parentMembership = {
-      metadataExtended: parentNftMetadataExtended,
-      extendedData: parentNftExtendedData,
-    };
-
-    const parentMembershipResp = await conn.getTokenLargestAccounts(
-      parentMembership.extendedData.mint,
-      "finalized"
-    );
-    if (
-      parentMembershipResp == null ||
-      parentMembershipResp.value == null ||
-      parentMembershipResp.value.length == 0
-    )
-      throw new Error("Invalid NFP");
-    const parentMembershipAccount = parentMembershipResp.value[0].address;
-    let info = await conn.getAccountInfo(parentMembershipAccount, "finalized");
-    if (info == null) throw new Error("parent membership info failed");
-    let accountInfo = AccountLayout.decode(info.data);
-    if (Number(accountInfo.amount) == 0)
-      throw new Error("Invalid Parent Membership Nft info");
-    const parentMembershipOwner = new PublicKey(accountInfo.owner);
-
-    const parentMembershipUsdcTokenAccount =
-      await getOrCreateAssociatedTokenAccount(
-        conn,
-        wallet.publicKey,
-        usdcToken,
-        parentMembershipOwner,
-        wallet.signTransaction
-      );
-
-    if (parentMembershipUsdcTokenAccount[1]) {
-      if (
-        royaltyList.findIndex(item => item == accountInfo.owner.toString()) ==
-        -1
-      ) {
-        royaltyList.push(accountInfo.owner.toString());
-        createTokenAccountTransaction.add(parentMembershipUsdcTokenAccount[1]);
-      }
-    }
-
-    // grand parent
-    const grandParentMembershipResp = await conn.getTokenLargestAccounts(
-      parentMembership.extendedData.parentNfp,
-      "finalized"
-    );
-    if (
-      grandParentMembershipResp == null ||
-      grandParentMembershipResp.value == null ||
-      grandParentMembershipResp.value.length == 0
-    )
-      throw new Error("Invalid NFP");
-    const grandParentMembershipAccount =
-      grandParentMembershipResp.value[0].address;
-    info = await conn.getAccountInfo(grandParentMembershipAccount, "finalized");
-    if (info == null) throw new Error("grand parent membership info failed");
-    accountInfo = AccountLayout.decode(info.data);
-    if (Number(accountInfo.amount) == 0)
-      throw new Error("Invalid Grand Parent Membership Nft info");
-    const grandParentMembershipOwner = new PublicKey(accountInfo.owner);
-
-    const grandParentMembershipUsdcTokenAccount =
-      await getOrCreateAssociatedTokenAccount(
-        conn,
-        wallet.publicKey,
-        usdcToken,
-        grandParentMembershipOwner,
-        wallet.signTransaction
-      );
-
-    if (grandParentMembershipUsdcTokenAccount[1]) {
-      if (
-        royaltyList.findIndex(item => item == accountInfo.owner.toString()) ==
-        -1
-      ) {
-        royaltyList.push(accountInfo.owner.toString());
-        createTokenAccountTransaction.add(
-          grandParentMembershipUsdcTokenAccount[1]
-        );
-      }
-    }
-
-    // grand grand parent
-    const grandGrandParentMembershipResp = await conn.getTokenLargestAccounts(
-      parentMembership.extendedData.grandParentNfp,
-      "finalized"
-    );
-    if (
-      grandGrandParentMembershipResp == null ||
-      grandGrandParentMembershipResp.value == null ||
-      grandGrandParentMembershipResp.value.length == 0
-    )
-      throw new Error("Invalid NFP");
-    const grandGrandParentMembershipAccount =
-      grandGrandParentMembershipResp.value[0].address;
-    info = await conn.getAccountInfo(
-      grandGrandParentMembershipAccount,
-      "finalized"
-    );
-    if (info == null) throw new Error("grand parent membership info failed");
-    accountInfo = AccountLayout.decode(info.data);
-    if (Number(accountInfo.amount) == 0)
-      throw new Error("Invalid Grand Parent Membership Nft info");
-    const grandGrandParentMembershipOwner = new PublicKey(accountInfo.owner);
-
-    const grandGrandParentMembershipUsdcTokenAccount =
-      await getOrCreateAssociatedTokenAccount(
-        conn,
-        wallet.publicKey,
-        usdcToken,
-        grandGrandParentMembershipOwner,
-        wallet.signTransaction
-      );
-
-    if (grandGrandParentMembershipUsdcTokenAccount[1]) {
-      if (
-        royaltyList.findIndex(item => item == accountInfo.owner.toString()) ==
-        -1
-      ) {
-        royaltyList.push(accountInfo.owner.toString());
-        createTokenAccountTransaction.add(
-          grandGrandParentMembershipUsdcTokenAccount[1]
-        );
-      }
-    }
-
-    const grandGrandGrandParentMembershipResp =
-      await conn.getTokenLargestAccounts(
-        parentMembership.extendedData.grandGrandParentNfp,
-        "finalized"
-      );
-    if (
-      grandGrandGrandParentMembershipResp == null ||
-      grandGrandGrandParentMembershipResp.value == null ||
-      grandGrandGrandParentMembershipResp.value.length == 0
-    )
-      throw new Error("Invalid NFP");
-
-    const grandGrandGrandParentMembershipAccount =
-      grandGrandGrandParentMembershipResp.value[0].address;
-    info = await conn.getAccountInfo(
-      grandGrandGrandParentMembershipAccount,
-      "finalized"
-    );
-    if (info == null) throw new Error("grand parent membership info failed");
-    accountInfo = AccountLayout.decode(info.data);
-    if (Number(accountInfo.amount) == 0)
-      throw new Error("Invalid Grand Parent Membership Nft info");
-    const grandGrandGrandParentMembershipOwner = new PublicKey(
-      accountInfo.owner
-    );
-
-    const grandGrandGrandParentMembershipUsdcTokenAccount =
-      await getOrCreateAssociatedTokenAccount(
-        conn,
-        wallet.publicKey,
-        usdcToken,
-        grandGrandGrandParentMembershipOwner,
-        wallet.signTransaction
-      );
-
-    if (grandGrandGrandParentMembershipUsdcTokenAccount[1]) {
-      if (
-        royaltyList.findIndex(item => item == accountInfo.owner.toString()) ==
-        -1
-      ) {
-        royaltyList.push(accountInfo.owner.toString());
-        createTokenAccountTransaction.add(
-          grandGrandGrandParentMembershipUsdcTokenAccount[1]
-        );
-      }
-    }
 
     if (!woodenNickel) {
       const lineage = await getWoodenNickelLineage(fakeID);
@@ -388,6 +186,7 @@ export const mintWoodenNickel = async ({
             metadataExtended: metadataExtended,
             sourceTokenAccount: sourceTokenAccount[0],
             scobyUsdcTokenAccount: scobyUsdcTokenAccount[0],
+            creatorNftAccount: creatorNftAccount,
             parentNftUsdcTokenAccount: parentMembershipUsdcTokenAccount[0],
             grandParentNftUsdcTokenAccount:
               grandParentMembershipUsdcTokenAccount[0],
@@ -442,6 +241,7 @@ export const mintWoodenNickel = async ({
             pool: WoodenNickelSFTPool,
             sourceTokenAccount: sourceTokenAccount[0],
             scobyUsdcTokenAccount: scobyUsdcTokenAccount[0],
+            creatorNftAccount: creatorNftAccount,
             parentNftUsdcTokenAccount: parentMembershipUsdcTokenAccount[0],
             grandParentNftUsdcTokenAccount:
               grandParentMembershipUsdcTokenAccount[0],
@@ -474,7 +274,7 @@ export const mintWoodenNickel = async ({
       await updateWoodenNickel(wallet.publicKey.toString(), keep);
     }
   } catch (err) {
-    console.trace(err);
+    console.error(err);
     throw err;
   }
 };
