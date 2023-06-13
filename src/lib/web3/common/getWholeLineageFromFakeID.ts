@@ -180,7 +180,7 @@ async function getParentMembershipUsdcTokenAccount(
 ) {
   /* Parent Membership (Fake ID parent) accounts */
   const parentMembershipResp = await conn.getTokenLargestAccounts(
-    parentMembership.extendedData.mint,
+    parentMembership.extendedData.parentNfp,
     "finalized"
   );
   if (
@@ -227,7 +227,7 @@ async function getGrandParentMembershipUsdcTokenAccount(
 ) {
   /* Grand Parent Membership (Fake ID Grand Parent) accounts */
   const grandParentMembershipResp = await conn.getTokenLargestAccounts(
-    parentMembership.extendedData.parentNfp,
+    parentMembership.extendedData.grandParentNfp,
     "finalized"
   );
 
@@ -284,7 +284,7 @@ async function getGrandGrandParentMembershipUsdcTokenAccount(
 ) {
   /* Grand Grand Parent Membership (Fake ID Grand Grand Parent) accounts */
   const grandGrandParentMembershipResp = await conn.getTokenLargestAccounts(
-    parentMembership.extendedData.grandParentNfp,
+    parentMembership.extendedData.grandGrandParentNfp,
     "finalized"
   );
   if (
@@ -338,7 +338,7 @@ async function getGrandGrandGrandParentMembershipUsdcTokenAccount(
   /* Grand Grand Grand Parent Membership (Fake ID Grand Grand Grand Parent) accounts */
   const grandGrandGrandParentMembershipResp =
     await conn.getTokenLargestAccounts(
-      parentMembership.extendedData.grandGrandParentNfp,
+      parentMembership.extendedData.grandGrandGrandParentNfp,
       "finalized"
     );
   if (

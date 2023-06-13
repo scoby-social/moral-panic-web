@@ -64,7 +64,14 @@ export const superheroIdentityWrapper: SxProps = {
   display: "flex",
 };
 
+export const formField: SxProps = {
+  ".MuiInputBase-root": {
+    padding: "0.5vmax 1vmax",
+  },
+};
+
 export const roleFormFields: SxProps = {
+  ...formField,
   maxWidth: "33%",
 };
 
@@ -85,7 +92,7 @@ export const mintButtonWrapper: SxProps = {
 };
 
 export const mintButton: SxProps = {
-  padding: "0.3vmax 2.5vmax",
+  padding: "0.5vmax 2.5vmax",
   opacity: 0.7,
   background: "#BEEF00 !important",
   borderRadius: "25px",

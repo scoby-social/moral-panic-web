@@ -61,6 +61,7 @@ export const buttonStyles: SxProps = {
 export const revertButton: SxProps = {
   width: "8%",
   padding: "0.3vmax 0.5vmax",
+  marginTop: "0.5vmax",
   borderRadius: "25px",
   fontFamily: "Poppins",
 
