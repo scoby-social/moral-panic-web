@@ -92,6 +92,7 @@ const LayerStep = ({ step }: LayerStepProps) => {
 
   const selectLayer = React.useCallback(
     async (layerIndex: number) => {
+      console.log("All combined layers: ", allCombinedLayers);
       const { combinedLayer, stepLayer, reversedKey } =
         await selectAndMergeLayer({
           layerIndex,
@@ -100,6 +101,8 @@ const LayerStep = ({ step }: LayerStepProps) => {
           step,
           selectedLayersOnStep,
         });
+
+      console.log("Combined layer: ", combinedLayer);
 
       setHasSelectedLayer(true);
       reverseLayerInStepByKey(reversedKey);

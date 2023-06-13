@@ -39,6 +39,7 @@ import {
   mintButtonWrapper,
   mintButton,
   forgeBackButtonWrapper,
+  formField,
 } from "./styles";
 import { PhotoBoothFormInputs } from "./types";
 import { schema } from "./validator";
@@ -140,6 +141,7 @@ const Form = ({
                       {...field}
                       id="username-input"
                       fullWidth
+                      sx={formField}
                       onBlur={validateIfUserExists}
                       error={!!errors.username}
                       placeholder="How you want to be addressed in one word 15 letters max"
@@ -209,6 +211,7 @@ const Form = ({
                       id="pronouns-select"
                       fullWidth
                       size="small"
+                      sx={formField}
                       defaultValue=""
                       error={!!errors.pronouns}
                       IconComponent={KeyboardArrowDownIcon}
@@ -241,6 +244,7 @@ const Form = ({
                       minRows={2}
                       maxRows={3}
                       fullWidth
+                      sx={formField}
                       error={!!errors.bio}
                       inputProps={{ maxLength: 160 }}
                       placeholder="bio"
@@ -262,6 +266,7 @@ const Form = ({
                       {...field}
                       id="twitter-input"
                       fullWidth
+                      sx={formField}
                       placeholder="@username"
                       error={!!errors.twitterHandle}
                       helperText={errors.twitterHandle?.message}
@@ -283,6 +288,7 @@ const Form = ({
                       {...field}
                       id="user-url-input"
                       fullWidth
+                      sx={formField}
                       placeholder="username#1234"
                       error={!!errors.discordHandle}
                       helperText={errors.discordHandle?.message}
@@ -304,6 +310,7 @@ const Form = ({
                       {...field}
                       id="user-url-input"
                       fullWidth
+                      sx={formField}
                       placeholder="@username"
                       error={!!errors.telegramHandle}
                       helperText={errors.telegramHandle?.message}

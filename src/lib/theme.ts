@@ -70,6 +70,13 @@ export default function CustomTheme() {
       },
     },
     components: {
+      MuiSelect: {
+        styleOverrides: {
+          select: {
+            padding: "0.5vmax 1vmax !important",
+          },
+        },
+      },
       MuiLink: {
         styleOverrides: {
           root: {
