@@ -149,6 +149,7 @@ const PhotoBooth = ({
         wallet,
         seniority: 0,
         updateMessage: setMessage,
+        woodenNickel: woodenNickel!,
       });
 
       await createUser(
@@ -171,7 +172,7 @@ const PhotoBooth = ({
 
       setLoading(false);
       setMessage(
-        "Congrats! Your Fake ID has been minted. You'll be redirected to your profile page shortly."
+        "Congrats! Your Fake ID has been minted. You'll be redirected to The Forge shortly."
       );
       setTimeout(() => {
         router.back();

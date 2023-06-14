@@ -15,6 +15,11 @@ import {
   MintLayout,
   TOKEN_PROGRAM_ID,
   createMintToCheckedInstruction,
+  getOrCreateAssociatedTokenAccount as createAssociatedTokenAccount,
+  createBurnInstruction,
+  burn,
+  burnChecked,
+  createBurnCheckedInstruction,
 } from "@solana/spl-token";
 import { getOrCreateAssociatedTokenAccount } from "../common/getOrCreateAssociatedTokenAccount";
 import { createAssociatedTokenAccountInstruction } from "../common/createAssociatedTokenAccountInstruction";
@@ -29,7 +34,8 @@ export const mintFakeID = async (
   wallet: any,
   metadataUrl: string,
   name: string,
-  leaderNftAddress: string
+  leaderNftAddress: string,
+  woodenNickel: string
 ): Promise<string> => {
   const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey(
     process.env.NEXT_PUBLIC_TOKEN_METADATA_PROGRAM_ID!
@@ -151,6 +157,15 @@ export const mintFakeID = async (
     }
   }
 
+  const woodenNickelPublicKey = new PublicKey(woodenNickel);
+
+  const tokenAccount = await createAssociatedTokenAccount(
+    conn,
+    wallet,
+    woodenNickelPublicKey,
+    wallet.publicKey
+  );
+
   // check if this wallet is holding the fake id nft
   if (await checkIfUserHasFakeID(wallet))
     throw new Error("Creator Already Have and Fake ID NFT");
@@ -194,6 +209,7 @@ export const mintFakeID = async (
     };
 
     const creatorMint = poolData.rootNft as PublicKey;
+
     const creatorResp = await conn.getTokenLargestAccounts(
       creatorMint,
       "finalized"
@@ -495,6 +511,18 @@ export const mintFakeID = async (
   }
 
   await sendTransaction(conn, wallet, transaction, signers);
+
+  const burnTransaction = new Transaction().add(
+    createBurnCheckedInstruction(
+      tokenAccount.address,
+      woodenNickelPublicKey,
+      wallet.publicKey,
+      1,
+      0
+    )
+  );
+
+  await sendTransaction(conn, wallet, burnTransaction, []);
 
   return nftMintAddress.toString();
 };

@@ -31,6 +31,7 @@ import {
   mintButtonContainer,
   featuredCardActionsWrapper,
   resultText,
+  resultContainer,
 } from "./styles";
 import { FeaturedCardProps } from "./types";
 
@@ -254,7 +255,7 @@ const FeaturedCard = ({
                 </Box>
               </Box>
               {result && (
-                <Box sx={{ display: "flex" }}>
+                <Box sx={resultContainer}>
                   <Typography
                     variant="subtitle2"
                     sx={resultText}

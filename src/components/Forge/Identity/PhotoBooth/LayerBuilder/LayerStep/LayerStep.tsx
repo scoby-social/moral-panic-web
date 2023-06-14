@@ -92,7 +92,6 @@ const LayerStep = ({ step }: LayerStepProps) => {
 
   const selectLayer = React.useCallback(
     async (layerIndex: number) => {
-      console.log("All combined layers: ", allCombinedLayers);
       const { combinedLayer, stepLayer, reversedKey } =
         await selectAndMergeLayer({
           layerIndex,
@@ -101,8 +100,6 @@ const LayerStep = ({ step }: LayerStepProps) => {
           step,
           selectedLayersOnStep,
         });
-
-      console.log("Combined layer: ", combinedLayer);
 
       setHasSelectedLayer(true);
       reverseLayerInStepByKey(reversedKey);
@@ -123,11 +120,13 @@ const LayerStep = ({ step }: LayerStepProps) => {
     setProcessingMerge(false);
     setAllLayers(completeLayers);
     setAllStepLayers(completeLayers);
-    if (step === 0) setAllCombinedLayers([completeLayers[0]]);
-    else
+    if (step === 0) {
+      setSelectedLayerOnStep([completeLayers[0]]);
+      setAllCombinedLayers([completeLayers[0]]);
+    } else
       setAllCombinedLayers(prevLayers => {
         const newLayers = [...prevLayers];
-        newLayers.push(newLayers[newLayers.length - 1]);
+        newLayers.push({ ...newLayers[newLayers.length - 1], exception: "" });
 
         return newLayers;
       });
@@ -209,9 +208,6 @@ const LayerStep = ({ step }: LayerStepProps) => {
           <Typography sx={captionTextColor} variant="caption">
             {layer.name.split(".")[0]}
           </Typography>
-          {/* <Typography sx={layerExceptionCaption} variant="caption"> */}
-          {/* {layer.exception} */}
-          {/* </Typography> */}
         </Box>
       ))}
     </Box>

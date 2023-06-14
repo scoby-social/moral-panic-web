@@ -12,4 +12,5 @@ export interface UploadNftParams {
   parentNftAddress: string;
   seniority: number;
   updateMessage: Dispatch<SetStateAction<string>>;
+  woodenNickel: string;
 }
