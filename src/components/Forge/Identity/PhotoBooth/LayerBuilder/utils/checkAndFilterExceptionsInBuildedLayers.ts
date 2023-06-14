@@ -14,7 +14,7 @@ export function checkAndFilterExceptionsInBuildedLayers(
   const buildedLayers = [...layers];
   filterLayersToCheckNewExceptions(buildedLayers);
 
-  buildedLayers.forEach((layer) => {
+  buildedLayers.forEach(layer => {
     if (layer.skipped) return;
 
     if (
@@ -30,7 +30,7 @@ export function checkAndFilterExceptionsInBuildedLayers(
       return;
     }
 
-    const hasException = !!exceptions.find((exception) => {
+    const hasException = !!exceptions.find(exception => {
       if (!exception) return false;
 
       if (exception.reverse && exception.name === layer.name) {

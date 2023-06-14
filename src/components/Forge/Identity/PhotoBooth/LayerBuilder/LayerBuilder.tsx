@@ -87,7 +87,7 @@ const LayerBuilder = () => {
 
   const goToNextStep = React.useCallback(() => {
     changeStep(currentStep + 1);
-    setHasSelectedLayer(false);
+    setHasSelectedLayer(Boolean(selectedLayerOnStep[currentStep]));
     // eslint-disable-next-line
   }, [changeStep, currentStep]);
 
@@ -98,7 +98,10 @@ const LayerBuilder = () => {
 
     setAllCombinedLayers(prevLayers => {
       const newLayers = [...prevLayers];
-      newLayers[newLayers.length - 1] = newLayers[newLayers.length - 2];
+      newLayers[newLayers.length - 1] = {
+        ...newLayers[newLayers.length - 2],
+        exception: "",
+      };
 
       return newLayers;
     });
@@ -178,7 +181,7 @@ const LayerBuilder = () => {
         {currentStep > 1 && currentStep <= maxStepNumber && (
           <Button
             onClick={revertLayer}
-            disabled={currentStep === 0 || processingMerge || !hasSelectedLayer}
+            disabled={processingMerge || !hasSelectedLayer}
             variant="outlined"
             color="secondary"
             sx={revertButton}

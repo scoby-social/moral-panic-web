@@ -8,6 +8,7 @@ export const layerBuilderWrapper: SxProps = {
 };
 
 export const layersContainer: SxProps = {
+  marginTop: "0.5vmax",
   display: "flex",
   justifyContent: "space-evenly",
   alignItems: "center",

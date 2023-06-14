@@ -6,7 +6,7 @@ export function getFilteredLayers(
 ): LayerInBuilder[] {
   const shiftedLayers = removeLastStepElementIfMatchesCurrentStep(step, steps);
 
-  return shiftedLayers.filter((val) => !val.skipped);
+  return shiftedLayers.filter(val => !val.skipped);
 }
 
 function removeLastStepElementIfMatchesCurrentStep(

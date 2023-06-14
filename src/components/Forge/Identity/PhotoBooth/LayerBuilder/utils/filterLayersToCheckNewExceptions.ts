@@ -7,9 +7,9 @@ export function filterLayersToCheckNewExceptions(
   allLayers.forEach((layer, index) => {
     if (layer.exceptions.length === 0) return;
 
-    layer.exceptions.forEach((exception) => {
+    layer.exceptions.forEach(exception => {
       if (Array.isArray(exception.items)) {
-        exception.items.forEach((exceptionName) => {
+        exception.items.forEach(exceptionName => {
           let matchingString = "";
 
           if (exceptionName.includes("*")) {
@@ -24,7 +24,8 @@ export function filterLayersToCheckNewExceptions(
             if (
               filteredLayers[i].name.includes(matchingString) &&
               filteredLayers[i].type === exception.type &&
-              !filteredLayers[i].standard
+              !filteredLayers[i].standard &&
+              !filteredLayers[i].reverse
             ) {
               filteredLayers.splice(i, 1);
             }

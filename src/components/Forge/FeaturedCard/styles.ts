@@ -72,6 +72,12 @@ export const featuredCardActionsWrapper: SxProps = {
   alignItems: "center",
 };
 
+export const resultContainer: SxProps = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
 export const resultText: SxProps = {
   maxWidth: "80%",
   marginTop: "1vmax",

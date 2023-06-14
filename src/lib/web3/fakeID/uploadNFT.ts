@@ -18,6 +18,7 @@ export async function uploadNFT({
   parentNftAddress,
   seniority,
   updateMessage,
+  woodenNickel,
 }: UploadNftParams): Promise<UploadNFTReturnType> {
   const attributes: MetadataAttributes[] = [];
   const orderedLayers: OrderedSelectedLayers = {
@@ -112,7 +113,8 @@ export async function uploadNFT({
       wallet,
       metadataShdwUrl,
       metadata.name,
-      parentNftAddress
+      parentNftAddress,
+      woodenNickel
     );
   } catch (err) {
     deleteShadowDriveFile(metadataShdwUrl);
