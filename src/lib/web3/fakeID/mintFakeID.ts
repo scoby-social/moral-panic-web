@@ -15,11 +15,6 @@ import {
   MintLayout,
   TOKEN_PROGRAM_ID,
   createMintToCheckedInstruction,
-  getOrCreateAssociatedTokenAccount as createAssociatedTokenAccount,
-  createBurnInstruction,
-  burn,
-  burnChecked,
-  createBurnCheckedInstruction,
 } from "@solana/spl-token";
 import { getOrCreateAssociatedTokenAccount } from "../common/getOrCreateAssociatedTokenAccount";
 import { createAssociatedTokenAccountInstruction } from "../common/createAssociatedTokenAccountInstruction";
@@ -158,13 +153,6 @@ export const mintFakeID = async (
   }
 
   const woodenNickelPublicKey = new PublicKey(woodenNickel);
-
-  const tokenAccount = await createAssociatedTokenAccount(
-    conn,
-    wallet,
-    woodenNickelPublicKey,
-    wallet.publicKey
-  );
 
   // check if this wallet is holding the fake id nft
   if (await checkIfUserHasFakeID(wallet))
@@ -511,18 +499,6 @@ export const mintFakeID = async (
   }
 
   await sendTransaction(conn, wallet, transaction, signers);
-
-  const burnTransaction = new Transaction().add(
-    createBurnCheckedInstruction(
-      tokenAccount.address,
-      woodenNickelPublicKey,
-      wallet.publicKey,
-      1,
-      0
-    )
-  );
-
-  await sendTransaction(conn, wallet, burnTransaction, []);
 
   return nftMintAddress.toString();
 };
