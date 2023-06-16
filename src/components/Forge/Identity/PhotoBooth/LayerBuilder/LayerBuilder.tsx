@@ -13,7 +13,6 @@ import {
   renderedSteps,
   selectedLayerIndexPerStep,
   selectedLayerPerStep,
-  userSelectedLayerOnStep,
 } from "lib/store";
 
 import {
@@ -38,10 +37,6 @@ const LayerBuilder = () => {
   const maxStepNumber = getStepsLength();
   const [currentStep, setCurrentStep] = useAtom(photoBoothStep);
   const [processingMerge, setProcessingMerge] = useAtom(mergeInProcess);
-  const [hasSelectedLayer, setHasSelectedLayer] = useAtom(
-    userSelectedLayerOnStep
-  );
-
   const [__, setSelectedLayerIdxPerStep] = useAtom(selectedLayerIndexPerStep);
   const [wallet] = useAtom(currentWallet);
   const [_, setStepsRendered] = useAtom(renderedSteps);
@@ -49,6 +44,8 @@ const LayerBuilder = () => {
   const [selectedLayerOnStep, setSelectedLayerOnStep] =
     useAtom(selectedLayerPerStep);
   const [croppedImage, setCroppedImage] = useAtom(finalCroppedImage);
+
+  const hasSelectedLayer = Boolean(selectedLayerOnStep[currentStep]);
 
   const changeStep = React.useCallback(
     (step: number) => {
@@ -66,9 +63,11 @@ const LayerBuilder = () => {
       return newSteps;
     });
 
-    setSelectedLayerOnStep(prevLayers => {
-      return [...prevLayers].slice(0, -1);
-    });
+    if (selectedLayerOnStep.length - 1 === currentStep) {
+      setSelectedLayerOnStep(prevLayers => {
+        return [...prevLayers].slice(0, -1);
+      });
+    }
 
     setAllCombinedLayers(prevLayers => {
       return [...prevLayers].slice(0, -1);
@@ -87,7 +86,6 @@ const LayerBuilder = () => {
 
   const goToNextStep = React.useCallback(() => {
     changeStep(currentStep + 1);
-    setHasSelectedLayer(Boolean(selectedLayerOnStep[currentStep]));
     // eslint-disable-next-line
   }, [changeStep, currentStep]);
 
@@ -106,7 +104,6 @@ const LayerBuilder = () => {
       return newLayers;
     });
 
-    setHasSelectedLayer(false);
     // eslint-disable-next-line
   }, []);
 

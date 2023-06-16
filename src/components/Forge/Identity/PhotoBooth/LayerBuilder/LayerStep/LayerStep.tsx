@@ -12,7 +12,6 @@ import {
   selectedBodyType,
   selectedLayerIndexPerStep,
   selectedLayerPerStep,
-  userSelectedLayerOnStep,
 } from "lib/store";
 import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 
@@ -39,7 +38,6 @@ const LayerStep = ({ step }: LayerStepProps) => {
   const [___, setProcessingMerge] = useAtom(mergeInProcess);
   const [bodyType, setBodyType] = useAtom(selectedBodyType);
   const [stepsRendered, setStepsRendered] = useAtom(renderedSteps);
-  const [____, setHasSelectedLayer] = useAtom(userSelectedLayerOnStep);
 
   const [allLayers, setAllLayers] = React.useState<LayerInBuilder[]>([]);
 
@@ -101,7 +99,6 @@ const LayerStep = ({ step }: LayerStepProps) => {
           selectedLayersOnStep,
         });
 
-      setHasSelectedLayer(true);
       reverseLayerInStepByKey(reversedKey);
       addLayerToSelectedOne(combinedLayer, stepLayer);
       setProcessingMerge(false);

@@ -20,7 +20,6 @@ export const renderedSteps = atom<boolean[]>([
 export const mergeInProcess = atom<boolean>(false);
 export const selectedBodyType = atom<number>(0); // 0 for male, 1 for female
 export const layerType = atom<LayerType>(LayerType.BACKGROUND);
-export const userSelectedLayerOnStep = atom<boolean>(false);
 
 export const finalCroppedImage = atom<string | null>(null);
 
