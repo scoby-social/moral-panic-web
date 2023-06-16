@@ -152,8 +152,6 @@ export const mintFakeID = async (
     }
   }
 
-  const woodenNickelPublicKey = new PublicKey(woodenNickel);
-
   // check if this wallet is holding the fake id nft
   if (await checkIfUserHasFakeID(wallet))
     throw new Error("Creator Already Have and Fake ID NFT");
