@@ -47,6 +47,7 @@ import {
 import { getStepsLength, getTotalStepsStartingFromOne } from "./utils/getSteps";
 import { uploadNFT } from "lib/web3/fakeID/uploadNFT";
 import LayerBuilder from "./LayerBuilder/LayerBuilder";
+import { LayerInBuilder } from "./LayerBuilder/types";
 
 const PhotoBooth = ({
   setFormFilled,
@@ -141,8 +142,14 @@ const PhotoBooth = ({
         return;
       }
 
+      const layers: LayerInBuilder[] = [];
+
+      selectedLayers.forEach(val => {
+        if (!!val) layers.push(val);
+      });
+
       const res = await uploadNFT({
-        selectedLayers,
+        selectedLayers: layers,
         resultingLayer,
         formResult: { ...values, bio },
         leaderWalletAddress: parentData.wallet,
