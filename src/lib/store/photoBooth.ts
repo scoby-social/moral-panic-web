@@ -9,7 +9,7 @@ export const photoBoothStep = atom<number>(0);
 
 export const allStepLayers = atom<LayerInBuilder[]>([]);
 export const combinedLayers = atom<LayerInBuilder[]>([]);
-export const selectedLayerPerStep = atom<LayerInBuilder[]>([]);
+export const selectedLayerPerStep = atom<Array<LayerInBuilder | null>>([]);
 export const selectedLayerIndexPerStep = atom<number[]>([
   ...getIterableSteps().map(() => 0),
 ]);

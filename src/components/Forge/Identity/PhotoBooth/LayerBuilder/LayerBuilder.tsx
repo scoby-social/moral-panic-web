@@ -63,7 +63,7 @@ const LayerBuilder = () => {
       return newSteps;
     });
 
-    if (selectedLayerOnStep.length - 1 === currentStep) {
+    if (selectedLayerOnStep.length - 1 >= currentStep) {
       setSelectedLayerOnStep(prevLayers => {
         return [...prevLayers].slice(0, -1);
       });
@@ -91,7 +91,8 @@ const LayerBuilder = () => {
 
   const revertLayer = React.useCallback(() => {
     setSelectedLayerOnStep(prevLayers => {
-      return [...prevLayers].slice(0, -1);
+      const layers = [...prevLayers].slice(0, -1);
+      return [...layers, null];
     });
 
     setAllCombinedLayers(prevLayers => {

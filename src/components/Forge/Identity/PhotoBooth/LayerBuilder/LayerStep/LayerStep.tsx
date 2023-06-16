@@ -54,8 +54,7 @@ const LayerStep = ({ step }: LayerStepProps) => {
 
         setSelectedLayerOnStep(prevLayers => {
           const newLayers = [...prevLayers];
-          if (!newLayers[currentStep]) newLayers.push(stepLayer);
-          else newLayers[currentStep] = stepLayer;
+          newLayers[currentStep] = stepLayer;
 
           return newLayers;
         });
@@ -77,7 +76,7 @@ const LayerStep = ({ step }: LayerStepProps) => {
     if (key) {
       setSelectedLayerOnStep(prev => {
         return [...prev].map(val => {
-          if (val.key === key) {
+          if (val?.key === key) {
             return { ...val, reverse: true };
           }
 
@@ -90,13 +89,19 @@ const LayerStep = ({ step }: LayerStepProps) => {
 
   const selectLayer = React.useCallback(
     async (layerIndex: number) => {
+      const selectedLayers: LayerInBuilder[] = [];
+
+      selectedLayersOnStep.forEach(val => {
+        if (!!val) selectedLayers.push(val);
+      });
+
       const { combinedLayer, stepLayer, reversedKey } =
         await selectAndMergeLayer({
           layerIndex,
           allStepLayers: allLayers,
           layersToCombine: allCombinedLayers,
           step,
-          selectedLayersOnStep,
+          selectedLayersOnStep: selectedLayers,
         });
 
       reverseLayerInStepByKey(reversedKey);
@@ -120,14 +125,17 @@ const LayerStep = ({ step }: LayerStepProps) => {
     if (step === 0) {
       setSelectedLayerOnStep([completeLayers[0]]);
       setAllCombinedLayers([completeLayers[0]]);
-    } else
+    } else {
       setAllCombinedLayers(prevLayers => {
         const newLayers = [...prevLayers];
         newLayers.push({ ...newLayers[newLayers.length - 1], exception: "" });
 
         return newLayers;
       });
-
+      setSelectedLayerOnStep(prevLayers => {
+        return [...prevLayers, null];
+      });
+    }
     // eslint-disable-next-line
   }, [
     currentStep,

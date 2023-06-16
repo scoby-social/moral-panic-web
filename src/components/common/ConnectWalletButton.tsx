@@ -71,8 +71,6 @@ const ConnectWalletButton = ({
         return;
       }
 
-      console.log("Setting data");
-
       setLoadingUser(false);
       setWallet("");
       setCurrentUser({} as User);
