@@ -22,6 +22,8 @@ import {
 import { checkIfUserHasFakeID } from "lib/web3/fakeID/checkIfUserHasFakeID";
 import { createUser } from "lib/axios/requests/users/saveUser";
 import { woodenNickelAddress } from "lib/store/forge";
+import { getWoodenNickelFakeIDInfo } from "lib/axios/requests/woodenNickel/getWoodenNickelFakeIDInfo";
+import { updateWoodenNickelByFakeIDMint } from "lib/axios/requests/woodenNickel/updateWoodenNickelByFakeIDMint";
 
 import {
   photoBoothContainer,
@@ -45,7 +47,6 @@ import {
 import { getStepsLength, getTotalStepsStartingFromOne } from "./utils/getSteps";
 import { uploadNFT } from "lib/web3/fakeID/uploadNFT";
 import LayerBuilder from "./LayerBuilder/LayerBuilder";
-import { getWoodenNickelFakeIDInfo } from "lib/axios/requests/woodenNickel/getWoodenNickelFakeIDInfo";
 
 const PhotoBooth = ({
   setFormFilled,
@@ -164,12 +165,6 @@ const PhotoBooth = ({
         res.metadataUrl
       );
 
-      // editSeniorityInJsonMetadata(
-      // res.metadataUrl,
-      // user.seniority,
-      // user.username
-      // );
-
       setLoading(false);
       setMessage(
         "Congrats! Your Fake ID has been minted. You'll be redirected to The Forge shortly."
@@ -177,6 +172,7 @@ const PhotoBooth = ({
       setTimeout(() => {
         router.back();
       }, 3000);
+      updateWoodenNickelByFakeIDMint(woodenNickel!);
     } catch (err) {
       setMessage(
         "I dunno why, but the machine elves f*cked up your mint. Try again later."
