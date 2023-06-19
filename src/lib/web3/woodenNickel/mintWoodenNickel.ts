@@ -154,7 +154,6 @@ export const mintWoodenNickel = async ({
       conn,
       wallet,
       createTokenAccountTransaction,
-      poolData,
       memberships[0].mintAddress,
       provider,
       fakeIDPoolData
