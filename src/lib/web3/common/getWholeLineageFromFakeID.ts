@@ -11,7 +11,6 @@ export async function getWholeLineageFromFakeID(
   conn: Connection,
   wallet: any,
   createTokenAccountTransaction: Transaction,
-  poolData: TypeDef<any, anchor.IdlTypes<any>>,
   fakeIDAddress: PublicKey,
   provider: anchor.AnchorProvider,
   fakeIDPoolData: TypeDef<any, anchor.IdlTypes<any>>
@@ -101,21 +100,10 @@ export async function getWholeLineageFromFakeID(
   }
 
   /* Scoby USDC Token Account */
-  const scobyUsdcTokenAccount = (await getOrCreateAssociatedTokenAccount(
-    conn,
-    wallet.publicKey,
-    usdcToken,
-    poolData.scobyWallet,
-    wallet.signTransaction
-  )) as any;
-
-  if (scobyUsdcTokenAccount[1]) {
-    if (
-      royaltyList.findIndex(item => item == poolData.scobyWallet.toString()) ==
-      -1
-    ) {
-      royaltyList.push(poolData.scobyWallet.toString());
-      createTokenAccountTransaction.add(scobyUsdcTokenAccount[1]);
+  if (creatorUsdcTokenAccount[1]) {
+    if (royaltyList.findIndex(item => item == creatorWallet.toString()) == -1) {
+      royaltyList.push(creatorWallet.toString());
+      createTokenAccountTransaction.add(creatorUsdcTokenAccount[1]);
     }
   }
 
@@ -158,7 +146,7 @@ export async function getWholeLineageFromFakeID(
   return {
     creatorNftAccount,
     sourceTokenAccount,
-    scobyUsdcTokenAccount,
+    scobyUsdcTokenAccount: creatorUsdcTokenAccount,
     parentMembershipUsdcTokenAccount:
       parentMembershipUsdcTokenAccount || creatorUsdcTokenAccount,
     grandParentMembershipUsdcTokenAccount:
