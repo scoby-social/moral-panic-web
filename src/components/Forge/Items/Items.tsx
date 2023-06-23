@@ -27,11 +27,12 @@ import { getWoodenNickelQuota } from "lib/axios/requests/woodenNickel/getWoodenN
 const Items = () => {
   const wallet = useWallet();
   const loaded = React.useRef(false);
-  const [woodenNickel, setWoodenNickel] = useAtom(woodenNickelAddress);
+  const [_, setWoodenNickel] = useAtom(woodenNickelAddress);
   const [missingID] = useAtom(userHasNoID);
   const [user] = useAtom(currentUser);
   const [__, setWoodenNickelQuota] = useAtom(woodenNickelCurrentQuota);
   const [loading, setLoading] = React.useState(false);
+  const [walletWoodenNickel, setWalletWoodenNickel] = React.useState("");
 
   const fetchInfo = React.useCallback(async () => {
     if (!wallet.publicKey) return;
@@ -45,7 +46,7 @@ const Items = () => {
     if (!woodenNickelAddr) {
       const wnInWallet = await getWnAddressInWallet();
 
-      setWoodenNickel(wnInWallet || "");
+      setWalletWoodenNickel(wnInWallet || "");
       setWoodenNickelQuota(null);
       if (!loaded.current) setLoading(false);
       loaded.current = true;
@@ -130,7 +131,7 @@ const Items = () => {
                 currency="USDC"
                 buttonTitle="CREATE ID"
                 id="fake_id"
-                locked={!woodenNickel || !missingID}
+                locked={!walletWoodenNickel || !missingID}
                 lockedText={
                   missingID
                     ? "Hey pal, looks like you are missing a Wooden Nickel. Go cop one and try again!"
