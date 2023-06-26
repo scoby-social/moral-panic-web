@@ -9,7 +9,7 @@ export const container: SxProps = {
     background: `url(/the_deal_wallpaper.png)`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    minHeight:'50vh'
+    minHeight: '50vh'
 }
 
 
@@ -19,11 +19,7 @@ export const subContainer: SxProps = {
     flexWrap: 'nowrap',
     alignItems: 'center',
     textAlign: 'center',
-    padding: {
-        xs: '1vmax',
-        sm: '5vmax',
-        lg: '3vmax 8vmax 8vmax 8vmax'
-    },
+
     minHeight: '50vh',
 }
 

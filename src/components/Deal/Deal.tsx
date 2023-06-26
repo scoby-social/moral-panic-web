@@ -4,19 +4,30 @@ import { container } from "./styles";
 import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 import WalletDisconnect from "./WalletDisconnect/WalletDisconnect";
 import { DealWoodenNickel } from "./DealWoodenNickel/DealWoodenNickel";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useAtom } from "jotai";
 import { currentUser, currentWallet } from "lib/store";
+import { getWoodenNickelsListMarket } from "lib/web3/woodenNickel/getWoodenNickelsListMarket";
+import { getWoodenNickelsToList } from "lib/web3/woodenNickel/getWoodenNickelsToList";
+import { PublicKey } from "@metaplex-foundation/js";
 
 const TheDeal = () => {
   const wallet = useWallet();
   const [publicKey] = useAtom(currentWallet);
+  const { connection } = useConnection();
+
   const [user, _] = useAtom(currentUser);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(false);
-  }, []);
+
+    if (wallet.connected) {
+      getWoodenNickelsListMarket(wallet).then(data => console.log({ data }));
+      getWoodenNickelsToList(wallet.publicKey as PublicKey).then(data => console.log({ data }));
+    }
+    // eslint-disable-next-line
+  }, [wallet.connected]);
 
   useEffect(() => {
     if (wallet.connecting) {

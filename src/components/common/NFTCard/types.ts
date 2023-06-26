@@ -6,5 +6,21 @@ export interface NFTCardProps {
     external_url: string;
     minter: string;
     seniority: string;
-    creators: string;
+    price: number;
+    type?: 'sell' | 'buy';
+    amount: number;
+    handleTransaction: () => Promise<Boolean>
+}
+
+export interface NotificationMessage {
+    type: messageType,
+    msg: string,
+}
+
+export enum messageType {
+    idle = 'idle',
+    success = 'success',
+    insufficientBalance = 'insufficient balance',
+    unknow = 'unknow'
+
 }
