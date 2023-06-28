@@ -5,13 +5,13 @@ import { Button, ButtonProps, SxProps, Typography } from "@mui/material";
 type CustomButtomProps = {};
 
 const BaseButton = styled(Button)`
-  max-height: 3vmax !important;
+  max-height: 2vmax !important;
   line-height: 0 !important;
-  padding: 3vmax 3.5vmax;
-  border-radius: 0.4vmax;
+  padding: 1vmax 2vmax;
+  border-radius: 0.2vmax;
   color: #fff;
-  border: solid 2px rgba(237, 234, 224, 1) !important;
-  outline: solid 1px rgba(47, 47, 49, 1) !important;
+  border: solid 1px rgba(237, 234, 224, 1) !important;
+  outline: solid 0.5px rgba(47, 47, 49, 1) !important;
   text-align: center;
   display: flex;
   align-items: center;
@@ -28,19 +28,19 @@ const BaseButton = styled(Button)`
   }
 
   @media (min-width: 1140px) {
-    border: solid 3px rgba(237, 234, 224, 1) !important;
-    outline: solid 2px rgba(47, 47, 49, 1) !important;
+    border: solid 2px rgba(237, 234, 224, 1) !important;
+    outline: solid 1px rgba(47, 47, 49, 1) !important;
   }
 `;
 
 const buttonText: SxProps = {
   fontFamily: "Patched",
-  fontSize: "2vmax !important",
+  fontSize: "1vmax !important",
   marginTop: "4px",
   lineHeight: 0,
 };
 
-export const CustomButton: FC<
+export const CardButton: FC<
   CustomButtomProps & PropsWithChildren & ButtonProps
 > = ({ children, ...props }) => {
   return (

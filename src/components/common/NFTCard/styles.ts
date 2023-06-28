@@ -15,7 +15,7 @@ export const container: SxProps = {
 
 export const title: SxProps = {
   fontFamily: 'Patched',
-  marginBottom: '1vmax',
+  marginBottom: '.5vmax',
   fontSize: {
     xs: '2vmax'
   }
@@ -24,23 +24,23 @@ export const title: SxProps = {
 export const textStyle: SxProps = {
   fontFamily: 'Cabin',
   lineHeight: {
-    xs: '1.4vmax',
-    sm: '1.8vmax',
-    lg: '1.5vmax'
+    xs: '1vmax',
+    sm: '1vmax',
+    lg: '1vmax'
   },
   fontSize: {
-    xs: '1.3vmax',
-    sm: '1.5vmax',
-    lg: '1.3vmax'
+    xs: '.6vmax',
+    sm: '.8vmax',
+    lg: '.6vmax'
   },
   textOverflow: 'ellipsis',
 }
 
 export const nftPropertie: SxProps = {
   fontSize: {
-    xs: "1.5vmax",
-    sm: "1.8vmax",
-    lg: "1.6vmax"
+    xs: ".8vmax",
+    sm: "1vmax",
+    lg: ".8vmax"
   },
   fontWeight: "bold",
   color: "rgba(132, 132, 132, 1)",
@@ -49,23 +49,25 @@ export const nftPropertie: SxProps = {
 };
 
 export const propertieItem: SxProps = {
-  marginTop: "1vmax",
+  marginTop: ".5vmax",
 
 };
 
 export const nftCard: SxProps = {
   borderRadius: "2vmax",
-  border: "0.2vmax solid #72767E",
+  border: "0.2vmax solid #191724",
+
   backgroundColor: "rgba(25, 23, 36, 1)",
   padding: {
-    xs: "1.8vmax",
-    sm: "1.5vmax"
+    xs: "1.3vmax",
+    sm: "1vmax"
   },
-  width: "100%",
+  width: "auto",
+  maxWidth: '45%',
   display: "flex",
   flexDirection: {
     xs: 'column',
-    sm: 'row'
+    sm: 'column'
   }
 };
 
@@ -76,12 +78,12 @@ export const nftTitle: SxProps = {
   fontWeight: "400",
   textAlign: "start",
   marginTop: {
-    xs: "2vmax",
+    xs: "1vmax",
     sm: "0"
   },
   fontSize: {
-    xs: "2vmax !important",
-    sm: "2.9vmax !important",
+    xs: "1vmax !important",
+    sm: "1.2vmax !important",
   },
   marginBottom: "0px"
 };
@@ -92,12 +94,12 @@ export const nftInformation: SxProps = {
   flexDirection: 'column',
   paddingTop: {
     xs: "0",
-    sm: "1vmax"
+    sm: ".8vmax"
   },
 
   paddingX: {
     xs: "0",
-    sm: "1vmax"
+    sm: ".8vmax"
   },
 }
 
@@ -105,12 +107,11 @@ export const propertiesContainer: SxProps = {
   display: "grid",
 
   gridTemplateColumns: "repeat(3, 1fr)",
-  gridGap: "1vmax",
+  gridGap: ".5vmax",
   overflowY: 'auto',
   maxHeight: {
-    xs: '23.5vmax',
-    sm: '23.5vmax',
-    lg: '23.5vmax',
+    xs: '5.5vmax',
+
   },
 
 };
@@ -136,9 +137,9 @@ export const priceText: SxProps = {
   textAlign: 'start',
   letterSpacing: '0.4px',
   fontSize: {
-    xs: '1vmax',
-    sm: '1.2vmax',
-    lg: '1.1vmax'
+    xs: '.5vmax',
+    sm: '.7vmax',
+    lg: '.5vmax'
   }
 }
 
@@ -149,7 +150,7 @@ export const cardInfoContainer: SxProps = {
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
   gridTemplateRows: "repeat(2)",
-  marginTop: "2vmax",
+  marginTop: "1vmax",
 }
 
 export const cardInfoPropertie: SxProps = {
@@ -159,7 +160,7 @@ export const cardInfoPropertie: SxProps = {
 }
 
 export const cardInfoPropertieText: SxProps = {
-  fontSize: "1.6vmax !important",
+  fontSize: ".8vmax  !important",
   textAlign: "center",
   fontFamily: "Cabin",
   display: "inline-flex",
@@ -167,26 +168,44 @@ export const cardInfoPropertieText: SxProps = {
 }
 
 export const cardInfoPropertieValue: SxProps = {
-  fontSize: "1.6vmax !important",
+  fontSize: ".8vmax !important",
   fontFamily: "Cabin",
-  marginLeft: "1vmax",
+  marginLeft: ".5vmax",
 }
 
 export const cardInfoAction: SxProps = {
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
+  justifyContent: 'space-around',
+  paddingX: '6vmax',
   alignItems: "center",
-  gridColumnStart: 2,
+  gridColumnStart: 1,
   gridColumnEnd: 4,
   gridRowStart: 1,
 }
+
+
 
 export const cardInfoNotification: SxProps = {
   gridColumnStart: 1,
   gridColumnEnd: 3,
   gridRowStart: 2,
-  marginTop: "1vmax",
+  marginTop: ".5vmax",
   fontWeight: "bold",
   fontFamily: "Cabin",
-  fontSize: "1.4vmax",
+  fontSize: ".6vmax",
+  textAlign: 'center',
+  display: 'flex',
+  justifyContent: 'center',
+
+}
+export const cardInfoNotificationText: SxProps = {
+
+  marginTop: ".5vmax",
+  fontWeight: "normal",
+  fontFamily: "Cabin",
+  fontSize: ".6vmax !important",
+  justifyContent: 'center',
+  maxWidth:'47%'
+
 }

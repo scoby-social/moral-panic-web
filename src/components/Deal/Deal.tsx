@@ -22,10 +22,6 @@ const TheDeal = () => {
   useEffect(() => {
     setIsLoading(false);
 
-    if (wallet.connected) {
-      getWoodenNickelsListMarket(wallet).then(data => console.log({ data }));
-      getWoodenNickelsToList(wallet.publicKey as PublicKey).then(data => console.log({ data }));
-    }
     // eslint-disable-next-line
   }, [wallet.connected]);
 

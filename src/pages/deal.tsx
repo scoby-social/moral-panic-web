@@ -1,7 +1,6 @@
 import { SxProps } from "@mui/material";
 import { Box } from "@mui/system";
 import TheDeal from "components/Deal/Deal";
-import { CustomButton } from "components/common/CustomButton/CustomButton";
 import { Header } from "components/common/Header/Header";
 import { useAtom } from "jotai";
 import { currentWallet, userHasNoID } from "lib/store";

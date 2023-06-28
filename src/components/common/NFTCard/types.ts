@@ -9,7 +9,10 @@ export interface NFTCardProps {
     price: number;
     type?: 'sell' | 'buy';
     amount: number;
-    handleTransaction: () => Promise<Boolean>
+    volume?: number;
+    quota: number;
+    transactionDisabled?: boolean;
+    handleTransaction: (amount: number) => Promise<Boolean | undefined>
 }
 
 export interface NotificationMessage {
@@ -19,8 +22,11 @@ export interface NotificationMessage {
 
 export enum messageType {
     idle = 'idle',
-    success = 'success',
+    buySuccess = 'buySuccess',
+    sellSuccess = 'sellSuccess',
     insufficientBalance = 'insufficient balance',
-    unknow = 'unknow'
+    unknow = 'unknow',
+    limitQuota = 'limitQuota',
+    buyLimit = 'buyLimit'
 
 }
