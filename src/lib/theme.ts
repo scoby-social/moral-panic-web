@@ -18,15 +18,16 @@ export default function CustomTheme() {
         fontSize: "1vmax !important",
       },
       h1: {
-        fontFamily: "Patched",
+        fontFamily: "Patched Prospect",
         fontSize: "3vmax",
-        fontWeight: "bold",
+        fontWeight: "400",
+        letterSpacing: "0.2em !important",
         [breakpoints.up("sm")]: {
           fontSize: "3.5vmax",
         },
       },
       h2: {
-        fontFamily: "Poppins",
+        fontFamily: "Patched",
         fontWeight: "800",
         fontSize: "1.5vmax",
         [breakpoints.up("sm")]: {
@@ -34,7 +35,8 @@ export default function CustomTheme() {
         },
       },
       h3: {
-        fontWeight: "500",
+        fontFamily: "Patched Prospect",
+        fontWeight: "400",
         fontSize: "1.1vmax",
         [breakpoints.up("sm")]: {
           fontSize: "1.3vmax",
@@ -46,7 +48,7 @@ export default function CustomTheme() {
       },
       subtitle1: {
         fontSize: "1.2vmax",
-        fontFamily: "Cabin",
+        fontFamily: "Poppins",
         [breakpoints.up("sm")]: {
           fontSize: "1vmax",
         },
@@ -54,11 +56,13 @@ export default function CustomTheme() {
       subtitle2: {
         fontFamily: "Cabin",
         fontSize: "1vmax",
+        lineHeight: "1vmax",
         [breakpoints.up("sm")]: {
           fontSize: "0.80vmax",
         },
       },
       caption: {
+        fontFamily: "Cabin",
         fontSize: "0.80vmax",
         [breakpoints.up("sm")]: {
           fontSize: "0.60vmax",
@@ -66,13 +70,20 @@ export default function CustomTheme() {
       },
     },
     components: {
+      MuiSelect: {
+        styleOverrides: {
+          select: {
+            padding: "0.5vmax 1vmax !important",
+          },
+        },
+      },
       MuiLink: {
         styleOverrides: {
           root: {
             fontFamily: "Poppins",
-            fontSize: "0.80vmax",
+            fontSize: "1vmax",
             [breakpoints.up("sm")]: {
-              fontSize: "0.60vmax",
+              fontSize: "0.80vmax",
             },
           },
         },
@@ -83,6 +94,19 @@ export default function CustomTheme() {
             props: { variant: "outlined" },
             style: {
               border: "1px solid rgba(190, 239, 0, 1)",
+            },
+          },
+          {
+            props: { variant: "contained" },
+            style: {
+              margin: "0",
+              padding: "0.25vmax 1.5vmax",
+              color: "#FFF",
+              fontSize: "1.25vmax !important",
+              fontWeight: "900",
+              fontFamily: "Patched",
+              borderRadius: "5px",
+              backgroundColor: "#076936",
             },
           },
         ],
@@ -96,9 +120,20 @@ export default function CustomTheme() {
       MuiInputBase: {
         styleOverrides: {
           root: {
-            padding: "0.25vmax !important",
             color: "#fff",
+            borderRadius: "10px",
             lineHeight: "1.43vmax",
+            "& input[type=number]": {
+              "-moz-appearance": "textfield",
+            },
+            "& input[type=number]::-webkit-outer-spin-button": {
+              "-webkit-appearance": "none",
+              margin: 0,
+            },
+            "& input[type=number]::-webkit-inner-spin-button": {
+              "-webkit-appearance": "none",
+              margin: 0,
+            },
             "&::placeholder": {
               color: "rgba(255, 255, 255, 0.2)",
             },
@@ -107,7 +142,7 @@ export default function CustomTheme() {
             },
           },
           input: {
-            padding: "0.50vmax !important",
+            padding: "0.1vmax !important",
             fontSize: "0.8vmax",
           },
         },
@@ -192,6 +227,9 @@ export default function CustomTheme() {
       secondary: {
         main: "#485364",
         contrastText: "#FFF",
+      },
+      warning: {
+        main: "#FF710B",
       },
     },
   });

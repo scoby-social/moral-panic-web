@@ -23,7 +23,7 @@ const Deal = () => {
   return (
     <div>
       <Box sx={headerBoxContainerStyle}>
-        <Header spawn={false} title={headerTitle} isProfile={false} />
+        <Header hasImage spawn={false} title={headerTitle} isProfile={false} />
         <TheDeal />
       </Box>
     </div>

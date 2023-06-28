@@ -74,7 +74,7 @@ export const nftCard: SxProps = {
 export const nftTitle: SxProps = {
   ...title,
   color: "rgba(190, 239, 0, 1)",
-  fontFamily: "Patched-Prospect",
+  fontFamily: "Patched Prospect",
   fontWeight: "400",
   textAlign: "start",
   marginTop: {

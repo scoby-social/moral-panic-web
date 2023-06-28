@@ -1,6 +1,6 @@
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { LayerInBuilder } from "components/Profile/PhotoBooth/LayerBuilder/types";
-import { PhotoBoothFormInputs } from "components/Profile/PhotoBooth/types";
+import { PhotoBoothFormInputs } from "components/Forge/Identity/Form/types";
+import { LayerInBuilder } from "components/Forge/Identity/PhotoBooth/LayerBuilder/types";
 import { Dispatch, SetStateAction } from "react";
 
 export interface UploadNftParams {
@@ -12,4 +12,5 @@ export interface UploadNftParams {
   parentNftAddress: string;
   seniority: number;
   updateMessage: Dispatch<SetStateAction<string>>;
+  woodenNickel: string;
 }

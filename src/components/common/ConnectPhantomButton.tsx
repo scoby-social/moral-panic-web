@@ -52,12 +52,17 @@ const WalletAddressButton = styled(Button)`
   &:focus {
     background-color: rgba(38, 38, 38, 0.76);
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
   @media (min-width: 769px) {
     padding: 2vmax 2.2vmax;
   }
 `;
 
 const WalletButton = styled(WalletMultiButton)`
+<<<<<<< HEAD
   max-height: 3vmax !important;
   line-height: 0 !important;
   padding: 2vmax 2.5vmax;
@@ -83,6 +88,23 @@ const WalletButton = styled(WalletMultiButton)`
   @media (min-width: 1140px) {
     border: solid 3px rgba(237, 234, 224, 1) !important;
     outline: solid 2px rgba(47, 47, 49, 1) !important;
+=======
+  max-height: 3vmax;
+  background-color: #076936;
+  line-height: 0 !important;
+  padding: 2.4vmax 3vmax;
+  border-radius: 3px;
+  border: 1px solid #000;
+
+  @media (min-width: 769px) {
+    padding: 2vmax;
+  }
+
+  & i {
+    @media (min-width: 1025px) {
+      margin-left: 1.4vmax !important;
+    }
+>>>>>>> dev
   }
 `;
 
