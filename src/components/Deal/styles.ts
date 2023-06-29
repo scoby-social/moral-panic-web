@@ -6,7 +6,7 @@ export const container: SxProps = {
     display: "flex",
     flexDirection: "column",
     flexWrap: 'nowrap',
-    background: `url(/the_deal_wallpaper.png)`,
+    background: `url(https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/the_deal_wallpaper.png)`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     minHeight: '50vh'

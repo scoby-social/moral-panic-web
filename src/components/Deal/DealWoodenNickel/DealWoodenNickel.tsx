@@ -18,35 +18,14 @@ import { listWoodenNickel } from "lib/web3/woodenNickel/listWoodenNickel";
 import { NftToList } from "lib/web3/types/nftToList";
 import { getVolumeNftTheDeal } from "lib/axios/requests/theDeal/getVolumeNftTheDeal";
 import { checkIfUserHasWoodenNickel } from "lib/web3/woodenNickel/checkIfUserHasWoodenNickel";
+import { CustomTab, CustomTabs } from "components/common/CustomTabs";
+import { TabPanel } from "components/common/CustomTabs/TabPanel";
 
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
-}
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Box
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      sx={{ width: "100%" }}
-      {...other}
-    >
-      {value === index && <Box sx={{ width: "100%" }}>{children}</Box>}
-    </Box>
-  );
 }
 
 export const DealWoodenNickel = () => {
@@ -154,29 +133,9 @@ export const DealWoodenNickel = () => {
     } as NFTCardProps;
   };
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabsChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
-
-  const CustomTabs = styled(Tabs)`
-    & .Mui-selected {
-      background-color: rgba(217, 217, 217, 0.1) !important;
-      color: #fff !important;
-    }
-    & .MuiTabs-indicator {
-      background: #beef00 !important;
-    }
-  `;
-
-  const CustomTab = styled(Tab)`
-    background-color: rgba(217, 217, 217, 0.1) !important;
-    color: rgba(255, 255, 255, 0.6) !important;
-    width: 50%;
-    max-width: none;
-    font-size: 1.5vmax !important;
-    font-family: Cabin;
-    font-weight: normal;
-  `;
 
   const handleBuyNft = async (nft: NftInMarketplace, amount: number) => {
     const buyer = wallet.publicKey as PublicKey;
@@ -220,7 +179,7 @@ export const DealWoodenNickel = () => {
       <Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}>
         <CustomTabs
           value={tabValue}
-          onChange={handleChange}
+          onChange={handleTabsChange}
           aria-label="basic tabs example"
         >
           <CustomTab label="Buy" {...a11yProps(0)} />

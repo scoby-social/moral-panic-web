@@ -6,39 +6,25 @@ import { Box, Input, TextField, Typography } from "@mui/material";
 import { NFTCardProps, NotificationMessage, messageType } from "./types";
 
 import {
-  cardInfoAction,
-  cardInfoContainer,
-  cardInfoPropertie,
-  cardInfoPropertieText,
-  cardInfoPropertieValue,
   firstPropertiesNft,
-  lastPropertiesNft,
   nftCard,
   nftInformation,
   nftPropertie,
   nftTitle,
-  priceText,
   propertieItem,
   propertiesContainer,
   textStyle,
-  cardInfoNotification,
-  cardInfoNotificationText,
 } from "./styles";
-import { CardButton } from "./components/CardButton";
-import { TransactionExpiredNonceInvalidError } from "@solana/web3.js";
+
+import { getNotificacionMessage } from "./utils/notificationMessage";
+
+import { CardActionBuy } from "./components/CardActionBuy";
+import { CardActionSell } from "./components/CardActionSell";
 
 const NftImage = styled(Image)`
   width: 40%;
   height: auto;
   @media (min-width: 767px) {
-  }
-`;
-
-const CustomInput = styled(Input)`
-  margin-left: 0.1vmax;
-  & input {
-    font-size: .8vmax !important;
-    font-family: Cabin;
   }
 `;
 
@@ -105,112 +91,6 @@ const NFTCard: FC<NFTCardProps> = ({
     setUnits(value);
   };
 
-  const CardPropertiesBuy = () => (
-    <Box>
-      <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>Listed:</Typography>
-        <Typography sx={cardInfoPropertieValue}>{amount}</Typography>
-      </Box>
-
-      <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>Quota:</Typography>
-        <Typography sx={cardInfoPropertieValue}>{quota}</Typography>
-      </Box>
-
-      <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>Units:</Typography>
-        <CustomInput type="number" value={units} onChange={handleChanceUnits} />
-      </Box>
-    </Box>
-  );
-
-  const CardPropertiesSell = () => (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-      }}
-    >
-      <Box sx={{ width: "50%" }}>
-        <Box sx={cardInfoPropertie}>
-          <Typography sx={cardInfoPropertieText}>Listed:</Typography>
-          <Typography sx={cardInfoPropertieValue}>{amount}</Typography>
-        </Box>
-
-        <Box sx={cardInfoPropertie}>
-          <Typography sx={cardInfoPropertieText}>Quota:</Typography>
-          <Typography sx={cardInfoPropertieValue}>{quota}</Typography>
-        </Box>
-
-        <Box sx={cardInfoPropertie}>
-          <Typography sx={cardInfoPropertieText}>Units:</Typography>
-          <CustomInput
-            type="number"
-            value={units}
-            onChange={e => setUnits(parseInt(e.target.value))}
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          width: "50%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <Box sx={cardInfoPropertie}>
-          <Typography sx={cardInfoPropertieText}>Last Sale:</Typography>
-          <Typography sx={cardInfoPropertieValue}>{`${price} USDC`}</Typography>
-        </Box>
-
-        <Box sx={cardInfoPropertie}>
-          <Typography sx={cardInfoPropertieText}>24hr Volume:</Typography>
-          <Typography sx={cardInfoPropertieValue}>{`${volume} `}</Typography>
-        </Box>
-      </Box>
-    </Box>
-  );
-
-  const notificationMessage = (type: messageType) => {
-    if (type === messageType.buySuccess) {
-      return "Congrats! You have bought a token successfully";
-    }
-
-    if (type === messageType.sellSuccess) {
-      return "Congrats! You have list a token successfully";
-    }
-
-    if (type === messageType.insufficientBalance) {
-      return `
-      "Hey! We checked your wallet and you don't have enough crypto to buy.
-      Come back later when you've earned some bread and try again."
-      `;
-    }
-
-    if (type === messageType.unknow) {
-      return "I dunno why, but the machines elves f*cked up your trade, Try again later.";
-    }
-
-    if (type === messageType.limitQuota) {
-      return "Sorry pal, you can’t list more of these tokens until 2 of the ones you minted have been used and burned.";
-    }
-
-    if (type === messageType.buyLimit) {
-      return "Hey pal, looks like you already have a Wooden Nickel. I’d love to sell you another but you should figure out how to mint your own.";
-    }
-
-    return "";
-  };
-
-  const getNotificacionMessage = (type: messageType): NotificationMessage => {
-    return {
-      type: type,
-      msg: notificationMessage(type),
-    };
-  };
-
   const handleClickBuy = async () => {
     try {
       const response = await handleTransaction(units);
@@ -241,127 +121,6 @@ const NFTCard: FC<NFTCardProps> = ({
       console.error(error);
       setTransaccionMessage(getNotificacionMessage(messageType.unknow));
     }
-  };
-
-  const CardActionBuy = () => {
-    return (
-      <Box sx={{ ...cardInfoContainer }}>
-        <Box sx={cardInfoAction}>
-          <CardPropertiesBuy />
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "start",
-            }}
-          >
-            <CardButton
-              disabled={transactionDisabled || actionDisabled}
-              onClick={async () => await handleClickBuy()}
-            >
-              {`BUY`}
-            </CardButton>
-            <Typography
-              sx={{
-                ...priceText,
-                textAlign: "center",
-                marginTop: "0.1vmax",
-              }}
-            >
-              {`Unit Cost: ${price} USDC`}
-            </Typography>
-            <Typography
-              sx={{
-                ...priceText,
-                textAlign: "center",
-              }}
-            >
-              {`Total: ${units > 0 ? price * units : price} USDC`}
-            </Typography>
-            <Typography
-              sx={{
-                ...priceText,
-                textAlign: "center",
-                marginTop: "0.1vmax",
-                fontSize: {
-                  xs: ".4vmax",
-                  sm: ".6vmax",
-                  lg: ".4vmax",
-                },
-              }}
-            >
-              {`Plus a small SOL transaction fee`}
-            </Typography>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            ...cardInfoNotification,
-            color:
-              transaccionMessage.type === messageType.buySuccess ||
-              transaccionMessage.type === messageType.sellSuccess
-                ? "rgba(190, 239, 0, 1)"
-                : transaccionMessage.type === messageType.buyLimit
-                ? "#FAD326"
-                : " rgba(255, 113, 11, 1)",
-          }}
-        >
-          <Typography sx={cardInfoNotificationText}>
-            {transaccionMessage.msg}
-          </Typography>
-        </Box>
-      </Box>
-    );
-  };
-
-  const CardActionSell = () => {
-    return (
-      <Box sx={{ ...cardInfoContainer }}>
-        <Box sx={cardInfoAction}>
-          <CardPropertiesSell />
-
-          <Box>
-            <CardButton
-              disabled={transactionDisabled || actionDisabled}
-              onClick={async () => await handleClickSell()}
-            >
-              {`MINT`}
-            </CardButton>
-            <Typography
-              sx={{
-                ...priceText,
-                textAlign: "center",
-                marginTop: "0.1vmax",
-                fontSize: {
-                  xs: ".4vmax",
-                  sm: ".6vmax",
-                  lg: ".4vmax",
-                },
-              }}
-            >
-              {`Plus a small SOL transaction fee`}
-            </Typography>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            ...cardInfoNotification,
-            color:
-              transaccionMessage.type === messageType.buySuccess ||
-              transaccionMessage.type === messageType.sellSuccess
-                ? "rgba(190, 239, 0, 1)"
-                : transaccionMessage.type === messageType.buyLimit
-                ? "#FAD326"
-                : " rgba(255, 113, 11, 1)",
-          }}
-        >
-          <Typography sx={cardInfoNotificationText}>
-            {transaccionMessage.msg}
-          </Typography>
-        </Box>
-      </Box>
-    );
   };
 
   return (
@@ -456,8 +215,33 @@ const NFTCard: FC<NFTCardProps> = ({
           </Box>
         </Box>
       </Box>
-      {type === "sell" && <CardActionSell />}
-      {type === "buy" && <CardActionBuy />}
+      {type === "sell" && (
+        <CardActionSell
+          amount={amount}
+          price={price}
+          quota={quota}
+          units={units}
+          volume={volume}
+          actionDisabled={actionDisabled}
+          transactionDisabled={transactionDisabled}
+          handleClickSell={handleClickSell}
+          transaccionMessage={transaccionMessage}
+          handleChanceUnits={handleChanceUnits}
+        />
+      )}
+      {type === "buy" && (
+        <CardActionBuy
+          amount={amount}
+          price={price}
+          quota={quota}
+          units={units}
+          actionDisabled={actionDisabled}
+          transactionDisabled={transactionDisabled}
+          handleClickBuy={handleClickBuy}
+          transaccionMessage={transaccionMessage}
+          handleChanceUnits={handleChanceUnits}
+        />
+      )}
     </Box>
   );
 };

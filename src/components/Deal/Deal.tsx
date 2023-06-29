@@ -16,7 +16,7 @@ const TheDeal = () => {
   const [publicKey] = useAtom(currentWallet);
   const { connection } = useConnection();
 
-  const [user, _] = useAtom(currentUser);
+  const [user] = useAtom(currentUser);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
