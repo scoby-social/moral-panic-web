@@ -7,7 +7,7 @@ import { PublicKey } from "@metaplex-foundation/js";
 import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import { NftInMarketplace } from "../types/NftInMarketplace";
 
-export const getNftListToSell = async (
+export const getNftListMarket = async (
   userWallet: any,
   connection: Connection,
   IDL: any,
