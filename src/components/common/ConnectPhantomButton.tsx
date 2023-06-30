@@ -52,7 +52,6 @@ const WalletAddressButton = styled(Button)`
   &:focus {
     background-color: rgba(38, 38, 38, 0.76);
   }
-
   @media (min-width: 769px) {
     padding: 2vmax 2.2vmax;
   }
@@ -86,9 +85,13 @@ const PhantomIcon = styled(Image)`
   }
 `;
 
-interface ConnectWalletButtonProps {}
+interface ConnectWalletButtonProps {
+  renderPhantomIcon?: boolean;
+}
 
-export const ConnectPhantomButton: FC<ConnectWalletButtonProps> = () => {
+export const ConnectPhantomButton: FC<ConnectWalletButtonProps> = ({
+  renderPhantomIcon = true,
+}) => {
   const isMobile = useCheckMobileScreen();
   const { publicKey } = useWallet();
 
@@ -166,12 +169,14 @@ export const ConnectPhantomButton: FC<ConnectWalletButtonProps> = () => {
       <WalletButton
         startIcon={undefined}
         endIcon={
-          <PhantomIcon
-            src={`/phantom_icon.png`}
-            width={100}
-            height={100}
-            alt="paper"
-          />
+          renderPhantomIcon ? (
+            <PhantomIcon
+              src={`/phantom_icon.png`}
+              width={100}
+              height={100}
+              alt="paper"
+            />
+          ) : undefined
         }
       >
         <Typography sx={textStyle}>

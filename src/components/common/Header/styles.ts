@@ -52,9 +52,11 @@ export const leaderboardContentWrapper = (isProfile: boolean): SxProps => {
 };
 
 export const leaderboardText: SxProps = {
+  fontFamily: 'Patched Prospect',
+  letterSpacing: "0.2vmax",
   textAlign: "center",
   userSelect: "none",
-  fontWeight: "400",
+  fontWeight: 400
 };
 
 export const headerImageWrapper: SxProps = {

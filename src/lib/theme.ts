@@ -173,7 +173,7 @@ export default function CustomTheme() {
             fontWeight: "bold !important",
             fontSize: "0.8vmax !important",
             "&.Mui-selected": {
-              backgroundColor: "#5D6068 !important",
+              backgroundColor: "#5D6068 ",
             },
             "&.Mui-disabled": {
               background: "rgba(72, 83, 100, 0.5) !important",
