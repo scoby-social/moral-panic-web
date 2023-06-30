@@ -69,9 +69,6 @@ export const DealWoodenNickel = () => {
     setNftToBuyProps(buyData);
   };
 
-  //  setgeNftToBuy(nft);
-  //   setNftsToSell(nftFiltered);
-
   const handleTabsChange = (
     e: React.SyntheticEvent<Element, Event>,
     newValue: number
