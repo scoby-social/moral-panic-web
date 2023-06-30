@@ -1,15 +1,20 @@
+import { FC } from "react";
+import { Box, Typography } from "@mui/material";
+
+import { CardPropertiesBuy } from "./CarsPropertiesBuy";
+import { CardButton } from "./CardButton";
+import { NotificationMessage } from "../types";
 import {
   cardInfoAction,
   cardInfoContainer,
+  cardActionsContainer,
+  propertiePriceText,
+  titlePropertiePriceText,
+  transacctionTextColor,
   cardInfoNotification,
-  cardInfoNotificationText,
   priceText,
-} from "../styles";
-import { CardPropertiesBuy } from "./CarsPropertiesBuy";
-import { Box, Typography } from "@mui/material";
-import { CardButton } from "./CardButton";
-import { FC } from "react";
-import { NotificationMessage, messageType } from "../types";
+  cardInfoNotificationText,
+} from "./styles";
 
 interface CardActionBuyProps {
   amount: number;
@@ -46,26 +51,14 @@ export const CardActionBuy: FC<CardActionBuyProps> = ({
           units={units}
         />
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
+        <Box sx={cardActionsContainer}>
           <CardButton
             disabled={transactionDisabled || actionDisabled}
             onClick={async () => await handleClickBuy()}
           >
             {`BUY`}
           </CardButton>
-          <Typography
-            sx={{
-              ...priceText,
-              textAlign: "center",
-              marginTop: "0.1vmax",
-            }}
-          >
+          <Typography sx={propertiePriceText}>
             {`Unit Cost: ${price} USDC`}
           </Typography>
           <Typography
@@ -76,18 +69,7 @@ export const CardActionBuy: FC<CardActionBuyProps> = ({
           >
             {`Total: ${units > 0 ? price * units : price} USDC`}
           </Typography>
-          <Typography
-            sx={{
-              ...priceText,
-              textAlign: "center",
-              marginTop: "0.1vmax",
-              fontSize: {
-                xs: ".4vmax",
-                sm: ".6vmax",
-                lg: ".4vmax",
-              },
-            }}
-          >
+          <Typography sx={titlePropertiePriceText}>
             {`Plus a small SOL transaction fee`}
           </Typography>
         </Box>
@@ -95,13 +77,7 @@ export const CardActionBuy: FC<CardActionBuyProps> = ({
       <Box
         sx={{
           ...cardInfoNotification,
-          color:
-            transaccionMessage.type === messageType.buySuccess ||
-            transaccionMessage.type === messageType.sellSuccess
-              ? "rgba(190, 239, 0, 1)"
-              : transaccionMessage.type === messageType.buyLimit
-              ? "#FAD326"
-              : " rgba(255, 113, 11, 1)",
+          color: transacctionTextColor(transaccionMessage.type),
         }}
       >
         <Typography sx={cardInfoNotificationText}>

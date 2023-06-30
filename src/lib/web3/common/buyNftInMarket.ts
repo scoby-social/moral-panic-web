@@ -18,7 +18,7 @@ export const buyNftInMarket = async (
   REWARD_TOKEN: string
 ) => {
   try {
-    let instructionSet: any[] = [],
+    const instructionSet: any[] = [],
       signerSet: any[] = [];
     let instructions: any[] = [],
       signers: any[] = [];

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { container, subContainer, title } from "../styles";
 
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@metaplex-foundation/js";
 
 import NFTCard from "components/common/NFTCard/NFTCard";
-import { NFTCardProps, messageType } from "components/common/NFTCard/types";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { NFTCardProps } from "components/common/NFTCard/types";
 import { getWoodenNickelsListMarket } from "lib/web3/woodenNickel/getWoodenNickelsListMarket";
-import styled from "@emotion/styled";
 import { getWoodenNickelsToList } from "lib/web3/woodenNickel/getWoodenNickelsToList";
-import { PublicKey } from "@metaplex-foundation/js";
 import { getTheDealForgeQuota } from "lib/axios/requests/theDeal/getTheDealForgeQuota";
 import { buyWoodenNickelTheDeal } from "lib/web3/woodenNickel/buyWoodenNickelTheDeal";
 import { NftInMarketplace } from "lib/web3/types/NftInMarketplace";
@@ -20,8 +18,15 @@ import { getVolumeNftTheDeal } from "lib/axios/requests/theDeal/getVolumeNftTheD
 import { checkIfUserHasWoodenNickel } from "lib/web3/woodenNickel/checkIfUserHasWoodenNickel";
 import { CustomTab, CustomTabs } from "components/common/CustomTabs";
 import { TabPanel } from "components/common/CustomTabs/TabPanel";
+import {
+  nftListStyle,
+  tabContainer,
+  tabHeader,
+  titleDeal,
+  subContainer,
+} from "./styles";
 
-function a11yProps(index: number) {
+function tabProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -34,10 +39,8 @@ export const DealWoodenNickel = () => {
   const [nftsToSell, setNftsToSell] = useState([] as NftToList[]);
   const [nftsToSellProps, setNftsToSellProps] = useState([] as NFTCardProps[]);
 
-  const [nftToBuy, setgeNftdToBuy] = useState<null | NftInMarketplace>(null);
-  const [nftToBuyProps, setgeNftToBuyProps] = useState<null | NFTCardProps>(
-    null
-  );
+  const [nftToBuy, setgeNftToBuy] = useState<null | NftInMarketplace>(null);
+  const [nftToBuyProps, setNftToBuyProps] = useState<null | NFTCardProps>(null);
 
   const [tabValue, setTabValue] = useState(0);
 
@@ -50,11 +53,11 @@ export const DealWoodenNickel = () => {
 
   const init = async () => {
     const sellData = await getNftsToDeal();
-    const buyData = await geNftToBuy();
+    const buyData = await getNftToBuy();
 
     setNftsToSellProps(sellData);
 
-    setgeNftToBuyProps(buyData);
+    setNftToBuyProps(buyData);
   };
 
   const getNftsToDeal = async () => {
@@ -100,7 +103,7 @@ export const DealWoodenNickel = () => {
     return await Promise.all(nftPropsFormated);
   };
 
-  const geNftToBuy = async () => {
+  const getNftToBuy = async () => {
     const nfts = await getWoodenNickelsListMarket(wallet);
     const nft = nfts.find(i => i.amount > 0);
 
@@ -108,7 +111,7 @@ export const DealWoodenNickel = () => {
       return null;
     }
 
-    setgeNftdToBuy(nft);
+    setgeNftToBuy(nft);
 
     const image = await (await fetch(nft.image)).blob();
     const imageUrl = URL.createObjectURL(image);
@@ -133,7 +136,10 @@ export const DealWoodenNickel = () => {
     } as NFTCardProps;
   };
 
-  const handleTabsChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabsChange = (
+    e: React.SyntheticEvent<Element, Event>,
+    newValue: number
+  ) => {
     setTabValue(newValue);
   };
 
@@ -176,50 +182,25 @@ export const DealWoodenNickel = () => {
   return (
     <Box sx={subContainer}>
       {/* TABS */}
-      <Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}>
+      <Box sx={tabHeader}>
         <CustomTabs
           value={tabValue}
           onChange={handleTabsChange}
           aria-label="basic tabs example"
         >
-          <CustomTab label="Buy" {...a11yProps(0)} />
-          <CustomTab label="Sell" {...a11yProps(1)} />
+          <CustomTab label="Buy" {...tabProps(0)} />
+          <CustomTab label="Sell" {...tabProps(1)} />
         </CustomTabs>
       </Box>
 
       {/* Buy */}
       <TabPanel value={tabValue} index={0}>
-        <Box
-          sx={{
-            width: "100%",
-            padding: {
-              xs: "1vmax",
-              sm: "5vmax",
-              lg: "3vmax 8vmax 8vmax 8vmax",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              ...title,
-              marginBottom: {
-                xs: "1vmax",
-                sm: "5vmax",
-                lg: "3vmax 8vmax 8vmax 8vmax",
-              },
-              fontFamily: "Cabin",
-            }}
-          >
+        <Box sx={tabContainer}>
+          <Typography sx={titleDeal}>
             Welcome to The Deal, where your dealer’s got the goods.
           </Typography>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
+          <Box sx={nftListStyle}>
             {nftToBuyProps && nftToBuy ? (
               <>
                 <NFTCard
@@ -236,37 +217,12 @@ export const DealWoodenNickel = () => {
 
       {/* Sell */}
       <TabPanel value={tabValue} index={1}>
-        <Box
-          sx={{
-            width: "100%",
-            padding: {
-              xs: "1vmax",
-              sm: "5vmax",
-              lg: "3vmax 8vmax 8vmax 8vmax",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              ...title,
-              marginBottom: {
-                xs: "1vmax",
-                sm: "5vmax",
-                lg: "3vmax 8vmax 8vmax 8vmax",
-              },
-              fontFamily: "Cabin",
-            }}
-          >
+        <Box sx={tabContainer}>
+          <Typography sx={titleDeal}>
             List your stuff with the dealer and maybe he’ll move it for you.
           </Typography>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
+          <Box sx={nftListStyle}>
             {nftsToSellProps.map((value, index) => (
               <NFTCard
                 key={`${value.description + index}`}

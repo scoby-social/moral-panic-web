@@ -1,11 +1,14 @@
+import { FC } from "react";
 import { Box, Typography } from "@mui/material";
 import {
+  CardCustomInput,
   cardInfoPropertie,
   cardInfoPropertieText,
   cardInfoPropertieValue,
-} from "../styles";
-import { FC } from "react";
-import { CustomInput } from "./CardCustomInput";
+  sellPropertiesContainer,
+  sellPropertiesContainerLeftSide,
+  sellPropertiesContainerRightSide,
+} from "./styles";
 
 interface CardPropertiesSellProps {
   amount: number;
@@ -26,14 +29,8 @@ export const CardPropertiesSell: FC<CardPropertiesSellProps> = ({
   volume,
   handleChanceUnits,
 }) => (
-  <Box
-    sx={{
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-    }}
-  >
-    <Box sx={{ width: "50%" }}>
+  <Box sx={sellPropertiesContainer}>
+    <Box sx={sellPropertiesContainerLeftSide}>
       <Box sx={cardInfoPropertie}>
         <Typography sx={cardInfoPropertieText}>Listed:</Typography>
         <Typography sx={cardInfoPropertieValue}>{amount}</Typography>
@@ -46,17 +43,14 @@ export const CardPropertiesSell: FC<CardPropertiesSellProps> = ({
 
       <Box sx={cardInfoPropertie}>
         <Typography sx={cardInfoPropertieText}>Units:</Typography>
-        <CustomInput type="number" value={units} onChange={handleChanceUnits} />
+        <CardCustomInput
+          type="number"
+          value={units}
+          onChange={handleChanceUnits}
+        />
       </Box>
     </Box>
-    <Box
-      sx={{
-        width: "50%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-    >
+    <Box sx={sellPropertiesContainerRightSide}>
       <Box sx={cardInfoPropertie}>
         <Typography sx={cardInfoPropertieText}>Last Sale:</Typography>
         <Typography sx={cardInfoPropertieValue}>{`${price} USDC`}</Typography>

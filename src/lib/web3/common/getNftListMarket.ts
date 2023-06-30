@@ -16,12 +16,12 @@ export const getNftListMarket = async (
   const provider = getProvider(connection, userWallet!);
   const program = new anchor.Program(IDL, new PublicKey(PROGRAM_ID), provider);
 
-  let [vaultPDA] = await anchor.web3.PublicKey.findProgramAddress(
+  const [vaultPDA] = await anchor.web3.PublicKey.findProgramAddress(
     [Buffer.from("rewards vault")],
     program.programId
   );
 
-  let nftArray = await getParsedNftAccountsByOwner({
+  const nftArray = await getParsedNftAccountsByOwner({
     publicAddress: vaultPDA.toString(),
     connection: connection,
   });
@@ -36,8 +36,7 @@ export const getNftListMarket = async (
     if (!listNftInfo) {
       return [];
     }
-    let listNFtData: any = null;
-    listNFtData = await program.account.listNft.fetch(listNftPDA);
+    let listNFtData: any = await program.account.listNft.fetch(listNftPDA);
 
     const metadata = await (await fetch(nft.data.uri)).json();
 

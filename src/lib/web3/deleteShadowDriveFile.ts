@@ -4,7 +4,7 @@ import nacl from "tweetnacl";
 
 const shdwDrivePrivateKey = process.env
   .NEXT_PUBLIC_SHDW_DRIVE_ACC_SECRET_KEY!.split(",")
-  .map((val) => Number(val));
+  .map(val => Number(val));
 
 const SECRET_KEY_ARR = Keypair.fromSecretKey(
   new Uint8Array(shdwDrivePrivateKey)

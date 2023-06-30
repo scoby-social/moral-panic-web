@@ -6,13 +6,16 @@ import { Box, Input, TextField, Typography } from "@mui/material";
 import { NFTCardProps, NotificationMessage, messageType } from "./types";
 
 import {
+  NftImage,
   firstPropertiesNft,
   nftCard,
+  nftCardContainer,
   nftInformation,
   nftPropertie,
   nftTitle,
   propertieItem,
   propertiesContainer,
+  propertiesTextStyle,
   textStyle,
 } from "./styles";
 
@@ -20,13 +23,6 @@ import { getNotificacionMessage } from "./utils/notificationMessage";
 
 import { CardActionBuy } from "./components/CardActionBuy";
 import { CardActionSell } from "./components/CardActionSell";
-
-const NftImage = styled(Image)`
-  width: 40%;
-  height: auto;
-  @media (min-width: 767px) {
-  }
-`;
 
 const transaccionNotificationInitial: NotificationMessage = {
   type: messageType.idle,
@@ -125,16 +121,7 @@ const NFTCard: FC<NFTCardProps> = ({
 
   return (
     <Box sx={nftCard}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: {
-            xs: "row",
-            sm: "row",
-          },
-          width: "100%",
-        }}
-      >
+      <Box sx={nftCardContainer}>
         <NftImage src={image} alt="rose" width={100} height={100} />
 
         <Box sx={nftInformation}>
@@ -159,10 +146,7 @@ const NFTCard: FC<NFTCardProps> = ({
               <Typography variant="h3" sx={nftPropertie}>
                 {`Symbol`}
               </Typography>
-              <Typography
-                variant="h3"
-                sx={{ ...textStyle, textAlign: "start", marginTop: ".5vmax" }}
-              >
+              <Typography variant="h3" sx={propertiesTextStyle}>
                 {symbol}
               </Typography>
             </Box>
@@ -171,10 +155,7 @@ const NFTCard: FC<NFTCardProps> = ({
               <Typography variant="h3" sx={nftPropertie}>
                 {`external_url`}
               </Typography>
-              <Typography
-                variant="h3"
-                sx={{ ...textStyle, textAlign: "start", marginTop: ".5vmax" }}
-              >
+              <Typography variant="h3" sx={propertiesTextStyle}>
                 {external_url}
               </Typography>
             </Box>
@@ -182,10 +163,7 @@ const NFTCard: FC<NFTCardProps> = ({
               <Typography variant="h3" sx={nftPropertie}>
                 {`minter`}
               </Typography>
-              <Typography
-                variant="h3"
-                sx={{ ...textStyle, textAlign: "start", marginTop: ".5vmax" }}
-              >
+              <Typography variant="h3" sx={propertiesTextStyle}>
                 {minter}
               </Typography>
             </Box>
@@ -193,10 +171,7 @@ const NFTCard: FC<NFTCardProps> = ({
               <Typography variant="h3" sx={nftPropertie}>
                 {`Symbol`}
               </Typography>
-              <Typography
-                variant="h3"
-                sx={{ ...textStyle, textAlign: "start", marginTop: ".5vmax" }}
-              >
+              <Typography variant="h3" sx={propertiesTextStyle}>
                 {symbol}
               </Typography>
             </Box>
@@ -205,10 +180,7 @@ const NFTCard: FC<NFTCardProps> = ({
               <Typography variant="h3" sx={nftPropertie}>
                 {`Seniority`}
               </Typography>
-              <Typography
-                variant="h3"
-                sx={{ ...textStyle, textAlign: "start", marginTop: ".5vmax" }}
-              >
+              <Typography variant="h3" sx={propertiesTextStyle}>
                 {seniority}
               </Typography>
             </Box>

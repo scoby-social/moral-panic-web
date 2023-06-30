@@ -45,7 +45,6 @@ export const sendTransactions = async (
 }> => {
   if (!wallet.publicKey) throw new WalletNotConnectedError();
 
-  console.log("send transaction");
   const unsignedTxns: Transaction[] = [];
 
   if (!block) {
@@ -80,12 +79,7 @@ export const sendTransactions = async (
   const pendingTxns: Promise<{ txid: string; slot: number }>[] = [];
 
   let breakEarlyObject = { breakEarly: false, i: 0 };
-  console.log(
-    "Signed txns length",
-    signedTxns.length,
-    "vs handed in length",
-    instructionSet.length
-  );
+
   for (let i = 0; i < signedTxns.length; i++) {
     const signedTxnPromise = sendSignedTransaction({
       connection,
@@ -110,9 +104,7 @@ export const sendTransactions = async (
         await signedTxnPromise;
         await sleep(100);
       } catch (e) {
-        console.log("Caught failure", e);
         if (SequenceType.StopOnFailure) {
-          console.log("Died on ", breakEarlyObject.i);
           // Return the txn we failed on by index
           return {
             success: false,
@@ -131,7 +123,6 @@ export const sendTransactions = async (
     txs = await Promise.all(pendingTxns);
     console.log("txs", txs);
   }
-  console.log({ success: true, number: signedTxns.length, txs });
   return { success: true, number: signedTxns.length, txs };
 };
 
@@ -215,7 +206,6 @@ export async function sendSignedTransaction({
     done = true;
   }
 
-  console.log("Latency", txid, getUnixTs() - startTime);
   return { txid, slot };
 }
 
@@ -239,7 +229,6 @@ async function awaitTransactionSignatureConfirmation(
         return;
       }
       done = true;
-      console.log("Rejecting for timeout...");
       reject({ timeout: true });
     }, timeout);
     try {
@@ -253,10 +242,8 @@ async function awaitTransactionSignatureConfirmation(
             confirmations: 0,
           };
           if (result.err) {
-            console.log("Rejected via websocket", result.err);
             reject(status);
           } else {
-            console.log("Resolved via websocket", result);
             resolve(status);
           }
         },
@@ -269,29 +256,16 @@ async function awaitTransactionSignatureConfirmation(
     while (!done && queryStatus) {
       // eslint-disable-next-line no-loop-func
       (async () => {
-        try {
-          const signatureStatuses = await connection.getSignatureStatuses([
-            txid,
-          ]);
-          status = signatureStatuses && signatureStatuses.value[0];
-          if (!done) {
-            if (!status) {
-              console.log("REST null result for", txid, status);
-            } else if (status.err) {
-              console.log("REST error for", txid, status);
-              done = true;
-              reject(status.err);
-            } else if (!status.confirmations) {
-              console.log("REST no confirmations for", txid, status);
-            } else {
-              console.log("REST confirmation for", txid, status);
-              done = true;
-              resolve(status);
-            }
-          }
-        } catch (e) {
-          if (!done) {
-            console.log("REST connection error: txid", txid, e);
+        const signatureStatuses = await connection.getSignatureStatuses([txid]);
+        status = signatureStatuses && signatureStatuses.value[0];
+        if (!done) {
+          if (!status) {
+          } else if (status.err) {
+            done = true;
+            reject(status.err);
+          } else {
+            done = true;
+            resolve(status);
           }
         }
       })();

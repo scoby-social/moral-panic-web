@@ -1,11 +1,12 @@
 import { FC } from "react";
+
+import { Box, Typography } from "@mui/material";
 import {
+  CardCustomInput,
   cardInfoPropertie,
   cardInfoPropertieText,
   cardInfoPropertieValue,
-} from "../styles";
-import { Box, Typography } from "@mui/material";
-import { CustomInput } from "./CardCustomInput";
+} from "./styles";
 
 interface CardPropertiesBuyProps {
   amount: number;
@@ -35,7 +36,11 @@ export const CardPropertiesBuy: FC<CardPropertiesBuyProps> = ({
 
     <Box sx={cardInfoPropertie}>
       <Typography sx={cardInfoPropertieText}>Units:</Typography>
-      <CustomInput type="number" value={units} onChange={handleChanceUnits} />
+      <CardCustomInput
+        type="number"
+        value={units}
+        onChange={handleChanceUnits}
+      />
     </Box>
   </Box>
 );

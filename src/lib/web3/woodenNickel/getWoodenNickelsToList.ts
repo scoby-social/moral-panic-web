@@ -1,14 +1,13 @@
-import { getNftUserWalletToList } from '../common/getNftUserWalletToList'
-import { Connection } from '@solana/web3.js';
-import { PublicKey } from '@metaplex-foundation/js';
-import { NftToList } from '../types/nftToList';
+import { getNftUserWalletToList } from "../common/getNftUserWalletToList";
+import { Connection } from "@solana/web3.js";
+import { PublicKey } from "@metaplex-foundation/js";
+import { NftToList } from "../types/nftToList";
 
 export const getWoodenNickelsToList = async (userWalletAddress: PublicKey) => {
+  const symbol = "NICKEL";
+  const conn = new Connection(process.env.NEXT_PUBLIC_SOLANA_CLUSTER!);
 
-    const symbol = 'NICKEL';
-    const conn = new Connection(process.env.NEXT_PUBLIC_SOLANA_CLUSTER!);
+  const wnList = await getNftUserWalletToList(userWalletAddress, conn, symbol);
 
-    const wnList = await getNftUserWalletToList(userWalletAddress, conn, symbol);
-
-    return wnList as NftToList[];
-}
+  return wnList as NftToList[];
+};

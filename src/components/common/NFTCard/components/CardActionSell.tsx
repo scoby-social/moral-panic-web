@@ -1,16 +1,18 @@
+import { FC } from "react";
+
+import { Box, Typography } from "@mui/material";
+
+import { CardButton } from "./CardButton";
+import { NotificationMessage } from "../types";
+import { CardPropertiesSell } from "./CardPropertiesToSell";
 import {
   cardInfoAction,
   cardInfoContainer,
+  titlePropertiePriceText,
+  transacctionTextColor,
   cardInfoNotification,
   cardInfoNotificationText,
-  priceText,
-} from "../styles";
-import { CardPropertiesBuy } from "./CarsPropertiesBuy";
-import { Box, Typography } from "@mui/material";
-import { CardButton } from "./CardButton";
-import { FC } from "react";
-import { NotificationMessage, messageType } from "../types";
-import { CardPropertiesSell } from "./CardPropertiesToSell";
+} from "./styles";
 
 interface CardActionSellProps {
   amount: number;
@@ -58,18 +60,7 @@ export const CardActionSell: FC<CardActionSellProps> = ({
           >
             {`MINT`}
           </CardButton>
-          <Typography
-            sx={{
-              ...priceText,
-              textAlign: "center",
-              marginTop: "0.1vmax",
-              fontSize: {
-                xs: ".4vmax",
-                sm: ".6vmax",
-                lg: ".4vmax",
-              },
-            }}
-          >
+          <Typography sx={titlePropertiePriceText}>
             {`Plus a small SOL transaction fee`}
           </Typography>
         </Box>
@@ -77,13 +68,7 @@ export const CardActionSell: FC<CardActionSellProps> = ({
       <Box
         sx={{
           ...cardInfoNotification,
-          color:
-            transaccionMessage.type === messageType.buySuccess ||
-            transaccionMessage.type === messageType.sellSuccess
-              ? "rgba(190, 239, 0, 1)"
-              : transaccionMessage.type === messageType.buyLimit
-              ? "#FAD326"
-              : " rgba(255, 113, 11, 1)",
+          color: transacctionTextColor(transaccionMessage.type),
         }}
       >
         <Typography sx={cardInfoNotificationText}>

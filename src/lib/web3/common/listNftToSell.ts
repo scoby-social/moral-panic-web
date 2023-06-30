@@ -22,7 +22,7 @@ export const listNftToSell = async (
       //!Error message
       return false;
     }
-    let instructionSet: any[] = [],
+    const instructionSet: any[] = [],
       signerSet: any[] = [];
     let instructions: any[] = [],
       signers: any[] = [];
@@ -94,7 +94,6 @@ export const listNftToSell = async (
       );
     }
     instructionSet.push(instructions);
-    console.log(instructionSet);
     signerSet.push(signers);
     await sendTransactions(
       connection,
