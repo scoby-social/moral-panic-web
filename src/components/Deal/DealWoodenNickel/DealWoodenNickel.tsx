@@ -5,7 +5,6 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@metaplex-foundation/js";
 
 import NFTCard from "components/common/NFTCard/NFTCard";
-import { NFTCardProps } from "components/common/NFTCard/types";
 import { getWoodenNickelsListMarket } from "lib/web3/woodenNickel/getWoodenNickelsListMarket";
 import { getWoodenNickelsToList } from "lib/web3/woodenNickel/getWoodenNickelsToList";
 import { getTheDealForgeQuota } from "lib/axios/requests/theDeal/getTheDealForgeQuota";
@@ -25,6 +24,11 @@ import {
   titleDeal,
   subContainer,
 } from "./styles";
+import { NFTCardProps } from "components/common/NFTCard/types";
+import { BuyNftListDealStatement } from "../types/buyNftListDealStatement";
+import { SellNftListDealStatement } from "../types/sellNftListDealStatement";
+import { getNftToBuy } from "../utils/getNftToBuy";
+import { getNftsToDeal } from "../utils/getNftsToDeal";
 
 function tabProps(index: number) {
   return {
@@ -52,89 +56,21 @@ export const DealWoodenNickel = () => {
   }, [wallet.connected]);
 
   const init = async () => {
-    const sellData = await getNftsToDeal();
-    const buyData = await getNftToBuy();
+    const sellData = await getNftsToDeal(wallet);
+    const sellStatement = sellData.map(i => i.statement).flat();
+    setNftsToSell(sellStatement);
+    const buyData = await getNftToBuy(wallet);
+
+    if (buyData) {
+      setgeNftToBuy(buyData.statement);
+    }
 
     setNftsToSellProps(sellData);
-
     setNftToBuyProps(buyData);
   };
 
-  const getNftsToDeal = async () => {
-    const userPubkey = wallet.publicKey as PublicKey;
-    const nftList = await getWoodenNickelsToList(wallet.publicKey as PublicKey);
-    const userWalletString = wallet.publicKey!.toString();
-
-    if (nftList.length === 0) {
-      return [];
-    }
-
-    const nftFiltered = nftList.filter(
-      i => i.data.creators[2].address === userPubkey.toBase58()
-    );
-
-    setNftsToSell(nftFiltered);
-
-    const nftPropsFormated = nftFiltered.map(async nft => {
-      const minterString = nft.name.split(" ")[0];
-      const minter = minterString.substring(0, minterString.length - 2);
-
-      const image = await (await fetch(nft.image)).blob();
-      const imageUrl = URL.createObjectURL(image);
-
-      const volume = await getVolumeNftTheDeal(new Date(), nft.symbol);
-      const quota = await getTheDealForgeQuota(userWalletString);
-      return {
-        external_url: nft.external_link,
-        description: nft.description,
-        image: imageUrl,
-        seniority: "2",
-        name: nft.name,
-        symbol: nft.symbol,
-        price: 0.01,
-        amount: 0,
-        minter,
-        type: "sell",
-        volume,
-        quota: quota.maxList || 0,
-      } as NFTCardProps;
-    });
-
-    return await Promise.all(nftPropsFormated);
-  };
-
-  const getNftToBuy = async () => {
-    const nfts = await getWoodenNickelsListMarket(wallet);
-    const nft = nfts.find(i => i.amount > 0);
-
-    if (!nft) {
-      return null;
-    }
-
-    setgeNftToBuy(nft);
-
-    const image = await (await fetch(nft.image)).blob();
-    const imageUrl = URL.createObjectURL(image);
-
-    const minterString = nft.name.split(" ")[0];
-    const minter = minterString.substring(0, minterString.length - 2);
-
-    const userWn = await checkIfUserHasWoodenNickel(wallet);
-
-    return {
-      external_url: nft.external_url,
-      description: nft.description,
-      image: imageUrl,
-      seniority: "2",
-      name: nft.name,
-      symbol: nft.symbol,
-      price: nft.price,
-      amount: nft.amount,
-      minter,
-      type: "buy",
-      transactionDisabled: nft.symbol === "NICKEL" ? userWn : false,
-    } as NFTCardProps;
-  };
+  //  setgeNftToBuy(nft);
+  //   setNftsToSell(nftFiltered);
 
   const handleTabsChange = (
     e: React.SyntheticEvent<Element, Event>,

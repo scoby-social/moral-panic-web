@@ -9,19 +9,9 @@ import {
   sellPropertiesContainerLeftSide,
   sellPropertiesContainerRightSide,
 } from "./styles";
+import { CardPropertiesToSellProps } from "../types";
 
-interface CardPropertiesSellProps {
-  amount: number;
-  quota: number;
-  units: number;
-  price: number;
-  volume: number;
-  handleChanceUnits: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-}
-
-export const CardPropertiesSell: FC<CardPropertiesSellProps> = ({
+export const CardPropertiesSell: FC<CardPropertiesToSellProps> = ({
   amount,
   quota,
   units,

@@ -1,4 +1,4 @@
-import { NotificationMessage, messageType } from "../types";
+import { NotificationMessage, messageType } from "../types/notificationsMessage";
 
 const notificationMessage = (type: messageType) => {
   if (type === messageType.buySuccess) {

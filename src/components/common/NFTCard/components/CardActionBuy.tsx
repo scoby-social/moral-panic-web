@@ -1,34 +1,21 @@
 import { FC } from "react";
 import { Box, Typography } from "@mui/material";
 
-import { CardPropertiesBuy } from "./CarsPropertiesBuy";
+import { CardPropertiesBuy } from "./CardPropertiesBuy";
 import { CardButton } from "./CardButton";
-import { NotificationMessage } from "../types";
 import {
   cardInfoAction,
   cardInfoContainer,
   cardActionsContainer,
   propertiePriceText,
   titlePropertiePriceText,
-  transacctionTextColor,
+  transactionTextColor,
   cardInfoNotification,
   priceText,
   cardInfoNotificationText,
 } from "./styles";
 
-interface CardActionBuyProps {
-  amount: number;
-  quota: number;
-  price: number;
-  units: number;
-  transactionDisabled: boolean;
-  actionDisabled: boolean;
-  transaccionMessage: NotificationMessage;
-  handleClickBuy: () => Promise<void>;
-  handleChanceUnits: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-}
+import { CardActionBuyProps } from "../types";
 
 export const CardActionBuy: FC<CardActionBuyProps> = ({
   amount,
@@ -77,7 +64,7 @@ export const CardActionBuy: FC<CardActionBuyProps> = ({
       <Box
         sx={{
           ...cardInfoNotification,
-          color: transacctionTextColor(transaccionMessage.type),
+          color: transactionTextColor(transaccionMessage.type),
         }}
       >
         <Typography sx={cardInfoNotificationText}>

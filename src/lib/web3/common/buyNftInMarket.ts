@@ -57,8 +57,6 @@ export const buyNftInMarket = async (
       new PublicKey(nft.mint)
     );
 
-    instructions = [...instructions, ...nftToAtaTx.instructions];
-    signers = [...signers, ...nftToAtaTx.signers];
     const tokenFromTx = await makeATokenAccountTransaction(
       connection,
       wallet!.publicKey,
@@ -74,8 +72,13 @@ export const buyNftInMarket = async (
       nft.owner,
       new PublicKey(REWARD_TOKEN)
     );
-    instructions = [...instructions, ...tokenToAtaTx.instructions];
-    signers = [...signers, ...tokenToAtaTx.signers];
+    instructions = [
+      ...instructions,
+      ...nftToAtaTx.instructions,
+      ...tokenToAtaTx.instructions,
+    ];
+    signers = [...signers, ...nftToAtaTx.signers, ...tokenToAtaTx.signers];
+
     instructions.push(
       program.instruction.buy(amount, {
         accounts: {

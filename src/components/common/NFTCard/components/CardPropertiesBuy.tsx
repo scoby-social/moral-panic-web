@@ -7,15 +7,7 @@ import {
   cardInfoPropertieText,
   cardInfoPropertieValue,
 } from "./styles";
-
-interface CardPropertiesBuyProps {
-  amount: number;
-  quota: number;
-  units: number;
-  handleChanceUnits: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-}
+import { CardPropertiesBuyProps } from "../types/cardPropertiesBuyProps";
 
 export const CardPropertiesBuy: FC<CardPropertiesBuyProps> = ({
   amount,

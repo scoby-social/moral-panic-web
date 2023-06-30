@@ -10,7 +10,6 @@ import {
   TransactionSignature,
   Blockhash,
   FeeCalculator,
-  SystemProgram,
 } from "@solana/web3.js";
 
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
@@ -121,7 +120,6 @@ export const sendTransactions = async (
   let txs: any[] = [];
   if (sequenceType !== SequenceType.Parallel) {
     txs = await Promise.all(pendingTxns);
-    console.log("txs", txs);
   }
   return { success: true, number: signedTxns.length, txs };
 };
@@ -147,8 +145,6 @@ export async function sendSignedTransaction({
       skipPreflight: true,
     }
   );
-
-  console.log("Started awaiting confirmation for", txid);
 
   let done = false;
   (async () => {

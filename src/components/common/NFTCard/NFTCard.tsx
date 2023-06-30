@@ -1,9 +1,8 @@
-import styled from "@emotion/styled";
-import Image from "next/image";
 import React, { FC, useEffect, useState } from "react";
 
-import { Box, Input, TextField, Typography } from "@mui/material";
-import { NFTCardProps, NotificationMessage, messageType } from "./types";
+import { Box, Typography } from "@mui/material";
+
+import { NotificationMessage, messageType } from "./types/notificationsMessage";
 
 import {
   NftImage,
@@ -23,6 +22,7 @@ import { getNotificacionMessage } from "./utils/notificationMessage";
 
 import { CardActionBuy } from "./components/CardActionBuy";
 import { CardActionSell } from "./components/CardActionSell";
+import { NFTCardProps } from "./types";
 
 const transaccionNotificationInitial: NotificationMessage = {
   type: messageType.idle,
@@ -46,10 +46,9 @@ const NFTCard: FC<NFTCardProps> = ({
 }) => {
   const [units, setUnits] = useState(0);
 
+  const [actionDisabled, setActionDisabled] = useState(false);
   const [transaccionMessage, setTransaccionMessage] =
     useState<NotificationMessage>(transaccionNotificationInitial);
-
-  const [actionDisabled, setActionDisabled] = useState(false);
 
   useEffect(() => {
     if (transactionDisabled) {

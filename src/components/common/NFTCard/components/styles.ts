@@ -1,5 +1,5 @@
 import { SxProps } from "@mui/material";
-import { messageType } from "../types";
+import { messageType } from "../types/notificationsMessage";
 
 import styled from "@emotion/styled";
 import { Input } from "@mui/material";
@@ -125,7 +125,7 @@ export const sellPropertiesContainerRightSide: SxProps = {
 
 export const sellPropertiesContainerLeftSide: SxProps = { width: "50%" };
 
-export const transacctionTextColor = (transactionType: messageType) => {
+export const transactionTextColor = (transactionType: messageType) => {
   if (
     transactionType === messageType.buySuccess ||
     transactionType === messageType.sellSuccess

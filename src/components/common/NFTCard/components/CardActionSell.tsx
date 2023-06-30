@@ -3,31 +3,16 @@ import { FC } from "react";
 import { Box, Typography } from "@mui/material";
 
 import { CardButton } from "./CardButton";
-import { NotificationMessage } from "../types";
 import { CardPropertiesSell } from "./CardPropertiesToSell";
 import {
   cardInfoAction,
   cardInfoContainer,
   titlePropertiePriceText,
-  transacctionTextColor,
+  transactionTextColor,
   cardInfoNotification,
   cardInfoNotificationText,
 } from "./styles";
-
-interface CardActionSellProps {
-  amount: number;
-  quota: number;
-  price: number;
-  units: number;
-  volume: number;
-  transactionDisabled: boolean;
-  actionDisabled: boolean;
-  transaccionMessage: NotificationMessage;
-  handleClickSell: () => Promise<void>;
-  handleChanceUnits: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-}
+import { CardActionSellProps } from "../types";
 
 export const CardActionSell: FC<CardActionSellProps> = ({
   amount,
@@ -68,7 +53,7 @@ export const CardActionSell: FC<CardActionSellProps> = ({
       <Box
         sx={{
           ...cardInfoNotification,
-          color: transacctionTextColor(transaccionMessage.type),
+          color: transactionTextColor(transaccionMessage.type),
         }}
       >
         <Typography sx={cardInfoNotificationText}>

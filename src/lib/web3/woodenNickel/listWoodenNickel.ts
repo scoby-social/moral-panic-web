@@ -10,7 +10,7 @@ export const listWoodenNickel = async (
   amount: number
 ) => {
   const WOODEN_NICKEL_PROGRAM_ID =
-    "5jKk2meTu2FJeXAQHec6eZumRpjuuqr4pM9AVDayf2q3";
+    process.env.NEXT_PUBLIC_WOODEN_NICKEL_PROGRAMID_THE_DEAL!;
   const REWARD_TOKEN_DECIMAL = 1000000;
 
   const conn = new Connection(process.env.NEXT_PUBLIC_SOLANA_CLUSTER!);
