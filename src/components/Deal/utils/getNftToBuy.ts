@@ -31,5 +31,6 @@ export const getNftToBuy = async (wallet: any) => {
     type: "buy",
     transactionDisabled: nft.symbol === "NICKEL" ? userWn : false,
     statement: nft,
+    lisNftMarket: nfts,
   } as BuyNftListDealStatement;
 };

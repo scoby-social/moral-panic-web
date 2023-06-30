@@ -3,11 +3,18 @@ import { getTheDealForgeQuota } from "lib/axios/requests/theDeal/getTheDealForge
 import { getVolumeNftTheDeal } from "lib/axios/requests/theDeal/getVolumeNftTheDeal";
 import { getWoodenNickelsToList } from "lib/web3/woodenNickel/getWoodenNickelsToList";
 import { SellNftListDealStatement } from "../types/sellNftListDealStatement";
+import { NftInMarketplace } from "lib/web3/types/NftInMarketplace";
 
-export const getNftsToDeal = async (wallet: any) => {
+export const getNftsToDeal = async (
+  wallet: any,
+  lisNftMarket: NftInMarketplace[]
+) => {
   const userPubkey = wallet.publicKey as PublicKey;
   const nftList = await getWoodenNickelsToList(wallet.publicKey as PublicKey);
   const userWalletString = wallet.publicKey!.toString();
+
+  const amountsMarket = lisNftMarket.map(i => i.amount);
+  const amount = amountsMarket.reduce((prev, curr) => prev + curr);
 
   if (nftList.length === 0) {
     return [];
@@ -26,6 +33,7 @@ export const getNftsToDeal = async (wallet: any) => {
 
     const volume = await getVolumeNftTheDeal(new Date(), nft.symbol);
     const quota = await getTheDealForgeQuota(userWalletString);
+
     return {
       external_url: nft.external_link,
       description: nft.description,
@@ -34,7 +42,7 @@ export const getNftsToDeal = async (wallet: any) => {
       name: nft.name,
       symbol: nft.symbol,
       price: 0.01,
-      amount: 0,
+      amount,
       minter,
       type: "sell",
       volume,
