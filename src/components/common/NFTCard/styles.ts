@@ -123,7 +123,7 @@ export const propertiesContainer: SxProps = {
   gridGap: ".5vmax",
   overflowY: "auto",
   maxHeight: {
-    xs: "5.5vmax",
+    xs: "11.5vmax",
   },
 };
 export const firstPropertiesNft: SxProps = {

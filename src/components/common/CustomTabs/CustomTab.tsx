@@ -9,4 +9,5 @@ export const CustomTab = styled(Tab)`
   font-size: 1.5vmax !important;
   font-family: Cabin;
   font-weight: normal;
+  text-transform: none;
 `;

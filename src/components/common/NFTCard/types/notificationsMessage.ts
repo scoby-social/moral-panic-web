@@ -11,6 +11,7 @@ export enum messageType {
     insufficientBalance = 'insufficient balance',
     unknow = 'unknow',
     limitQuota = 'limitQuota',
-    buyLimit = 'buyLimit'
+    buyLimit = 'buyLimit',
+    hasFakeId = 'hasFakeId',
 
 }

@@ -1,6 +1,8 @@
-import { checkIfUserHasWoodenNickel } from "lib/web3/woodenNickel/checkIfUserHasWoodenNickel";
 import { getWoodenNickelsListMarket } from "lib/web3/woodenNickel/getWoodenNickelsListMarket";
 import { BuyNftListDealStatement } from "../types/buyNftListDealStatement";
+import { checkUserWalletNftHellbender } from "lib/web3/checkUserWalletNftHellbender";
+import { getTransactionDisabled } from "./getTransactionDisabled";
+import { getQuota } from "./getQuota";
 
 export const getNftToBuy = async (wallet: any) => {
   const nfts = await getWoodenNickelsListMarket(wallet);
@@ -16,7 +18,16 @@ export const getNftToBuy = async (wallet: any) => {
   const minterString = nft.name.split(" ")[0];
   const minter = minterString.substring(0, minterString.length - 2);
 
-  const userWn = await checkIfUserHasWoodenNickel(wallet);
+  const userWalletChecked = await checkUserWalletNftHellbender(wallet);
+  const userWn = userWalletChecked["NICKEL"];
+  const userFakeID = userWalletChecked["HELLPASS"];
+
+  const quota = getQuota(userWn, userFakeID, nft.symbol, "NICKEL");
+  const transactionDisabled = getTransactionDisabled(
+    nft.symbol,
+    "NICKEL",
+    userWn
+  );
 
   return {
     external_url: nft.external_url,
@@ -29,8 +40,10 @@ export const getNftToBuy = async (wallet: any) => {
     amount: nft.amount,
     minter,
     type: "buy",
-    transactionDisabled: nft.symbol === "NICKEL" ? userWn : false,
     statement: nft,
     lisNftMarket: nfts,
+    userHasFakeId: userFakeID,
+    transactionDisabled,
+    quota,
   } as BuyNftListDealStatement;
 };
