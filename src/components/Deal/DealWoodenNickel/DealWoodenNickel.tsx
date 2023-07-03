@@ -29,6 +29,7 @@ import { BuyNftListDealStatement } from "../types/buyNftListDealStatement";
 import { SellNftListDealStatement } from "../types/sellNftListDealStatement";
 import { getNftToBuy } from "../utils/getNftToBuy";
 import { getNftsToDeal } from "../utils/getNftsToDeal";
+import { checkIfUserHasFakeID } from "lib/web3/fakeID/checkIfUserHasFakeID";
 
 function tabProps(index: number) {
   return {
@@ -46,6 +47,9 @@ export const DealWoodenNickel = () => {
   const [nftToBuy, setgeNftToBuy] = useState<null | NftInMarketplace>(null);
   const [nftToBuyProps, setNftToBuyProps] = useState<null | NFTCardProps>(null);
 
+  const [userHasWoodenNickel, setUserHasWoodenNickel] = useState(false);
+  const [userHasFakeId, setUserHasFakeId] = useState(false);
+
   const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
@@ -58,6 +62,12 @@ export const DealWoodenNickel = () => {
   const init = async () => {
     const buyData = await getNftToBuy(wallet);
     const nftsTheDealMarket = buyData ? buyData.lisNftMarket : [];
+
+/*     const userWoodenNickel = await checkIfUserHasWoodenNickel(wallet);
+    const userFakeId = await checkIfUserHasFakeID(wallet);
+
+    setUserHasWoodenNickel(userWoodenNickel);
+    setUserHasFakeId(userFakeId); */
 
     if (buyData) {
       setgeNftToBuy(buyData.statement);

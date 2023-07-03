@@ -42,6 +42,7 @@ const NFTCard: FC<NFTCardProps> = ({
   amount,
   volume = 0,
   quota = 0,
+  userHasFakeId = false,
   transactionDisabled = false,
 }) => {
   const [units, setUnits] = useState(0);
@@ -51,11 +52,23 @@ const NFTCard: FC<NFTCardProps> = ({
     useState<NotificationMessage>(transaccionNotificationInitial);
 
   useEffect(() => {
-    if (transactionDisabled) {
-      setTransaccionMessage(getNotificacionMessage(messageType.buyLimit));
-    }
+    setCardInitNotification();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const setCardInitNotification = () => {
+    setTransaccionMessage(() => {
+      if (transactionDisabled && type === "buy" && quota < 1) {
+        return getNotificacionMessage(messageType.buyLimit);
+      }
+
+      if (type === "buy" && userHasFakeId) {
+        getNotificacionMessage(messageType.hasFakeId);
+      }
+
+      return getNotificacionMessage(messageType.idle);
+    });
+  };
 
   const handleChanceUnits = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

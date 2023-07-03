@@ -20,11 +20,7 @@ export const getNftsToDeal = async (
     return [];
   }
 
-  const nftFiltered = nftList.filter(
-    i => i.data.creators[2].address === userPubkey.toBase58()
-  );
-
-  const nftPropsFormated = nftFiltered.map(async nft => {
+  const nftPropsFormated = nftList.map(async nft => {
     const minterString = nft.name.split(" ")[0];
     const minter = minterString.substring(0, minterString.length - 2);
 
@@ -33,6 +29,7 @@ export const getNftsToDeal = async (
 
     const volume = await getVolumeNftTheDeal(new Date(), nft.symbol);
     const quota = await getTheDealForgeQuota(userWalletString);
+    const price = lisNftMarket.find(i => i.symbol === nft.symbol)?.price || 0;
 
     return {
       external_url: nft.external_link,
@@ -41,13 +38,13 @@ export const getNftsToDeal = async (
       seniority: "2",
       name: nft.name,
       symbol: nft.symbol,
-      price: 0.01,
+      price,
       amount,
       minter,
       type: "sell",
       volume,
       quota: quota.maxList || 0,
-      statement: nftFiltered,
+      statement: nftList,
     } as SellNftListDealStatement;
   });
 

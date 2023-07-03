@@ -133,7 +133,10 @@ export const transactionTextColor = (transactionType: messageType) => {
     return "rgba(190, 239, 0, 1)";
   }
 
-  if (transactionType === messageType.buyLimit) {
+  if (
+    transactionType === messageType.buyLimit ||
+    transactionType === messageType.hasFakeId
+  ) {
     return "#FAD326";
   }
 

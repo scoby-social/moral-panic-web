@@ -10,6 +10,7 @@ import {
   sellPropertiesContainerRightSide,
 } from "./styles";
 import { CardPropertiesToSellProps } from "../types";
+import { unitsInputValidations } from "../utils/unitsInputValidations";
 
 export const CardPropertiesSell: FC<CardPropertiesToSellProps> = ({
   amount,
@@ -37,6 +38,7 @@ export const CardPropertiesSell: FC<CardPropertiesToSellProps> = ({
           type="number"
           value={units}
           onChange={handleChanceUnits}
+          disabled={unitsInputValidations(quota)}
         />
       </Box>
     </Box>

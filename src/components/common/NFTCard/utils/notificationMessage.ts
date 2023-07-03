@@ -28,6 +28,10 @@ const notificationMessage = (type: messageType) => {
     return "Hey pal, looks like you already have a Wooden Nickel. I’d love to sell you another but you should figure out how to mint your own.";
   }
 
+  if (type === messageType.hasFakeId) {
+    return "Hey pal, looks like you already have a Fake ID. I’d love to sell you a Wooden Nickel, but you can mint your own cheaper.";
+  }
+
   return "";
 };
 

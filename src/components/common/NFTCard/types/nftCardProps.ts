@@ -11,6 +11,7 @@ export interface NFTCardProps {
   amount: number;
   volume?: number;
   quota: number;
+  userHasFakeId?: boolean;
   transactionDisabled?: boolean;
   handleTransaction: (amount: number) => Promise<Boolean | undefined>;
 }
