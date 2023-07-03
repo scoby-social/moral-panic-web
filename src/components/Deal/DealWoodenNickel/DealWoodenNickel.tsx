@@ -74,7 +74,6 @@ export const DealWoodenNickel = () => {
 
   const handleBuyNft = async (nft: NftInMarketplace, amount: number) => {
     const buyer = wallet.publicKey as PublicKey;
-    const quota = await getTheDealForgeQuota(buyer.toString());
     const response = await buyWoodenNickelTheDeal(nft, wallet, amount);
 
     const tokenAddress = new PublicKey(nft.mint);

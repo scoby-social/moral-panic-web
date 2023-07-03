@@ -7,17 +7,17 @@ export const container: SxProps = {
   background: `url(https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/the_deal_wallpaper.png)`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
-  minHeight: "50vh",
+  minHeight: "100vmax",
 };
 
 export const subContainer: SxProps = {
+  marginTop: "4vmax",
   display: "flex",
   flexDirection: "column",
   flexWrap: "nowrap",
   alignItems: "center",
   textAlign: "center",
-
-  minHeight: "50vh",
+  height:'100%'
 };
 
 export const title: SxProps = {
