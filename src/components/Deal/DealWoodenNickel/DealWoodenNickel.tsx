@@ -37,7 +37,7 @@ export const DealWoodenNickel = () => {
   const [nftsToSell, setNftsToSell] = useState([] as NftToList[]);
   const [nftsToSellProps, setNftsToSellProps] = useState([] as NFTCardProps[]);
 
-  const [nftToBuy, setgeNftToBuy] = useState<null | NftInMarketplace>(null);
+  const [nftToBuy, setNftToBuy] = useState<null | NftInMarketplace>(null);
   const [nftToBuyProps, setNftToBuyProps] = useState<null | NFTCardProps>(null);
 
   const [tabValue, setTabValue] = useState(0);
@@ -54,7 +54,7 @@ export const DealWoodenNickel = () => {
     const nftsTheDealMarket = buyData ? buyData.lisNftMarket : [];
 
     if (buyData) {
-      setgeNftToBuy(buyData.statement);
+      setNftToBuy(buyData.statement);
     }
 
     const sellData = await getNftsToDeal(wallet, nftsTheDealMarket);

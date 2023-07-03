@@ -1,11 +1,11 @@
 import { compareSymbol } from "./compareSymbol";
 
-export const getTransactionDisabled = (symbol: string, userHasNft: boolean) => {
-  const symbolCompared = compareSymbol(symbol);
+export const getTransactionDisabled = (
+  symbol: string,
+  symbolToCompare: string,
+  userHasNft: boolean
+) => {
+  const symbolCompared = compareSymbol(symbol, symbolToCompare);
 
-  if (symbolCompared && userHasNft) {
-    return true;
-  }
-
-  return false;
+  return symbolCompared && userHasNft;
 };

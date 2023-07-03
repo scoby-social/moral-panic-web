@@ -1,5 +1,5 @@
-export const compareSymbol = (symbol: string) => {
-  if (symbol === "NICKEL") {
+export const compareSymbol = (symbol: string, symbolToCompare: string) => {
+  if (symbol === symbolToCompare) {
     return true;
   }
 

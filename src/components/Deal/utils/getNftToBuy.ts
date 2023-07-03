@@ -22,8 +22,12 @@ export const getNftToBuy = async (wallet: any) => {
   const userWn = userWalletChecked["NICKEL"];
   const userFakeID = userWalletChecked["HELLPASS"];
 
-  const quota = getQuota(userWn, userFakeID, nft.symbol);
-  const transactionDisabled = getTransactionDisabled(nft.symbol, userWn);
+  const quota = getQuota(userWn, userFakeID, nft.symbol, "NICKEL");
+  const transactionDisabled = getTransactionDisabled(
+    nft.symbol,
+    "NICKEL",
+    userWn
+  );
 
   return {
     external_url: nft.external_url,
