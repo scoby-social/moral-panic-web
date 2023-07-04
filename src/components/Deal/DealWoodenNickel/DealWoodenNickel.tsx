@@ -163,15 +163,6 @@ export const DealWoodenNickel = () => {
                 }
               />
             ))}
-            {nftsToSellProps.map((value, index) => (
-              <NFTCard
-                key={`${value.description + index}`}
-                {...value}
-                handleTransaction={amount =>
-                  handleSellNft(nftsToSell[index], amount)
-                }
-              />
-            ))}
           </Box>
         </Box>
       </TabPanel>

@@ -1,6 +1,9 @@
 import React, { FC, PropsWithChildren } from "react";
+import Image from "next/image";
 import styled from "@emotion/styled";
-import { Button, ButtonProps, SxProps, Typography } from "@mui/material";
+import { Badge, Button, ButtonProps, SxProps, Typography } from "@mui/material";
+
+import useCheckMobileScreen from "lib/hooks/useCheckMobileScreen";
 
 type CustomButtomProps = {};
 
@@ -25,6 +28,7 @@ const BaseButton = styled(Button)`
   &.Mui-disabled {
     background-color: rgba(82, 82, 82, 1) !important;
     color: #fff !important;
+    border: none !important;
   }
 
   @media (min-width: 1140px) {
@@ -43,6 +47,30 @@ const buttonText: SxProps = {
 export const CardButton: FC<
   CustomButtomProps & PropsWithChildren & ButtonProps
 > = ({ children, ...props }) => {
+  const isMobile = useCheckMobileScreen();
+  const { disabled } = props;
+
+  if (props.disabled) {
+    return (
+      <Badge
+        badgeContent={
+          <Image
+            src={
+              "https://storage.googleapis.com/hellbenders-public-c095b-assets/hellbendersWebAssets/lock.svg"
+            }
+            alt="lock"
+            width={isMobile ? 20 : 40}
+            height={isMobile ? 20 : 40}
+          />
+        }
+      >
+        <BaseButton variant="contained" disabled={disabled}>
+          <Typography sx={buttonText}>{children}</Typography>
+        </BaseButton>
+      </Badge>
+    );
+  }
+
   return (
     <BaseButton {...props}>
       <Typography sx={buttonText}>{children}</Typography>
