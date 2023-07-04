@@ -3,6 +3,7 @@ import { BuyNftListDealStatement } from "../types/buyNftListDealStatement";
 import { checkUserWalletNftHellbender } from "lib/web3/checkUserWalletNftHellbender";
 import { getTransactionDisabled } from "./getTransactionDisabled";
 import { getQuota } from "./getQuota";
+import { getNftMarketAmount } from "./getNftMarketAmount";
 
 export const getNftToBuy = async (wallet: any) => {
   const nfts = await getWoodenNickelsListMarket(wallet);
@@ -29,6 +30,8 @@ export const getNftToBuy = async (wallet: any) => {
     userWn
   );
 
+  const realAmount = getNftMarketAmount(nfts, nft.symbol);
+
   return {
     external_url: nft.external_url,
     description: nft.description,
@@ -37,7 +40,7 @@ export const getNftToBuy = async (wallet: any) => {
     name: nft.name,
     symbol: nft.symbol,
     price: nft.price,
-    amount: nft.amount,
+    amount: realAmount,
     minter,
     type: "buy",
     statement: nft,

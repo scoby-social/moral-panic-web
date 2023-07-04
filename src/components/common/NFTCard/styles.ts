@@ -62,7 +62,7 @@ export const propertieItem: SxProps = {
 export const nftCard: SxProps = {
   borderRadius: "2vmax",
   border: "0.2vmax solid #191724",
-
+  marginBottom: '3vmax',
   backgroundColor: "rgba(25, 23, 36, 1)",
   padding: {
     xs: "1.3vmax",

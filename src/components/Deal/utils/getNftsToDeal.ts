@@ -4,17 +4,15 @@ import { getVolumeNftTheDeal } from "lib/axios/requests/theDeal/getVolumeNftTheD
 import { getWoodenNickelsToList } from "lib/web3/woodenNickel/getWoodenNickelsToList";
 import { SellNftListDealStatement } from "../types/sellNftListDealStatement";
 import { NftInMarketplace } from "lib/web3/types/NftInMarketplace";
+import { getNftMarketAmount } from "./getNftMarketAmount";
 
 export const getNftsToDeal = async (
   wallet: any,
   lisNftMarket: NftInMarketplace[]
 ) => {
   const userPubkey = wallet.publicKey as PublicKey;
-  const nftList = await getWoodenNickelsToList(wallet.publicKey as PublicKey);
-  const userWalletString = wallet.publicKey!.toString();
-
-  const amountsMarket = lisNftMarket.map(i => i.amount);
-  const amount = amountsMarket.reduce((prev, curr) => prev + curr);
+  const userWalletString = userPubkey.toString();
+  const nftList = await getWoodenNickelsToList(userPubkey);
 
   if (nftList.length === 0) {
     return [];
@@ -30,6 +28,8 @@ export const getNftsToDeal = async (
     const volume = await getVolumeNftTheDeal(new Date(), nft.symbol);
     const quota = await getTheDealForgeQuota(userWalletString);
     const price = lisNftMarket.find(i => i.symbol === nft.symbol)?.price || 0;
+
+    const amount = getNftMarketAmount(lisNftMarket, nft.symbol);
 
     return {
       external_url: nft.external_link,
@@ -48,5 +48,19 @@ export const getNftsToDeal = async (
     } as SellNftListDealStatement;
   });
 
-  return await Promise.all(nftPropsFormated);
+  const res = await Promise.all(nftPropsFormated);
+
+  let nftPropsFiltered: SellNftListDealStatement[] = [];
+
+  res.forEach((val, index) => {
+    const nftFound = nftPropsFiltered.find(i => i.symbol === val.symbol);
+
+    console.log({ nftFound, index });
+
+    if (!nftFound) {
+      nftPropsFiltered = [...nftPropsFiltered, val];
+    }
+  });
+
+  return nftPropsFiltered;
 };

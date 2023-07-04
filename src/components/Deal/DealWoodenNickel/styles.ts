@@ -46,5 +46,6 @@ export const tabContainer: SxProps = {
 export const nftListStyle: SxProps = {
   display: "flex",
   flexDirection: "row",
+  flexWrap: "wrap",
   justifyContent: "space-between",
 };

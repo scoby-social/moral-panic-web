@@ -53,6 +53,11 @@ const NFTCard: FC<NFTCardProps> = ({
 
   useEffect(() => {
     setCardInitNotification();
+
+    if (quota === 0) {
+      setActionDisabled(true);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,7 +68,7 @@ const NFTCard: FC<NFTCardProps> = ({
       }
 
       if (type === "buy" && userHasFakeId) {
-        getNotificacionMessage(messageType.hasFakeId);
+        return getNotificacionMessage(messageType.hasFakeId);
       }
 
       return getNotificacionMessage(messageType.idle);
@@ -177,14 +182,6 @@ const NFTCard: FC<NFTCardProps> = ({
               </Typography>
               <Typography variant="h3" sx={propertiesTextStyle}>
                 {minter}
-              </Typography>
-            </Box>
-            <Box sx={propertieItem}>
-              <Typography variant="h3" sx={nftPropertie}>
-                {`Symbol`}
-              </Typography>
-              <Typography variant="h3" sx={propertiesTextStyle}>
-                {symbol}
               </Typography>
             </Box>
 

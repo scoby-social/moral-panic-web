@@ -43,7 +43,7 @@ export const CardActionSell: FC<CardActionSellProps> = ({
             disabled={transactionDisabled || actionDisabled}
             onClick={async () => await handleClickSell()}
           >
-            {`MINT`}
+            {`LIST`}
           </CardButton>
           <Typography sx={titlePropertiePriceText}>
             {`Plus a small SOL transaction fee`}
