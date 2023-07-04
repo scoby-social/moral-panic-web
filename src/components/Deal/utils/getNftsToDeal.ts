@@ -27,6 +27,7 @@ export const getNftsToDeal = async (
 
     const volume = await getVolumeNftTheDeal(new Date(), nft.symbol);
     const quota = await getTheDealForgeQuota(userWalletString);
+
     const price = lisNftMarket.find(i => i.symbol === nft.symbol)?.price || 0;
 
     const amount = getNftMarketAmount(lisNftMarket, nft.symbol);

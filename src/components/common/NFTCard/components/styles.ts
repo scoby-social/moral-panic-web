@@ -51,7 +51,10 @@ export const cardInfoAction: SxProps = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-around",
-  paddingX: "6vmax",
+  paddingX: {
+    xs: "1vmax",
+    lg: "6vmax",
+  },
   alignItems: "center",
   gridColumnStart: 1,
   gridColumnEnd: 4,
@@ -74,7 +77,11 @@ export const cardInfoNotificationText: SxProps = {
   fontFamily: "Cabin",
   fontSize: ".6vmax !important",
   justifyContent: "center",
-  maxWidth: "47%",
+  maxWidth: {
+    xs: "65%",
+    sm:"40%",
+    lg: "47%",
+  },
 };
 
 export const cardInfoPropertieText: SxProps = {

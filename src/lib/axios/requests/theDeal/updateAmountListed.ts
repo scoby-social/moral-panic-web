@@ -1,6 +1,4 @@
-import { User } from "lib/models/user";
 import client from "lib/axios/axiosClient";
-import { NftQuota } from "./types/nftQuota";
 import { PublicKey } from "@metaplex-foundation/js";
 
 export async function updateAmountListed(

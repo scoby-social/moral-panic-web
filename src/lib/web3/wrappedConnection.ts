@@ -169,7 +169,7 @@ export default class WrapperConnection extends Connection {
       },
     });
 
-    if (!result) throw new ReadApiError("No results returned");
+    // !if (!result) throw new ReadApiError("No results returned");
 
     return result;
   }

@@ -31,11 +31,23 @@ export const titleDeal: SxProps = {
     sm: "5vmax",
     lg: "3vmax 8vmax 8vmax 8vmax",
   },
+  maxWidth: {
+    xs: "60%",
+    lg: "100%",
+  },
+  fontSize: {
+    xs: "1.4vmax",
+    sm: "1.6vmax",
+    lg: "2vmax",
+  },
   fontFamily: "Cabin",
 };
 
 export const tabContainer: SxProps = {
   width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   padding: {
     xs: "1vmax",
     sm: "5vmax",
@@ -45,7 +57,14 @@ export const tabContainer: SxProps = {
 
 export const nftListStyle: SxProps = {
   display: "flex",
-  flexDirection: "row",
+  flexDirection: {
+    xs: "column",
+    lg: "row",
+  },
+  alignItems: {
+    xs: "center",
+    lg: "flex-start",
+  },
   flexWrap: "wrap",
   justifyContent: "space-between",
 };

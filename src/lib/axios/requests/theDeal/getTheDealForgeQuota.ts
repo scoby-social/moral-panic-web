@@ -1,4 +1,3 @@
-import { User } from "lib/models/user";
 import client from "lib/axios/axiosClient";
 import { NftQuota } from "./types/nftQuota";
 
