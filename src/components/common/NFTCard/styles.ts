@@ -232,3 +232,81 @@ export const NftImage = styled(Image)`
     width: 40%;
   }
 `;
+
+// * Full Screen styles
+export const nftCardFullScreen: SxProps = {
+  borderRadius: "2vmax",
+  border: "0.2vmax solid #191724",
+  marginBottom: "3vmax",
+  backgroundColor: "rgba(25, 23, 36, 1)",
+  padding: {
+    xs: "1.3vmax",
+    sm: "1vmax",
+  },
+  width: "auto",
+  maxWidth: {
+    xs: "100%",
+  },
+  display: "flex",
+  flexDirection: {
+    xs: "column",
+    sm: "column",
+  },
+};
+
+export const NftImageFullScreen = styled(Image)`
+  height: auto;
+  width: 70%;
+
+  @media (min-width: 426px) {
+    width: 45%;
+  }
+
+  @media (min-width: 769px) {
+    width: 45%;
+  }
+`;
+
+export const nftTitleFullScreen: SxProps = {
+  ...title,
+  color: "rgba(190, 239, 0, 1)",
+  fontFamily: "Patched Prospect",
+  fontWeight: "400",
+  textAlign: "start",
+  marginTop: {
+    xs: "1vmax",
+    sm: "0",
+  },
+  fontSize: "2vmax !important",
+  marginBottom: "0px",
+};
+
+export const propertiesContainerFullScreen: SxProps = {
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 1fr)",
+  gridGap: ".5vmax",
+  overflowY: "auto",
+  maxHeight: {
+    xs: "24.5vmax",
+  },
+};
+
+export const nftPropertieFullScreen: SxProps = {
+  fontSize: {
+    xs: "1.2vmax",
+  },
+  fontWeight: "bold",
+  color: "rgba(132, 132, 132, 1)",
+  fontFamily: "Cabin",
+  textAlign: "start",
+};
+
+export const propertiesTextStyleFullScreen: SxProps = {
+  ...textStyle,
+  textAlign: "start",
+  marginTop: ".5vmax",
+  lineHeight: "1.2vmax",
+  fontSize: {
+    xs: "1vmax",
+  },
+};

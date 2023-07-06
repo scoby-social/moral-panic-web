@@ -1,5 +1,6 @@
 export interface NFTCardProps {
   name: string;
+  maxWidth: boolean;
   symbol: string;
   description: string;
   image: string;

@@ -1,16 +1,6 @@
 import { SxProps } from "@mui/material";
+
 import { messageType } from "../types/notificationsMessage";
-
-import styled from "@emotion/styled";
-import { Input } from "@mui/material";
-
-export const CardCustomInput = styled(Input)`
-  margin-left: 0.1vmax;
-  & input {
-    font-size: 0.8vmax !important;
-    font-family: Cabin;
-  }
-`;
 
 export const priceText: SxProps = {
   fontFamily: "Cabin",
@@ -22,6 +12,11 @@ export const priceText: SxProps = {
     sm: ".7vmax",
     lg: ".5vmax",
   },
+};
+
+export const unitText: SxProps = {
+  ...priceText,
+  textAlign: "center",
 };
 
 export const cardActionsContainer: SxProps = {
@@ -79,7 +74,7 @@ export const cardInfoNotificationText: SxProps = {
   justifyContent: "center",
   maxWidth: {
     xs: "65%",
-    sm:"40%",
+    sm: "40%",
     lg: "47%",
   },
 };
@@ -105,6 +100,12 @@ export const cardInfoNotification: SxProps = {
   justifyContent: "center",
 };
 
+export const actionContainer: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-start",
+};
+
 export const cardInfoPropertie: SxProps = {
   display: "flex",
   flexDirection: "row",
@@ -124,13 +125,13 @@ export const sellPropertiesContainer: SxProps = {
 };
 
 export const sellPropertiesContainerRightSide: SxProps = {
-  width: "50%",
+  width: "55%",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
 };
 
-export const sellPropertiesContainerLeftSide: SxProps = { width: "50%" };
+export const sellPropertiesContainerLeftSide: SxProps = { width: "45%" };
 
 export const transactionTextColor = (transactionType: messageType) => {
   if (
@@ -149,3 +150,97 @@ export const transactionTextColor = (transactionType: messageType) => {
 
   return "rgba(255, 113, 11, 1)";
 };
+
+// * FullScreen Styles
+export const cardInfoPropertieTextFullScreen: SxProps = {
+  fontSize: {
+    xs: "1vmax  !important",
+    lg: "1.4vmax  !important",
+  },
+  textAlign: "center",
+  fontFamily: "Cabin",
+  display: "inline-flex",
+  alignItems: "center",
+};
+
+export const cardInfoPropertieValueFullScreen: SxProps = {
+  fontSize: {
+    xs: "1vmax  !important",
+    lg: "1.4vmax  !important",
+  },
+  fontFamily: "Cabin",
+  marginLeft: ".5vmax",
+};
+
+export const cardInfoActionFullScreen: SxProps = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  paddingX: {
+    xs: "1vmax",
+    lg: "6vmax",
+  },
+  alignItems: "center",
+  gridColumnStart: 1,
+  gridColumnEnd: 4,
+  gridRowStart: 1,
+};
+
+export const cardInfoNotificationTextFullScreen: SxProps = {
+  marginTop: "2vmax",
+  fontWeight: "normal",
+  fontFamily: "Cabin",
+  fontSize: {
+    xs: ".8vmax !important",
+    sm: "1vmax !important",
+    lg: "1.2vmax !important",
+  },
+  justifyContent: "center",
+  maxWidth: {
+    xs: "80%",
+  },
+};
+
+export const priceTextFullScreen: SxProps = {
+  fontFamily: "Cabin",
+  fontWeight: "400",
+  textAlign: "start",
+  letterSpacing: "0.4px",
+  fontSize: {
+    xs: ".8vmax",
+    sm: "1vmax",
+    lg: ".8vmax",
+  },
+};
+
+export const propertiePriceTextFullScreen: SxProps = {
+  ...priceTextFullScreen,
+  textAlign: "center",
+  marginTop: "0.1vmax",
+};
+
+export const unitTextFullScreen: SxProps = {
+  ...priceTextFullScreen,
+  textAlign: "center",
+};
+
+export const titlePropertiePriceTextFullScreen: SxProps = {
+  ...priceTextFullScreen,
+  textAlign: "center",
+  marginTop: "0.1vmax",
+  fontSize: {
+    xs: ".8vmax",
+    sm: "1vmax",
+    lg: ".8vmax",
+  },
+};
+
+export const actionContainerFullScreen: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: {
+    xs: "center",
+    sm: '"flex-start"',
+  },
+};
+

@@ -24,6 +24,7 @@ import { NFTCardProps } from "components/common/NFTCard/types";
 import { getNftToBuy } from "../utils/getNftToBuy";
 import { getNftsToDeal } from "../utils/getNftsToDeal";
 import { updateAmountListed } from "lib/axios/requests/theDeal/updateAmountListed";
+import NFTCardFullScreen from "components/common/NFTCard/NFTCardFullScreen";
 
 function tabProps(index: number) {
   return {
@@ -89,8 +90,6 @@ export const DealWoodenNickel = () => {
         amount,
         nft.external_url
       );
-
-      await updateAmountListed(buyer, amount);
     }
 
     return response;
@@ -106,6 +105,10 @@ export const DealWoodenNickel = () => {
     }
 
     const response = await listWoodenNickel(nft, wallet, amount);
+
+    if (response) {
+      await updateAmountListed(userWallet, amount);
+    }
 
     return response;
   };
@@ -134,8 +137,9 @@ export const DealWoodenNickel = () => {
           <Box sx={nftListStyle}>
             {nftToBuyProps && nftToBuy ? (
               <>
-                <NFTCard
+                <NFTCardFullScreen
                   {...nftToBuyProps}
+                  maxWidth
                   handleTransaction={(amount: number) => {
                     return handleBuyNft(nftToBuy, amount);
                   }}
@@ -155,13 +159,28 @@ export const DealWoodenNickel = () => {
 
           <Box sx={nftListStyle}>
             {nftsToSellProps.map((value, index) => (
-              <NFTCard
-                key={`${value.description + index}`}
-                {...value}
-                handleTransaction={amount =>
-                  handleSellNft(nftsToSell[index], amount)
-                }
-              />
+              <>
+                {index === 0 && (
+                  <NFTCardFullScreen
+                    key={`${value.description + index}`}
+                    {...value}
+                    maxWidth={index === 0}
+                    handleTransaction={amount =>
+                      handleSellNft(nftsToSell[index], amount)
+                    }
+                  />
+                )}
+                {index > 0 && (
+                  <NFTCard
+                    key={`${value.description + index}`}
+                    {...value}
+                    maxWidth={index === 0}
+                    handleTransaction={amount =>
+                      handleSellNft(nftsToSell[index], amount)
+                    }
+                  />
+                )}
+              </>
             ))}
           </Box>
         </Box>

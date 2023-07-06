@@ -1,16 +1,18 @@
 import { FC } from "react";
 import { Box, Typography } from "@mui/material";
 import {
-  CardCustomInput,
   cardInfoPropertie,
   cardInfoPropertieText,
+  cardInfoPropertieTextFullScreen,
   cardInfoPropertieValue,
+  cardInfoPropertieValueFullScreen,
   sellPropertiesContainer,
   sellPropertiesContainerLeftSide,
   sellPropertiesContainerRightSide,
 } from "./styles";
 import { CardPropertiesToSellProps } from "../types";
 import { unitsInputValidations } from "../utils/unitsInputValidations";
+import { CardCustomInput } from "./CardCustomInput/CardCustomInput";
 
 export const CardPropertiesSell: FC<CardPropertiesToSellProps> = ({
   amount,
@@ -18,39 +20,99 @@ export const CardPropertiesSell: FC<CardPropertiesToSellProps> = ({
   units,
   price,
   volume,
-  handleChanceUnits,
+  fullScreen = false,
+  handleChangeUnits,
 }) => (
   <Box sx={sellPropertiesContainer}>
     <Box sx={sellPropertiesContainerLeftSide}>
       <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>Listed:</Typography>
-        <Typography sx={cardInfoPropertieValue}>{amount}</Typography>
+        <Typography
+          sx={
+            fullScreen ? cardInfoPropertieTextFullScreen : cardInfoPropertieText
+          }
+        >
+          Listed:
+        </Typography>
+        <Typography
+          sx={
+            fullScreen
+              ? cardInfoPropertieValueFullScreen
+              : cardInfoPropertieValue
+          }
+        >
+          {amount}
+        </Typography>
       </Box>
 
       <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>Quota:</Typography>
-        <Typography sx={cardInfoPropertieValue}>{quota}</Typography>
+        <Typography
+          sx={
+            fullScreen ? cardInfoPropertieTextFullScreen : cardInfoPropertieText
+          }
+        >
+          Quota:
+        </Typography>
+        <Typography
+          sx={
+            fullScreen
+              ? cardInfoPropertieValueFullScreen
+              : cardInfoPropertieValue
+          }
+        >
+          {quota}
+        </Typography>
       </Box>
 
       <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>Units:</Typography>
+        <Typography
+          sx={
+            fullScreen ? cardInfoPropertieTextFullScreen : cardInfoPropertieText
+          }
+        >
+          Units:
+        </Typography>
         <CardCustomInput
+          fullScreen={fullScreen}
           type="number"
           value={units}
-          onChange={handleChanceUnits}
+          onChange={handleChangeUnits}
           disabled={unitsInputValidations(quota)}
         />
       </Box>
     </Box>
     <Box sx={sellPropertiesContainerRightSide}>
       <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>Last Sale:</Typography>
-        <Typography sx={cardInfoPropertieValue}>{`${price} USDC`}</Typography>
+        <Typography
+          sx={
+            fullScreen ? cardInfoPropertieTextFullScreen : cardInfoPropertieText
+          }
+        >
+          Last Sale:
+        </Typography>
+        <Typography
+          sx={
+            fullScreen
+              ? cardInfoPropertieValueFullScreen
+              : cardInfoPropertieValue
+          }
+        >{`${price} USDC`}</Typography>
       </Box>
 
       <Box sx={cardInfoPropertie}>
-        <Typography sx={cardInfoPropertieText}>24hr Volume:</Typography>
-        <Typography sx={cardInfoPropertieValue}>{`${volume} `}</Typography>
+        <Typography
+          sx={
+            fullScreen ? cardInfoPropertieTextFullScreen : cardInfoPropertieText
+          }
+        >
+          24hr Volume:
+        </Typography>
+        <Typography
+          sx={
+            fullScreen
+              ? cardInfoPropertieValueFullScreen
+              : cardInfoPropertieValue
+          }
+        >{`${volume} `}</Typography>
       </Box>
     </Box>
   </Box>

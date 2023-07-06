@@ -1,12 +1,14 @@
+import { Connection } from "@solana/web3.js";
+import { getNftsForOwnerBySymbol } from "../common/getNftsForOwner";
 import { getNFTByWallet } from "../common/getNFTByWallet";
 
 export async function checkIfUserHasWoodenNickel(
   wallet: any
 ): Promise<boolean> {
-  const Symbol = "NICKEL";
-  const rpcCluster = process.env.NEXT_PUBLIC_HELIUS_SOLANA_CLUSTER!;
+  const symbol = "NICKEL";
+  const conn = new Connection(process.env.NEXT_PUBLIC_SOLANA_CLUSTER!);
 
-  const nickel = await getNFTByWallet(Symbol, rpcCluster, wallet.publicKey);
+  const nickel = await getNftsForOwnerBySymbol(symbol, wallet.publicKey, conn);
 
   if (!nickel) {
     return false;

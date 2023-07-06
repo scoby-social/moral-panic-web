@@ -8,8 +8,9 @@ export interface CardActionBuyProps {
   transactionDisabled: boolean;
   actionDisabled: boolean;
   transaccionMessage: NotificationMessage;
+  fullScreen?: boolean;
   handleClickBuy: () => Promise<void>;
-  handleChanceUnits: (
+  handleChangeUnits: (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
 }

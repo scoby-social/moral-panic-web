@@ -6,15 +6,21 @@ import { NotificationMessage, messageType } from "./types/notificationsMessage";
 
 import {
   NftImage,
+  NftImageFullScreen,
   firstPropertiesNft,
   nftCard,
   nftCardContainer,
+  nftCardFullScreen,
   nftInformation,
   nftPropertie,
+  nftPropertieFullScreen,
   nftTitle,
+  nftTitleFullScreen,
   propertieItem,
   propertiesContainer,
+  propertiesContainerFullScreen,
   propertiesTextStyle,
+  propertiesTextStyleFullScreen,
   textStyle,
 } from "./styles";
 
@@ -28,7 +34,7 @@ const transaccionNotificationInitial: NotificationMessage = {
   type: messageType.idle,
   msg: "",
 };
-const NFTCard: FC<NFTCardProps> = ({
+const NFTCardFullScreen: FC<NFTCardProps> = ({
   name,
   symbol,
   description,
@@ -47,7 +53,7 @@ const NFTCard: FC<NFTCardProps> = ({
 }) => {
   const [units, setUnits] = useState(0);
 
-  const [actionDisabled, setActionDisabled] = useState(false);
+  const [actionDisabled, setActionDisabled] = useState(true);
   const [transaccionMessage, setTransaccionMessage] =
     useState<NotificationMessage>(transaccionNotificationInitial);
 
@@ -101,6 +107,10 @@ const NFTCard: FC<NFTCardProps> = ({
       setUnits(parseInt(valueString.substring(-1)));
     }
 
+    if (valueString === "" || value > amount) {
+      setActionDisabled(true);
+    }
+
     setUnits(value);
   };
 
@@ -138,94 +148,97 @@ const NFTCard: FC<NFTCardProps> = ({
   };
 
   return (
-    <Box sx={nftCard}>
+    <Box sx={nftCardFullScreen}>
       <Box sx={nftCardContainer}>
-        <NftImage src={image} alt="rose" width={100} height={100} />
+        <NftImageFullScreen src={image} alt="rose" width={100} height={100} />
 
         <Box sx={nftInformation}>
-          <Typography variant="h2" sx={nftTitle}>
+          <Typography variant="h2" sx={nftTitleFullScreen}>
             {name}
           </Typography>
 
-          <Box sx={{ ...propertiesContainer }}>
+          <Box sx={propertiesContainerFullScreen}>
             <Box sx={firstPropertiesNft}>
-              <Typography variant="h3" sx={{ ...nftPropertie }}>
+              <Typography variant="h3" sx={nftPropertieFullScreen}>
                 {`Guidance`}
               </Typography>
               <Typography
                 variant="h3"
-                sx={{ ...textStyle, textAlign: "start" }}
+                sx={{ ...propertiesTextStyleFullScreen, textAlign: "start" }}
               >
                 {description}
               </Typography>
             </Box>
 
             <Box sx={propertieItem}>
-              <Typography variant="h3" sx={nftPropertie}>
+              <Typography variant="h3" sx={nftPropertieFullScreen}>
                 {`Symbol`}
               </Typography>
-              <Typography variant="h3" sx={propertiesTextStyle}>
+              <Typography variant="h3" sx={propertiesTextStyleFullScreen}>
                 {symbol}
               </Typography>
             </Box>
 
             <Box sx={propertieItem}>
-              <Typography variant="h3" sx={nftPropertie}>
+              <Typography variant="h3" sx={nftPropertieFullScreen}>
                 {`external_url`}
               </Typography>
-              <Typography variant="h3" sx={propertiesTextStyle}>
+              <Typography variant="h3" sx={propertiesTextStyleFullScreen}>
                 {external_url}
               </Typography>
             </Box>
             <Box sx={propertieItem}>
-              <Typography variant="h3" sx={nftPropertie}>
+              <Typography variant="h3" sx={nftPropertieFullScreen}>
                 {`minter`}
               </Typography>
-              <Typography variant="h3" sx={propertiesTextStyle}>
+              <Typography variant="h3" sx={propertiesTextStyleFullScreen}>
                 {minter}
               </Typography>
             </Box>
 
             <Box sx={propertieItem}>
-              <Typography variant="h3" sx={nftPropertie}>
+              <Typography variant="h3" sx={nftPropertieFullScreen}>
                 {`Seniority`}
               </Typography>
-              <Typography variant="h3" sx={propertiesTextStyle}>
+              <Typography variant="h3" sx={propertiesTextStyleFullScreen}>
                 {seniority}
               </Typography>
             </Box>
           </Box>
+
+          {type === "sell" && (
+            <CardActionSell
+              fullScreen
+              amount={amount}
+              price={price}
+              quota={quota}
+              units={units}
+              volume={volume}
+              actionDisabled={actionDisabled}
+              transactionDisabled={transactionDisabled}
+              handleClickSell={handleClickSell}
+              transaccionMessage={transaccionMessage}
+              handleChangeUnits={handleChangeUnits}
+            />
+          )}
+          {type === "buy" && (
+            <CardActionBuy
+              fullScreen
+              amount={amount}
+              price={price}
+              quota={quota}
+              units={units}
+              actionDisabled={actionDisabled}
+              transactionDisabled={transactionDisabled}
+              handleClickBuy={handleClickBuy}
+              transaccionMessage={transaccionMessage}
+              handleChangeUnits={handleChangeUnits}
+            />
+          )}
         </Box>
       </Box>
-      {type === "sell" && (
-        <CardActionSell
-          amount={amount}
-          price={price}
-          quota={quota}
-          units={units}
-          volume={volume}
-          actionDisabled={actionDisabled}
-          transactionDisabled={transactionDisabled}
-          handleClickSell={handleClickSell}
-          transaccionMessage={transaccionMessage}
-          handleChangeUnits={handleChangeUnits}
-        />
-      )}
-      {type === "buy" && (
-        <CardActionBuy
-          amount={amount}
-          price={price}
-          quota={quota}
-          units={units}
-          actionDisabled={actionDisabled}
-          transactionDisabled={transactionDisabled}
-          handleClickBuy={handleClickBuy}
-          transaccionMessage={transaccionMessage}
-          handleChangeUnits={handleChangeUnits}
-        />
-      )}
     </Box>
   );
 };
 
-export default NFTCard;
+export default NFTCardFullScreen;

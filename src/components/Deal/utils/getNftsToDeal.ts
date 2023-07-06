@@ -1,17 +1,16 @@
 import { PublicKey } from "@metaplex-foundation/js";
-import { getTheDealForgeQuota } from "lib/axios/requests/theDeal/getTheDealForgeQuota";
 import { getVolumeNftTheDeal } from "lib/axios/requests/theDeal/getVolumeNftTheDeal";
 import { getWoodenNickelsToList } from "lib/web3/woodenNickel/getWoodenNickelsToList";
 import { SellNftListDealStatement } from "../types/sellNftListDealStatement";
 import { NftInMarketplace } from "lib/web3/types/NftInMarketplace";
 import { getNftMarketAmount } from "./getNftMarketAmount";
+import { getSellWoodenNickelQuota } from "./getSellWoodenNickelQuota";
 
 export const getNftsToDeal = async (
   wallet: any,
   lisNftMarket: NftInMarketplace[]
 ) => {
   const userPubkey = wallet.publicKey as PublicKey;
-  const userWalletString = userPubkey.toString();
   const nftList = await getWoodenNickelsToList(userPubkey);
 
   if (nftList.length === 0) {
@@ -26,17 +25,20 @@ export const getNftsToDeal = async (
     const imageUrl = URL.createObjectURL(image);
 
     const volume = await getVolumeNftTheDeal(new Date(), nft.symbol);
-    const quota = await getTheDealForgeQuota(userWalletString);
 
     const price = lisNftMarket.find(i => i.symbol === nft.symbol)?.price || 0;
-
     const amount = getNftMarketAmount(lisNftMarket, nft.symbol);
+    const quota = await getSellWoodenNickelQuota(
+      nft.symbol,
+      userPubkey,
+      nft.mint
+    );
 
     return {
-      external_url: nft.external_link,
+      external_url: nft.external_url,
       description: nft.description,
       image: imageUrl,
-      seniority: "2",
+      seniority: nft?.seniority?.toString() || "1",
       name: nft.name,
       symbol: nft.symbol,
       price,
@@ -44,7 +46,7 @@ export const getNftsToDeal = async (
       minter,
       type: "sell",
       volume,
-      quota: quota.maxList || 0,
+      quota,
       statement: nftList,
     } as SellNftListDealStatement;
   });
@@ -56,9 +58,7 @@ export const getNftsToDeal = async (
   res.forEach((val, index) => {
     const nftFound = nftPropsFiltered.find(i => i.symbol === val.symbol);
 
-    console.log({ nftFound, index });
-
-    if (!nftFound) {
+    if (!nftFound && val.quota !== 0) {
       nftPropsFiltered = [...nftPropsFiltered, val];
     }
   });
