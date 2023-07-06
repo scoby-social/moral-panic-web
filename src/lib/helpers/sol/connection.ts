@@ -269,9 +269,9 @@ async function awaitTransactionSignatureConfirmation(
     }
   });
 
-  //@ts-ignore
-  if (connection._signatureSubscriptions[subId])
-    connection.removeSignatureListener(subId);
+  /*   //@ts-ignore
+  if (connection._signatureSubscriptions[subId]) */
+  connection.removeSignatureListener(subId);
   done = true;
   return status;
 }

@@ -48,6 +48,7 @@ export const getNftsToDeal = async (
       volume,
       quota,
       statement: nftList,
+      mint: nft.mint,
     } as SellNftListDealStatement;
   });
 

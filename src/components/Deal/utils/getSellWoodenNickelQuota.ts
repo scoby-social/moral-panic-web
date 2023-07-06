@@ -1,5 +1,6 @@
 import { PublicKey } from "@metaplex-foundation/js";
 import { getTheDealForgeQuota } from "lib/axios/requests/theDeal/getTheDealForgeQuota";
+import { getTheDealWoodenNickelAmountListed } from "lib/axios/requests/theDeal/getTheDealWoodenNickelAmountListed";
 import { getWoodenNickelAddress } from "lib/axios/requests/woodenNickel/getWoodenNickelAddress";
 
 export const getSellWoodenNickelQuota = async (
@@ -13,7 +14,9 @@ export const getSellWoodenNickelQuota = async (
 
   if (!wnAddress || tokenAddress !== wnAddress) return 0;
 
+  const amountListed = await getTheDealWoodenNickelAmountListed(wnAddress);
   const wnQuota = await getTheDealForgeQuota(wnAddress);
+  const amountQuota = wnQuota.maxList - amountListed;
 
-  return wnQuota.maxList;
+  return amountQuota <= 0 ? 0 : amountQuota;
 };

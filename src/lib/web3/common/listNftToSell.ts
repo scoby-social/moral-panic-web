@@ -7,6 +7,7 @@ import { getProvider } from "lib/helpers/getProvider";
 import { TOKEN_PROGRAM_ID, getAssociatedTokenAddress } from "@solana/spl-token";
 import { makeATokenAccountTransaction } from "lib/helpers/makeATokenAccountTransaction";
 import { SequenceType, sendTransactions } from "lib/helpers/sol/connection";
+import { getWoodenNickelAddress } from "lib/axios/requests/woodenNickel/getWoodenNickelAddress";
 
 export const listNftToSell = async (
   nft: NftToList,
@@ -18,7 +19,13 @@ export const listNftToSell = async (
   amount: number
 ) => {
   try {
-    if (nft.data.creators[2].address !== userWallet?.publicKey.toBase58()) {
+    const userWalletString = userWallet?.publicKey.toString() as string;
+
+    const getWNAddress = await getWoodenNickelAddress(userWalletString);
+
+    console.log(nft.mint);
+
+    if (nft.mint !== getWNAddress) {
       //!Error message
       return false;
     }

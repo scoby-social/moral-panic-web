@@ -48,5 +48,6 @@ export const getNftToBuy = async (wallet: any) => {
     userHasFakeId: userFakeID,
     transactionDisabled,
     quota,
+    mint: nft.mint,
   } as BuyNftListDealStatement;
 };

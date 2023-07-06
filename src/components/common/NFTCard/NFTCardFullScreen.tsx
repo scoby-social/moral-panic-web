@@ -135,6 +135,7 @@ const NFTCardFullScreen: FC<NFTCardProps> = ({
   const handleClickSell = async () => {
     try {
       const response = await handleTransaction(units);
+      console.log({ response });
 
       if (response) {
         setTransaccionMessage(getNotificacionMessage(messageType.sellSuccess));
