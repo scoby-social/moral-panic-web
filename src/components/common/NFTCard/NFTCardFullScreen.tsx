@@ -101,7 +101,7 @@ const NFTCardFullScreen: FC<NFTCardProps> = ({
     if (
       valueString[valueString.length] === "e" ||
       valueString[valueString.length] === "." ||
-      valueString[valueString.length] === "."
+      valueString[valueString.length] === ","
     ) {
       e.target.value = valueString.substring(-1);
       setUnits(parseInt(valueString.substring(-1)));
@@ -135,7 +135,6 @@ const NFTCardFullScreen: FC<NFTCardProps> = ({
   const handleClickSell = async () => {
     try {
       const response = await handleTransaction(units);
-      console.log({ response });
 
       if (response) {
         setTransaccionMessage(getNotificacionMessage(messageType.sellSuccess));

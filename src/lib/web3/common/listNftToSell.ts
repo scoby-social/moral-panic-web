@@ -23,8 +23,6 @@ export const listNftToSell = async (
 
     const getWNAddress = await getWoodenNickelAddress(userWalletString);
 
-    console.log(nft.mint);
-
     if (nft.mint !== getWNAddress) {
       //!Error message
       return false;
