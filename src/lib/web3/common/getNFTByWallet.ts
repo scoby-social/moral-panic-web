@@ -14,7 +14,7 @@ export async function getNFTByWallet(
       return res;
     });
 
-  const nfts = rpcAssets.items.find(
+  const nfts = rpcAssets?.items.find(
     val => val.content.metadata?.symbol === symbol
   );
 

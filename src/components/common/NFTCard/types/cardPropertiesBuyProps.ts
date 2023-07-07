@@ -2,7 +2,8 @@ export interface CardPropertiesBuyProps {
   amount: number;
   quota: number;
   units: number;
-  handleChanceUnits: (
+  fullScreen: boolean;
+  handleChangeUnits: (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
 }

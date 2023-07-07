@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import { Box, Typography } from "@mui/material";
 
-import { CardButton } from "./CardButton";
+import { CardButton } from "./CardButton/CardButton";
 import { CardPropertiesSell } from "./CardPropertiesToSell";
 import {
   cardInfoAction,
@@ -11,6 +11,9 @@ import {
   transactionTextColor,
   cardInfoNotification,
   cardInfoNotificationText,
+  titlePropertiePriceTextFullScreen,
+  actionContainer,
+  actionContainerFullScreen,
 } from "./styles";
 import { CardActionSellProps } from "../types";
 
@@ -23,29 +26,38 @@ export const CardActionSell: FC<CardActionSellProps> = ({
   actionDisabled,
   transaccionMessage,
   volume,
+  fullScreen = false,
   handleClickSell,
-  handleChanceUnits,
+  handleChangeUnits,
 }) => {
   return (
     <Box sx={{ ...cardInfoContainer }}>
       <Box sx={cardInfoAction}>
         <CardPropertiesSell
+          fullScreen={fullScreen}
           amount={amount}
           price={price}
           quota={quota}
           units={units}
           volume={volume}
-          handleChanceUnits={handleChanceUnits}
+          handleChangeUnits={handleChangeUnits}
         />
 
         <Box>
           <CardButton
+            fullScreen={fullScreen}
             disabled={transactionDisabled || actionDisabled}
             onClick={async () => await handleClickSell()}
           >
-            {`MINT`}
+            {`LIST`}
           </CardButton>
-          <Typography sx={titlePropertiePriceText}>
+          <Typography
+            sx={
+              fullScreen
+                ? titlePropertiePriceTextFullScreen
+                : titlePropertiePriceText
+            }
+          >
             {`Plus a small SOL transaction fee`}
           </Typography>
         </Box>
@@ -56,7 +68,9 @@ export const CardActionSell: FC<CardActionSellProps> = ({
           color: transactionTextColor(transaccionMessage.type),
         }}
       >
-        <Typography sx={cardInfoNotificationText}>
+        <Typography
+          sx={fullScreen ? cardInfoNotificationText : cardInfoNotificationText}
+        >
           {transaccionMessage.msg}
         </Typography>
       </Box>

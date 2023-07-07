@@ -1,5 +1,6 @@
 export interface NFTCardProps {
   name: string;
+  maxWidth: boolean;
   symbol: string;
   description: string;
   image: string;
@@ -13,5 +14,6 @@ export interface NFTCardProps {
   quota: number;
   userHasFakeId?: boolean;
   transactionDisabled?: boolean;
+  mint: string;
   handleTransaction: (amount: number) => Promise<Boolean | undefined>;
 }
