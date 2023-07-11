@@ -52,9 +52,6 @@ export const DealWoodenNickel = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet.connected]);
 
-  useEffect(() => {}, [wallet.publicKey]);
-  useEffect(() => {}, [nftsToSellProps, nftToBuyProps]);
-
   const init = async () => {
     const buyData = await getNftToBuy(wallet);
     const nftsTheDealMarket = buyData ? buyData.lisNftMarket : [];
