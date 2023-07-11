@@ -10,5 +10,5 @@ export async function checkIfUserHasWoodenNickel(
 
   const nickel = await getNftsForOwnerBySymbol(symbol, wallet.publicKey, conn);
 
-  return nickel.length === 0;
+  return nickel.length > 0;
 }
