@@ -5,7 +5,10 @@ import WoodenNickelIDL from "./wooden-nickel.json";
 import { NftInMarketplace } from "../types/NftInMarketplace";
 
 export const getWoodenNickelsListMarket = async (userWallet: any) => {
-  const conn = new Connection(process.env.NEXT_PUBLIC_SOLANA_CLUSTER!);
+  const conn = new Connection(
+    process.env.NEXT_PUBLIC_SOLANA_CLUSTER!,
+    "processed"
+  );
   const WOODEN_NICKEL_PROGRAM_ID =
     process.env.NEXT_PUBLIC_WOODEN_NICKEL_PROGRAMID_THE_DEAL!;
 

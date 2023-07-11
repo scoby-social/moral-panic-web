@@ -86,15 +86,19 @@ const NFTCard: FC<NFTCardProps> = ({
       setUnits(parseInt("0"));
     }
 
-    if (value < 1 || (value > quota && type == "sell")) {
+    if (value < 1 || valueString === "") {
       setActionDisabled(true);
+      setTransaccionMessage(getNotificacionMessage(messageType.idle));
+    } else if (value > quota) {
+      setActionDisabled(true);
+      setTransaccionMessage(getNotificacionMessage(messageType.limitQuota));
     } else {
+      setTransaccionMessage(getNotificacionMessage(messageType.idle));
       setActionDisabled(false);
     }
 
     if (
       valueString[valueString.length] === "e" ||
-      valueString[valueString.length] === "." ||
       valueString[valueString.length] === "."
     ) {
       e.target.value = valueString.substring(-1);
@@ -129,7 +133,9 @@ const NFTCard: FC<NFTCardProps> = ({
       if (response) {
         setTransaccionMessage(getNotificacionMessage(messageType.sellSuccess));
       } else {
-        setTransaccionMessage(getNotificacionMessage(messageType.limitQuota));
+        setTransaccionMessage(
+          getNotificacionMessage(messageType.insufficientTokenBalance)
+        );
       }
     } catch (error) {
       console.error(error);

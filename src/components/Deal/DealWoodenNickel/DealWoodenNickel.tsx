@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Box, Typography } from "@mui/material";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -25,6 +25,7 @@ import { getNftToBuy } from "../utils/getNftToBuy";
 import { getNftsToDeal } from "../utils/getNftsToDeal";
 import { updateAmountListed } from "lib/axios/requests/theDeal/updateAmountListed";
 import NFTCardFullScreen from "components/common/NFTCard/NFTCardFullScreen";
+import { getTokenBalanceByWallet } from "lib/web3/getTokenBalanceByWallet";
 
 function tabProps(index: number) {
   return {
@@ -90,7 +91,17 @@ export const DealWoodenNickel = () => {
         amount,
         nft.external_url
       );
-      await init();
+
+      setTimeout(async () => {
+        await init();
+      }, 2000);
+    }
+
+    const buyData = await getNftToBuy(wallet);
+
+    if (buyData) {
+      setNftToBuy(buyData.statement);
+      setNftToBuyProps(buyData);
     }
 
     return response;
@@ -101,6 +112,15 @@ export const DealWoodenNickel = () => {
     const quota = await getTheDealForgeQuota(userWallet.toString());
 
     if (quota.maxList < amount) {
+      return false;
+    }
+
+    const info = await getTokenBalanceByWallet(
+      userWallet,
+      new PublicKey(nft.mint)
+    );
+
+    if (info < amount) {
       return false;
     }
 

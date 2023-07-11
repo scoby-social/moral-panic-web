@@ -1,4 +1,7 @@
-import { NotificationMessage, messageType } from "../types/notificationsMessage";
+import {
+  NotificationMessage,
+  messageType,
+} from "../types/notificationsMessage";
 
 const notificationMessage = (type: messageType) => {
   if (type === messageType.buySuccess) {
@@ -30,6 +33,13 @@ const notificationMessage = (type: messageType) => {
 
   if (type === messageType.hasFakeId) {
     return "Hey pal, looks like you already have a Fake ID. I’d love to sell you a Wooden Nickel, but you can mint your own cheaper.";
+  }
+
+  if (type === messageType.insufficientTokenBalance) {
+    return `
+    "Hey! We checked your wallet and you don't have enough crypto to sell.
+    Come back later when you've earned some bread and try again."
+    `;
   }
 
   return "";
