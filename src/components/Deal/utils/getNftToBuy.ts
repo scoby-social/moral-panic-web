@@ -20,6 +20,7 @@ export const getNftToBuy = async (wallet: any) => {
   const minter = minterString.substring(0, minterString.length - 2);
 
   const userWalletChecked = await checkUserWalletNftHellbender(wallet);
+
   const userWn = userWalletChecked["NICKEL"];
   const userFakeID = userWalletChecked["HELLPASS"];
 

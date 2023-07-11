@@ -7,5 +7,7 @@ export const getNftMarketAmount = (
   const marketFiltered = nftMarket.filter(val => val.symbol === symbol);
   const marketAmountArr = marketFiltered.map(val => val.amount);
 
-  return marketAmountArr.reduce((prev, curr) => prev + curr);
+  return marketAmountArr.length > 0
+    ? marketAmountArr?.reduce((prev, curr) => prev + curr)
+    : 0;
 };

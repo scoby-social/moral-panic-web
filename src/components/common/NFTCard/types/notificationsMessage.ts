@@ -9,6 +9,7 @@ export enum messageType {
     buySuccess = 'buySuccess',
     sellSuccess = 'sellSuccess',
     insufficientBalance = 'insufficient balance',
+    insufficientTokenBalance = 'insufficient tokenBalance balance',
     unknow = 'unknow',
     limitQuota = 'limitQuota',
     buyLimit = 'buyLimit',
