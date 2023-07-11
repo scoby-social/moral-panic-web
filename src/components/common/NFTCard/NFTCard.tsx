@@ -99,7 +99,6 @@ const NFTCard: FC<NFTCardProps> = ({
 
     if (
       valueString[valueString.length] === "e" ||
-      valueString[valueString.length] === "." ||
       valueString[valueString.length] === "."
     ) {
       e.target.value = valueString.substring(-1);
