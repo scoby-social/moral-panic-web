@@ -14,6 +14,7 @@ import {
   titlePropertiePriceTextFullScreen,
   actionContainer,
   actionContainerFullScreen,
+  cardInfoNotificationTextFullScreen,
 } from "./styles";
 import { CardActionSellProps } from "../types";
 
@@ -69,7 +70,11 @@ export const CardActionSell: FC<CardActionSellProps> = ({
         }}
       >
         <Typography
-          sx={fullScreen ? cardInfoNotificationText : cardInfoNotificationText}
+          sx={
+            fullScreen
+              ? cardInfoNotificationTextFullScreen
+              : cardInfoNotificationText
+          }
         >
           {transaccionMessage.msg}
         </Typography>

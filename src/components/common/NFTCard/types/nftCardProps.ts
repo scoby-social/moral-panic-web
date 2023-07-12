@@ -15,5 +15,6 @@ export interface NFTCardProps {
   userHasFakeId?: boolean;
   transactionDisabled?: boolean;
   mint: string;
+  fakeIdMintedToIncreasedAt: number;
   handleTransaction: (amount: number) => Promise<Boolean | undefined>;
 }

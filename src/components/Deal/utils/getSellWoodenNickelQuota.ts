@@ -13,7 +13,6 @@ export const getSellWoodenNickelQuota = async (
   const wnAddress = await getWoodenNickelAddress(walletPubKey.toString());
 
   if (!wnAddress || tokenAddress !== wnAddress) return 0;
-
   const amountListed = await getTheDealWoodenNickelAmountListed(wnAddress);
   const wnQuota = await getTheDealForgeQuota(wnAddress);
   const amountQuota = wnQuota.maxList - amountListed;

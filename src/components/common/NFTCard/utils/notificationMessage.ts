@@ -3,7 +3,7 @@ import {
   messageType,
 } from "../types/notificationsMessage";
 
-const notificationMessage = (type: messageType) => {
+const notificationMessage = (type: messageType, amount = 2) => {
   if (type === messageType.buySuccess) {
     return "Congrats! You have bought a token successfully";
   }
@@ -24,7 +24,7 @@ const notificationMessage = (type: messageType) => {
   }
 
   if (type === messageType.limitQuota) {
-    return "Sorry pal, you can’t list more of these tokens until 2 of the ones you minted have been used and burned.";
+    return `Sorry pal, you can’t list more of these tokens until ${amount} of the ones you minted have been used and burned.`;
   }
 
   if (type === messageType.buyLimit) {
@@ -46,10 +46,11 @@ const notificationMessage = (type: messageType) => {
 };
 
 export const getNotificacionMessage = (
-  type: messageType
+  type: messageType,
+  amount = 2
 ): NotificationMessage => {
   return {
     type: type,
-    msg: notificationMessage(type),
+    msg: notificationMessage(type, amount),
   };
 };

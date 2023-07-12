@@ -61,6 +61,7 @@ export const DealWoodenNickel = () => {
     }
 
     const sellData = await getNftsToDeal(wallet, nftsTheDealMarket);
+
     const sellStatement = sellData.map(i => i.statement).flat();
     setNftsToSell(sellStatement);
 
