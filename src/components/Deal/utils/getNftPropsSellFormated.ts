@@ -4,12 +4,12 @@ import { NftInMarketplace } from "lib/web3/types/NftInMarketplace";
 import { NftToList } from "lib/web3/types/nftToList";
 import { getNftMarketAmount } from "./getNftMarketAmount";
 import { getSellWoodenNickelQuota } from "./getSellWoodenNickelQuota";
-import { checkIfUsrIsWoodenNickelOwner } from "lib/helpers/woodenNickel";
+import { checkIfUserIsWoodenNickelOwner } from "lib/helpers/woodenNickel";
 import { SellNftListDealStatement } from "../types/sellNftListDealStatement";
 
 export const getNftPropsSellFormated = async (
   nftList: NftToList[],
-  lisNftMarket: NftInMarketplace[],
+  listNftMarket: NftInMarketplace[],
   userPubkey: PublicKey
 ) => {
   const nftPropsFormated = nftList.map(async nft => {
@@ -22,14 +22,14 @@ export const getNftPropsSellFormated = async (
 
     const volume = await getVolumeNftTheDeal(new Date(), nft.symbol);
 
-    const price = lisNftMarket.find(i => i.symbol === nft.symbol)?.price || 0;
-    const amount = getNftMarketAmount(lisNftMarket, nft.symbol);
+    const price = listNftMarket.find(i => i.symbol === nft.symbol)?.price || 0;
+    const amount = getNftMarketAmount(listNftMarket, nft.symbol);
     const quota = await getSellWoodenNickelQuota(
       nft.symbol,
       userPubkey,
       nft.mint
     );
-    const insOwner = await checkIfUsrIsWoodenNickelOwner(
+    const insOwner = await checkIfUserIsWoodenNickelOwner(
       userPubkey,
       tokenAddress
     );

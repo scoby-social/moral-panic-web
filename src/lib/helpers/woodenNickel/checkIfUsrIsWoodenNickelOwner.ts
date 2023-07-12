@@ -1,7 +1,7 @@
 import { PublicKey } from "@metaplex-foundation/js";
 import { getWoodenNickelAddress } from "lib/axios/requests/woodenNickel/getWoodenNickelAddress";
 
-export const checkIfUsrIsWoodenNickelOwner = async (
+export const checkIfUserIsWoodenNickelOwner = async (
   walletAddress: PublicKey,
   tokenAddress: PublicKey
 ) => {

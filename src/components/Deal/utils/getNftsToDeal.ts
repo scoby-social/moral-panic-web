@@ -32,7 +32,7 @@ export const getNftsToDeal = async (
     }
   });
 
-  const nftPropsWithIncreaseDat = nftPropsFiltered.map(async val => {
+  const nftPropsWithIncreasedAt = nftPropsFiltered.map(async val => {
     const fakeIdMintedToIncreasedAt = await getWNFakeIDsMintToIncreasedAt(
       val.symbol,
       userPubkey
@@ -41,9 +41,9 @@ export const getNftsToDeal = async (
     return { ...val, fakeIdMintedToIncreasedAt };
   });
 
-  const nftPropsWithIncreaseDatPromised = await Promise.all(
-    nftPropsWithIncreaseDat
+  const nftPropsWithIncreasedAtPromised = await Promise.all(
+    nftPropsWithIncreasedAt
   );
 
-  return nftPropsWithIncreaseDatPromised;
+  return nftPropsWithIncreasedAtPromised;
 };
