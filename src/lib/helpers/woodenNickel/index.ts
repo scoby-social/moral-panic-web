@@ -1,1 +1,1 @@
-export * from "./checkIfUsrIsWoodenNickelOwner";
+export * from "./checkIfUserIsWoodenNickelOwner";
