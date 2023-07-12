@@ -4,4 +4,5 @@ export interface NftQuota {
   maxList: number;
   increasesAt: number;
   nextQuota: string | null;
+  amount: number;
 }

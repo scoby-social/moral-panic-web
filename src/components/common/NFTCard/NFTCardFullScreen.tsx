@@ -48,6 +48,7 @@ const NFTCardFullScreen: FC<NFTCardProps> = ({
   amount,
   volume = 0,
   quota = 0,
+  fakeIdMintedToIncreasedAt = 2,
   userHasFakeId = false,
   transactionDisabled = false,
 }) => {
@@ -62,6 +63,16 @@ const NFTCardFullScreen: FC<NFTCardProps> = ({
 
     if (quota === 0) {
       setActionDisabled(true);
+    }
+
+    if (quota === 0 && type === "sell") {
+      setActionDisabled(true);
+      setTransaccionMessage(
+        getNotificacionMessage(
+          messageType.limitQuota,
+          fakeIdMintedToIncreasedAt
+        )
+      );
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
