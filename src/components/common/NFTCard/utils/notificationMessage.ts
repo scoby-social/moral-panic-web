@@ -24,7 +24,7 @@ const notificationMessage = (type: messageType, amount = 2) => {
   }
 
   if (type === messageType.limitQuota) {
-    return `Sorry pal, you can’t list more of these tokens until ${amount} of the ones you minted have been used and burned.`;
+    return `Sorry pal, you can’t list more of these tokens until ${amount} of the ones you minted have been used.`;
   }
 
   if (type === messageType.buyLimit) {
